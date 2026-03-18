@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>CámaraCtrl v5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08090c;--s1:#0f1117;--s2:#161a22;
+  --b1:#1e2635;--b2:#2a3448;
+  --t1:#e4e8f0;--t2:#7a8799;--t3:#3d4a5c;
+  --pa:#f0a500;--pa2:rgba(240,165,0,.12);--pa3:rgba(240,165,0,.3);
+  --po:#2d8cf0;--po2:rgba(45,140,240,.12);--po3:rgba(45,140,240,.3);
+  --gr:#1db954;--gr2:rgba(29,185,84,.12);--gr3:rgba(29,185,84,.3);
+  --re:#e53e3e;--re2:rgba(229,62,62,.12);--re3:rgba(229,62,62,.3);
+  --ye:#d4a017;--ye2:rgba(212,160,23,.12);--ye3:rgba(212,160,23,.3);
+  --ac:#6c63ff;--ac2:rgba(108,99,255,.12);--ac3:rgba(108,99,255,.3);
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--t1);min-height:100vh}
+input,select,textarea,button{font-family:var(--sans)}
+input[type=date]{color-scheme:dark}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--s1)}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.fadein{animation:fadein .2s ease both}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.login-box{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:32px 28px;width:100%;max-width:360px;text-align:center}
+.login-logo{font-family:var(--mono);font-size:22px;font-weight:700;margin-bottom:6px}
+.login-logo span{color:var(--ac)}
+.login-sub{font-size:12px;color:var(--t2);margin-bottom:28px}
+.pin-dots{display:flex;justify-content:center;gap:10px;margin-bottom:20px}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--b2);transition:all .2s}
+.pin-dot.filled{background:var(--ac);border-color:var(--ac)}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.pin-btn{background:var(--s2);border:1px solid var(--b1);color:var(--t1);font-family:var(--mono);font-size:20px;font-weight:600;padding:16px;border-radius:8px;cursor:pointer;transition:all .15s}
+.pin-btn:hover{background:var(--b1);border-color:var(--b2)}
+.pin-btn:active{transform:scale(.95)}
+.pin-btn.del{font-size:14px;color:var(--t2)}
+.pin-btn.zero{grid-column:2}
+
+/* HEADER */
+.hdr{background:var(--s1);border-bottom:1px solid var(--b1);padding:0 14px;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.08em}
+.logo span{color:var(--ac)}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.live{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--gr);background:var(--gr2);padding:3px 8px;border-radius:4px;border:1px solid var(--gr3)}
+.live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gr);animation:pulse 2s infinite;flex-shrink:0}
+.live.offline{color:var(--re);background:var(--re2);border-color:var(--re3)}
+.live.offline::before{background:var(--re)}
+.user-badge{font-family:var(--mono);font-size:10px;color:var(--t2);background:var(--s2);padding:3px 8px;border-radius:4px;border:1px solid var(--b1);cursor:pointer}
+
+/* NAV */
+.nav{background:var(--s1);border-bottom:1px solid var(--b1);display:flex;overflow-x:auto;padding:0 4px;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nb{background:none;border:none;color:var(--t2);font-family:var(--sans);font-size:12px;font-weight:600;padding:11px 12px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+.nb:hover{color:var(--t1)}.nb.on{color:var(--t1);border-bottom-color:var(--ac)}
+
+.main{padding:12px;max-width:1100px;margin:0 auto}
+.page{display:none}.page.on{display:block;animation:fadein .2s ease}
+
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:8px;padding:14px;margin-bottom:11px}
+.ct{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--t2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:11px;display:flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+
+.fl{font-family:var(--mono);font-size:10px;color:var(--t2);display:block;margin-bottom:4px;letter-spacing:.03em}
+.req{color:var(--re)}
+.fc{width:100%;background:var(--s2);border:1px solid var(--b1);color:var(--t1);font-family:var(--sans);font-size:13px;padding:8px 10px;border-radius:6px;outline:none;transition:border-color .2s}
+.fc:focus{border-color:var(--ac)}.fc::placeholder{color:var(--t3)}
+select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
+.fg{margin-bottom:11px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+
+.btn{background:var(--ac);color:#fff;border:none;font-family:var(--sans);font-size:13px;font-weight:600;padding:9px 16px;border-radius:6px;cursor:pointer;transition:filter .15s;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn:hover{filter:brightness(1.1)}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-ghost{background:var(--s2);color:var(--t1);border:1px solid var(--b1)}
+.btn-green{background:var(--gr2);color:var(--gr);border:1px solid var(--gr3)}
+.btn-re{background:var(--re2);color:var(--re);border:1px solid var(--re3)}
+.btn-ye{background:var(--ye2);color:var(--ye);border:1px solid var(--ye3)}
+.btn-sm{padding:5px 11px;font-size:11px}.btn-full{width:100%}
+.btn-row{display:flex;gap:7px;flex-wrap:wrap}
+
+.alert{padding:9px 12px;border-radius:6px;margin-bottom:9px;font-size:12px;line-height:1.5}
+.al-info{background:var(--ac2);color:#a5b4fc;border:1px solid var(--ac3)}
+.al-ok{background:var(--gr2);color:var(--gr);border:1px solid var(--gr3)}
+.al-warn{background:var(--ye2);color:var(--ye);border:1px solid var(--ye3)}
+.al-danger{background:var(--re2);color:var(--re);border:1px solid var(--re3)}
+
+.kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+.kpi{background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px}
+.kl{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.kv{font-family:var(--mono);font-size:19px;font-weight:700;line-height:1}
+.ku{font-size:11px;color:var(--t2);margin-left:2px}
+
+.tag{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;display:inline-block}
+.tag-pa{background:var(--pa2);color:var(--pa)}.tag-po{background:var(--po2);color:var(--po)}
+
+.stitle{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin:16px 0 9px;display:flex;align-items:center;gap:7px}
+.stitle::after{content:'';flex:1;height:1px;background:var(--b1)}
+
+.vbadge{font-family:var(--mono);font-size:9px;padding:2px 5px;border-radius:3px;display:inline-block}
+.vb-ok{background:var(--gr2);color:var(--gr)}.vb-warn{background:var(--ye2);color:var(--ye)}.vb-danger{background:var(--re2);color:var(--re)}
+
+.sdbadge{font-family:var(--mono);font-size:9px;padding:1px 5px;border-radius:3px;display:inline-block;border:1px solid}
+.sd-general{color:#94a3b8;border-color:#2d3748}
+.sd-copetin{color:#f59e0b;border-color:#92400e}
+.sd-huertas{color:#34d399;border-color:#064e3b}
+.sd-suteki{color:#a78bfa;border-color:#4c1d95}
+.sd-reserva{color:#fb923c;border-color:#7c2d12}
+
+.rp{min-width:98px;background:var(--s2);border:1px solid var(--b1);border-radius:5px;padding:6px 7px;cursor:pointer;transition:all .15s}
+.rp:hover{border-color:var(--b2)}.rp.oc-pa{border-color:var(--pa3);background:var(--pa2)}.rp.oc-po{border-color:var(--po3);background:var(--po2)}
+.rp.vto-warn{border-color:var(--ye3)!important}.rp.vto-danger{border-color:var(--re3)!important}
+.rp.empty{border-style:dashed;opacity:.5}.rp.reserved{border-color:var(--ac3)}
+.rp-code{font-family:var(--mono);font-size:7px;color:var(--t3);margin-bottom:2px}
+.rp-prod{font-size:10px;font-weight:700;line-height:1.2;margin-bottom:1px}
+.rp-kg{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.rack-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:3px}
+
+.pstep{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;background:var(--s2);border:1px solid var(--b1);border-left:3px solid var(--ac);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:all .2s}
+.pstep.pa{border-left-color:var(--pa)}.pstep.po{border-left-color:var(--po)}
+.pstep.done-step{background:var(--gr2);border-color:var(--gr3);border-left-color:var(--gr)}
+.pchk{width:20px;height:20px;border-radius:50%;border:2px solid var(--b2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px}
+.pchk.done{background:var(--gr);border-color:var(--gr)}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{font-family:var(--mono);font-size:9px;color:var(--t3);text-align:left;padding:6px 9px;border-bottom:1px solid var(--b1);letter-spacing:.05em;text-transform:uppercase}
+.tbl td{padding:8px 9px;border-bottom:1px solid var(--b1);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}.tbl tr:hover td{background:rgba(255,255,255,.015)}
+
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--b2);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite}
+
+.upz{border:2px dashed var(--b2);border-radius:8px;padding:20px 14px;text-align:center;cursor:pointer;margin-bottom:11px;background:var(--s2);transition:border-color .2s}
+.upz:hover{border-color:var(--ac)}
+
+.detail-panel{position:fixed;bottom:10px;left:10px;right:10px;background:var(--s1);border:1px solid var(--b2);border-radius:10px;padding:13px;z-index:90;box-shadow:0 8px 32px rgba(0,0,0,.8);max-width:480px;margin:0 auto;animation:fadein .2s ease}
+
+/* SYNC indicator */
+.sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.sync-ok{background:var(--gr)}.sync-saving{background:var(--ye);animation:pulse .8s infinite}.sync-err{background:var(--re)}
+
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--b1);padding:5px 0 env(safe-area-inset-bottom,5px);z-index:100}
+.bnav-inner{display:flex;justify-content:space-around}
+.bb{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--sans);font-size:9px;color:var(--t3);padding:4px 8px;cursor:pointer;transition:color .2s;min-width:40px}
+.bb.on{color:var(--ac)}.bb svg{width:18px;height:18px}
+
+/* SETUP SCREEN */
+#setup-screen{position:fixed;inset:0;background:var(--bg);z-index:999;overflow-y:auto;padding:20px}
+.setup-box{max-width:600px;margin:0 auto}
+
+@media(max-width:640px){
+  .bnav{display:block}.nav{display:none}
+  .main{padding:10px 10px 72px}
+  .kgrid{grid-template-columns:repeat(2,1fr)}
+  .g2,.g3{grid-template-columns:1fr}
+}
+@media print{
+  .hdr,.nav,.bnav,.btn,.btn-row,.upz,#pick-add-row,#login-screen,#setup-screen{display:none!important}
+  .page{display:block!important}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ SETUP SCREEN (primera vez) ═══ -->
+<div id="setup-screen" style="display:none">
+  <div class="setup-box">
+    <div style="text-align:center;margin-bottom:28px">
+      <div class="login-logo">CÁMARA<span style="color:var(--ac)">CTRL</span> <span style="font-size:12px;color:var(--t3)">v5</span></div>
+      <div style="font-size:13px;color:var(--t2);margin-top:6px">Configuración inicial — Firebase</div>
+    </div>
+
+    <div class="card">
+      <div class="ct"><span class="dot" style="background:var(--ye)"></span>Paso 1 — Crear proyecto Firebase</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.9">
+        1. Andá a <strong style="color:var(--t1)">console.firebase.google.com</strong><br>
+        2. Clic en <strong style="color:var(--t1)">"Crear un proyecto"</strong><br>
+        3. Nombre: <code style="background:var(--s2);padding:1px 5px;border-radius:3px">camara-ctrl</code> → Continuar<br>
+        4. Desactivá Google Analytics → Crear proyecto<br>
+        5. En el menú izquierdo: <strong style="color:var(--t1)">Realtime Database → Crear base de datos</strong><br>
+        6. Elegí región <strong style="color:var(--t1)">us-central1</strong> → Siguiente<br>
+        7. Seleccioná <strong style="color:var(--t1)">"Empezar en modo de prueba"</strong> → Listo<br>
+        8. En el menú izquierdo: <strong style="color:var(--t1)">Configuración del proyecto (⚙) → General</strong><br>
+        9. Bajá hasta <strong style="color:var(--t1)">"Tus apps"</strong> → clic en el ícono <strong style="color:var(--t1)">&lt;/&gt;</strong> (Web)<br>
+        10. Nombre de la app: <code style="background:var(--s2);padding:1px 5px;border-radius:3px">camara</code> → Registrar app<br>
+        11. Copiá los datos del bloque <code style="background:var(--s2);padding:1px 5px;border-radius:3px">firebaseConfig</code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ct"><span class="dot" style="background:var(--ac)"></span>Paso 2 — Pegá tu configuración Firebase</div>
+      <div class="fg">
+        <label class="fl">API Key Firebase</label>
+        <input type="text" class="fc" id="fb-apikey" placeholder="AIzaSy...">
+      </div>
+      <div class="fg">
+        <label class="fl">Auth Domain</label>
+        <input type="text" class="fc" id="fb-authdomain" placeholder="camara-ctrl.firebaseapp.com">
+      </div>
+      <div class="fg">
+        <label class="fl">Database URL</label>
+        <input type="text" class="fc" id="fb-dburl" placeholder="https://camara-ctrl-default-rtdb.firebaseio.com">
+      </div>
+      <div class="fg">
+        <label class="fl">Project ID</label>
+        <input type="text" class="fc" id="fb-projectid" placeholder="camara-ctrl">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ct"><span class="dot" style="background:var(--gr)"></span>Paso 3 — Configurá usuarios y PIN</div>
+      <div class="alert al-info" style="margin-bottom:10px">El PIN tiene 4 dígitos. Cada usuario tiene su nombre y el mismo PIN compartido (podés cambiarlo después).</div>
+      <div class="g2">
+        <div class="fg">
+          <label class="fl">PIN de acceso (4 dígitos)</label>
+          <input type="password" class="fc" id="fb-pin" placeholder="1234" maxlength="4">
+        </div>
+        <div class="fg">
+          <label class="fl">Repetir PIN</label>
+          <input type="password" class="fc" id="fb-pin2" placeholder="1234" maxlength="4">
+        </div>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--t2);margin-bottom:8px">Usuarios del sistema:</div>
+      <div class="g2">
+        <div class="fg"><label class="fl">Usuario 1 (vos)</label><input type="text" class="fc" id="u1" placeholder="Imanol" value="Imanol"></div>
+        <div class="fg"><label class="fl">Usuario 2</label><input type="text" class="fc" id="u2" placeholder="Nombre operario"></div>
+        <div class="fg"><label class="fl">Usuario 3</label><input type="text" class="fc" id="u3" placeholder="Nombre logística"></div>
+        <div class="fg"><label class="fl">Usuario 4</label><input type="text" class="fc" id="u4" placeholder="Nombre repartidor"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ct"><span class="dot" style="background:var(--re)"></span>Paso 4 — Reglas de seguridad Firebase</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.9;margin-bottom:10px">
+        En Firebase Console → Realtime Database → <strong style="color:var(--t1)">Reglas</strong>, pegá esto:
+      </div>
+      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:10px;font-family:var(--mono);font-size:11px;color:var(--t2);line-height:1.6;margin-bottom:10px">
+        {<br>
+        &nbsp;&nbsp;"rules": {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;".read": true,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;".write": true<br>
+        &nbsp;&nbsp;}<br>
+        }
+      </div>
+      <div style="font-size:11px;color:var(--t3)">Nota: el PIN en la app protege el acceso visual. Las reglas de Firebase controlan quién puede leer/escribir a nivel de base de datos.</div>
+    </div>
+
+    <div id="setup-err" style="margin-bottom:10px"></div>
+    <button class="btn btn-full" onclick="setupGuardar()" style="margin-bottom:20px">✓ Guardar configuración y entrar</button>
+  </div>
+</div>
+
+<!-- ═══ LOGIN SCREEN ═══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">CÁMARA<span>CTRL</span></div>
+    <div class="login-sub">Sistema de gestión de cámara</div>
+    <div style="margin-bottom:16px">
+      <label class="fl" style="text-align:left;display:block;margin-bottom:6px">¿Quién sos?</label>
+      <select class="fc" id="login-user" style="font-size:14px"></select>
+    </div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-btn" onclick="pinPress('1')">1</button>
+      <button class="pin-btn" onclick="pinPress('2')">2</button>
+      <button class="pin-btn" onclick="pinPress('3')">3</button>
+      <button class="pin-btn" onclick="pinPress('4')">4</button>
+      <button class="pin-btn" onclick="pinPress('5')">5</button>
+      <button class="pin-btn" onclick="pinPress('6')">6</button>
+      <button class="pin-btn" onclick="pinPress('7')">7</button>
+      <button class="pin-btn" onclick="pinPress('8')">8</button>
+      <button class="pin-btn" onclick="pinPress('9')">9</button>
+      <button class="pin-btn zero" onclick="pinPress('0')">0</button>
+      <button class="pin-btn del" onclick="pinDel()">⌫</button>
+    </div>
+    <div id="login-err" style="font-family:var(--mono);font-size:11px;color:var(--re);min-height:16px"></div>
+    <button class="btn btn-ghost btn-sm" onclick="showSetup()" style="margin-top:16px;width:100%">⚙ Configuración inicial Firebase</button>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app" style="display:none">
+
+<div class="hdr">
+  <div class="logo">CÁMARA<span>CTRL</span> <span style="font-size:9px;color:var(--t3);font-weight:400">v5</span></div>
+  <div class="hdr-right">
+    <div class="live" id="sync-status">SINCRONIZANDO</div>
+    <div class="user-badge" id="user-badge" onclick="logout()">— Salir</div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nb on" onclick="goTo('dashboard')">Dashboard</button>
+  <button class="nb" onclick="goTo('camara')">Mapa Cámara</button>
+  <button class="nb" onclick="goTo('ingreso')">Ingreso</button>
+  <button class="nb" onclick="goTo('picking')">Picking / Salida</button>
+  <button class="nb" onclick="goTo('reparto')">Consolidado Reparto</button>
+  <button class="nb" onclick="goTo('stock')">Stock</button>
+  <button class="nb" onclick="goTo('config')">⚙ Config</button>
+</nav>
+
+<div class="main">
+
+<!-- DASHBOARD -->
+<div class="page on" id="page-dashboard">
+  <div class="kgrid" id="kpi-grid"></div>
+  <div id="alerts-box"></div>
+  <div class="stitle">Actividad reciente</div>
+  <div class="card" id="activity-card"></div>
+  <div class="stitle">Resumen por zona</div>
+  <div id="zona-summary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px"></div>
+</div>
+
+<!-- MAPA -->
+<div class="page" id="page-camara">
+  <div id="mapa-container"></div>
+  <div class="card" style="padding:9px 12px">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:11px">
+      <span><span style="display:inline-block;width:10px;height:10px;background:var(--pa2);border:1px solid var(--pa3);border-radius:2px;margin-right:3px"></span>Pastas</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:var(--po2);border:1px solid var(--po3);border-radius:2px;margin-right:3px"></span>Pollo</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:var(--ye2);border:1px solid var(--ye3);border-radius:2px;margin-right:3px"></span>Vence ≤30d</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:var(--re2);border:1px solid var(--re3);border-radius:2px;margin-right:3px"></span>Vence ≤7d</span>
+    </div>
+  </div>
+  <div id="pos-detail-panel" style="display:none"></div>
+</div>
+
+<!-- INGRESO -->
+<div class="page" id="page-ingreso">
+  <div id="ing-banner"></div>
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--gr)"></span>Registrar Ingreso / Devolución</div>
+    <div class="g2">
+      <div class="fg"><label class="fl">Tipo</label>
+        <select class="fc" id="ing-tipo">
+          <option value="ingreso">Ingreso normal</option>
+          <option value="devolucion">Devolución de cliente</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Empresa</label>
+        <select class="fc" id="ing-empresa" onchange="ingEmpChange()">
+          <option value="">— Seleccionar —</option>
+          <option value="pastas">Pastas Pariggi</option>
+          <option value="pollo">Pollo Cocido</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Sub-depósito destino</label>
+      <select class="fc" id="ing-subdep"><option value="general">General</option></select>
+    </div>
+    <div class="fg"><label class="fl">Producto</label>
+      <select class="fc" id="ing-prod" onchange="ingCalc()"><option value="">— Primero elegí empresa —</option></select>
+    </div>
+    <div class="g3">
+      <div class="fg"><label class="fl">Cantidad</label>
+        <input type="number" class="fc" id="ing-cant" placeholder="0" min="0" step="0.5" oninput="ingCalc()">
+      </div>
+      <div class="fg"><label class="fl">Unidad</label>
+        <select class="fc" id="ing-unidad" onchange="ingCalc()">
+          <option value="kg">kg</option><option value="caja">Cajas</option><option value="pallet">Pallets</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Equivalencia</label>
+        <div id="ing-equiv" style="font-family:var(--mono);font-size:10px;color:var(--t2);padding:8px 0;line-height:1.7">—</div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="fg"><label class="fl">Fecha Vencimiento <span class="req">*</span></label>
+        <input type="date" class="fc" id="ing-vto">
+      </div>
+      <div class="fg"><label class="fl">Lote / Referencia</label>
+        <input type="text" class="fc" id="ing-lote" placeholder="Ej: L240315">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Observaciones</label>
+      <textarea class="fc" id="ing-obs" placeholder="Devoluciones, estado del producto, etc."></textarea>
+    </div>
+    <div class="stitle">Ubicación sugerida</div>
+    <div id="ing-sug-box"></div>
+    <div id="ing-mov-box"></div>
+    <button class="btn btn-green btn-full" style="margin-bottom:9px" onclick="ingSugerir()">⚡ Calcular posición FEFO óptima</button>
+    <div class="fg"><label class="fl">Posición en cámara</label>
+      <select class="fc" id="ing-pos"><option value="">— Seleccionar —</option></select>
+    </div>
+    <button class="btn btn-full" onclick="ingConfirmar()">✓ Confirmar Ingreso</button>
+  </div>
+</div>
+
+<!-- PICKING -->
+<div class="page" id="page-picking">
+  <div id="pick-banner"></div>
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--ac)"></span>Picking / Orden de Retiro</div>
+    <div id="pick-apikey-warn"></div>
+    <div class="upz" onclick="document.getElementById('pick-pdf').click()">
+      <input type="file" id="pick-pdf" accept=".pdf,image/*" style="display:none" onchange="pickLeerPDF(event)">
+      <div id="pick-pdf-inner">
+        <div style="font-size:24px;margin-bottom:5px">📄</div>
+        <div style="font-size:13px;color:var(--t2)">Subir factura PDF o foto</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--t3);margin-top:2px">PDF · JPG · PNG · Cámara</div>
+      </div>
+    </div>
+    <div class="stitle">Ítems del pedido</div>
+    <div id="pick-items-list"></div>
+    <div id="pick-add-row" style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:9px;margin-bottom:11px">
+      <div class="g2" style="margin-bottom:7px">
+        <select class="fc" id="pa-emp" onchange="paEmpChange()" style="font-size:12px">
+          <option value="">Empresa</option>
+          <option value="pastas">Pastas Pariggi</option>
+          <option value="pollo">Pollo Cocido</option>
+        </select>
+        <select class="fc" id="pa-prod" style="font-size:12px"><option value="">Producto</option></select>
+      </div>
+      <div class="g3" style="margin-bottom:7px">
+        <input type="number" class="fc" id="pa-cant" placeholder="Cantidad" min="0" step="0.5" style="font-size:12px">
+        <select class="fc" id="pa-uni" style="font-size:12px">
+          <option value="kg">kg</option><option value="box">Box</option>
+          <option value="caja">Cajas</option><option value="pallet">Pallets</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="paAgregar()">+ Ítem</button>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="fg"><label class="fl">Cliente <span class="req">*</span></label>
+        <input type="text" class="fc" id="pick-cliente" placeholder="Nombre del cliente">
+      </div>
+      <div class="fg"><label class="fl">Fecha de entrega <span class="req">*</span></label>
+        <input type="date" class="fc" id="pick-fecha">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Observaciones</label>
+      <textarea class="fc" id="pick-obs" placeholder="Notas del pedido" style="min-height:44px"></textarea>
+    </div>
+    <button class="btn btn-full" onclick="pickGenerar()">⚡ Generar Orden FEFO</button>
+  </div>
+  <div class="card" id="pick-orden-card" style="display:none">
+    <div class="ct"><span class="dot" style="background:var(--gr)"></span>Orden <span id="pick-orden-id"></span></div>
+    <div id="pick-orden-content"></div>
+    <div class="stitle">Equivalencias repartidor</div>
+    <div id="pick-equiv-summary" style="font-family:var(--mono);font-size:11px;line-height:2;color:var(--t2)"></div>
+    <div class="btn-row" style="margin-top:11px">
+      <button class="btn btn-green btn-sm" onclick="pickConfirmarSalida()">✓ Confirmar Salida</button>
+      <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Imprimir</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('pick-orden-card').style.display='none'">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPARTO -->
+<div class="page" id="page-reparto">
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--ye)"></span>Consolidado de Reparto</div>
+    <div class="g2">
+      <div class="fg"><label class="fl">Fecha de reparto</label>
+        <input type="date" class="fc" id="rep-fecha" onchange="renderReparto()">
+      </div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:11px">
+        <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Imprimir hoja de ruta</button>
+      </div>
+    </div>
+  </div>
+  <div id="rep-content"></div>
+</div>
+
+<!-- STOCK -->
+<div class="page" id="page-stock">
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--pa)"></span>Stock por Producto</div>
+    <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead><tr><th>Producto</th><th>Empresa</th><th>Sub-dep.</th><th>Kg</th><th>Pallets</th><th>Cajas</th><th>Box</th><th>Posiciones</th></tr></thead>
+        <tbody id="stock-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--re)"></span>Vencimientos</div>
+    <div id="vto-list"></div>
+  </div>
+</div>
+
+<!-- CONFIG -->
+<div class="page" id="page-config">
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--ac)"></span>API Key Anthropic (lectura PDF)</div>
+    <div class="alert al-info" style="margin-bottom:10px">Guardada solo en este navegador. Obtenela en <strong>console.anthropic.com</strong></div>
+    <div class="fg"><label class="fl">API Key</label><input type="password" class="fc" id="cfg-key" placeholder="sk-ant-api03-..."></div>
+    <div class="btn-row">
+      <button class="btn btn-green" onclick="cfgGuardar()">Guardar</button>
+      <button class="btn btn-re btn-sm" onclick="cfgBorrar()">Borrar</button>
+    </div>
+    <div id="cfg-ok" style="margin-top:9px"></div>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--ye)"></span>Firebase — Estado de conexión</div>
+    <div id="cfg-firebase-status"></div>
+    <button class="btn btn-ghost btn-sm" style="margin-top:9px" onclick="showSetup()">Reconfigurar Firebase</button>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--re)"></span>Peligro</div>
+    <div class="alert al-warn" style="margin-bottom:9px">Borrar todos los datos en Firebase es irreversible.</div>
+    <button class="btn btn-re btn-sm" onclick="cfgBorrarTodo()">🗑 Borrar todo el stock y movimientos</button>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<div class="bnav">
+  <div class="bnav-inner">
+    <button class="bb on" onclick="goTo('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Inicio
+    </button>
+    <button class="bb" onclick="goTo('camara')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="12" y1="5" x2="12" y2="19"/></svg>Cámara
+    </button>
+    <button class="bb" onclick="goTo('ingreso')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>Ingreso
+    </button>
+    <button class="bb" onclick="goTo('picking')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Picking
+    </button>
+    <button class="bb" onclick="goTo('reparto')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Reparto
+    </button>
+  </div>
+</div>
+</div><!-- end app -->
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getDatabase, ref, onValue, set, push, remove, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+// ═══════════════ PRODUCTOS ═══════════════
+const PRODS = {
+  pastas:[
+    {cod:"6010",       nom:"Bucatini",                        pB:.5,  uBox:16, cajKg:8,   palKg:320},
+    {cod:"101010204",  nom:"Puntallete 1,5 kg",               pB:1.5, uBox:8,  cajKg:12,  palKg:null},
+    {cod:"1010203",    nom:"Puntallete 0,500",                pB:.5,  uBox:24, cajKg:12,  palKg:null},
+    {cod:"101070207",  nom:"Foglia de Lasaña",                pB:.5,  uBox:20, cajKg:10,  palKg:400},
+    {cod:"101070208",  nom:"Ñoquis a la Romana c/Parmesano", pB:.6,  uBox:16, cajKg:9.6, palKg:384},
+    {cod:"10201",      nom:"Cables de Teléfono al Huevo",     pB:.45, uBox:16, cajKg:7.2, palKg:288},
+    {cod:"10202",      nom:"Cuerdas de Guitarra al Huevo",    pB:.5,  uBox:16, cajKg:8,   palKg:320},
+    {cod:"20301",      nom:"Cables de Teléfono Integrales",   pB:.45, uBox:16, cajKg:7.2, palKg:288},
+    {cod:"30101",      nom:"Ñoquis de Pura Papa",             pB:.5,  uBox:20, cajKg:10,  palKg:400},
+    {cod:"50201",      nom:"Ravioles de Ricota Sicilianos",   pB:.5,  uBox:16, cajKg:8,   palKg:320},
+    {cod:"60202",      nom:"Raviolones Espinaca y Provolone", pB:.5,  uBox:16, cajKg:8,   palKg:320},
+    {cod:"70205",      nom:"Sorrentinos Jamón y Mozzarella",  pB:.5,  uBox:16, cajKg:8,   palKg:320},
+    {cod:"70206",      nom:"Sorrentinos Calabaza de Ferrara", pB:.5,  uBox:16, cajKg:8,   palKg:320},
+  ],
+  pollo:[
+    {cod:"20324",  nom:"Milanesa de Pollo",  pB:1, bCaja:5, cajKg:5,  palKg:650},
+    {cod:"200222", nom:"Pechuga 90/110 grs", pB:1, bCaja:5, cajKg:5,  palKg:700},
+    {cod:"200224", nom:"Trocitos 20x20x20",  pB:1, bCaja:5, cajKg:5,  palKg:700},
+    {cod:"200305", nom:"Bifecitos Neo",       pB:5, bCaja:2, cajKg:10, palKg:600},
+    {cod:"200243", nom:"Fingers de Pollo",   pB:1, bCaja:5, cajKg:5,  palKg:350},
+  ]
+};
+const SUBDEPS = {
+  pastas:[{id:"general",nom:"General"},{id:"reserva",nom:"Reserva"}],
+  pollo: [{id:"general",nom:"General"},{id:"copetin",nom:"Copetin"},{id:"huertas",nom:"Huertas"},{id:"suteki",nom:"Suteki"}]
+};
+const SD_NAMES={general:"General",copetin:"Copetin",huertas:"Huertas",suteki:"Suteki",reserva:"Reserva"};
+const SD_CSS={general:"sd-general",copetin:"sd-copetin",huertas:"sd-huertas",suteki:"sd-suteki",reserva:"sd-reserva"};
+
+function getProd(emp,cod){return PRODS[emp]?.find(p=>p.cod===cod)}
+function toKg(cant,uni,prod){
+  if(!prod||!cant)return 0; cant=parseFloat(cant)||0;
+  if(uni==="kg")return cant; if(uni==="box")return cant*(prod.pB||0);
+  if(uni==="caja")return cant*(prod.cajKg||0); if(uni==="pallet")return cant*(prod.palKg||0);
+  return 0;
+}
+function equivStr(kg,prod,emp){
+  if(!prod||!kg)return"—";
+  const parts=[fmt(kg)+"kg"];
+  if(emp==="pastas"&&prod.pB) parts.push((kg/prod.pB).toFixed(0)+" box");
+  if(prod.cajKg) parts.push((kg/prod.cajKg).toFixed(1)+" cajas");
+  if(prod.palKg) parts.push((kg/prod.palKg).toFixed(2)+" pallets");
+  return parts.join(" = ");
+}
+
+// ═══════════════ POSICIONES ═══════════════
+function buildPos(){
+  const P=[];
+  for(let r=1;r<=7;r++) for(let n=1;n<=3;n++)
+    P.push({id:`PA-R${r}-N${n}`,label:`Pastas Rack ${r} Nivel ${n}`,zona:"pastas-pared",rack:r,nivel:n,empZona:"pastas"});
+  for(let p=1;p<=6;p++)
+    P.push({id:`PA-PP${p}`,label:`Pastas Pasillo Pos ${p}`,zona:"pastas-pasillo",rack:p,nivel:0,empZona:"pastas"});
+  for(let r=1;r<=4;r++) for(let n=1;n<=3;n++)
+    P.push({id:`PC-R${r}-N${n}`,label:`Pastas Central Rack ${r} Nivel ${n}`,zona:"pastas-central",rack:r,nivel:n,empZona:"pastas"});
+  for(let g=1;g<=4;g++) for(let n=1;n<=2;n++) for(let p=1;p<=2;p++)
+    P.push({id:`PO-PP-G${g}-N${n}-P${p}`,label:`Pollo Pasillo Gr${g} N${n} P${p}`,zona:"pollo-pasillo",rack:g,nivel:n,posNum:p,empZona:"pollo"});
+  for(let r=1;r<=7;r++) for(let n=1;n<=3;n++)
+    P.push({id:`PO-R${r}-N${n}`,label:`Pollo Rack ${r} Nivel ${n}`,zona:"pollo-pared",rack:r,nivel:n,empZona:"pollo"});
+  return P;
+}
+const BASE_POS=buildPos();
+
+// ═══════════════ UTILS ═══════════════
+const fmt=n=>parseFloat(n||0).toLocaleString("es-AR",{maximumFractionDigits:1});
+const today=()=>new Date().toISOString().split("T")[0];
+const diasVto=v=>v?Math.ceil((new Date(v)-new Date())/86400000):9999;
+function vbadge(v){if(!v)return"";const d=diasVto(v);return`<span class="vbadge ${d<=7?"vb-danger":d<=30?"vb-warn":"vb-ok"}">${d}d</span>`}
+function tagEmp(e){return`<span class="tag tag-${e==="pastas"?"pa":"po"}">${e==="pastas"?"PARIGGI":"POLLO"}</span>`}
+function sdBadge(sd){if(!sd||sd==="general")return"";return`<span class="sdbadge ${SD_CSS[sd]||""}">${SD_NAMES[sd]||sd}</span>`}
+
+// ═══════════════ FIREBASE STATE ═══════════════
+let fbApp=null, fbDb=null;
+let DB={contenidos:{},movimientos:[],ordenes:[]};
+let currentUser="";
+let syncStatus="offline";
+
+function getCfg(){
+  try{const r=localStorage.getItem("cc_fb_cfg");return r?JSON.parse(r):null}catch{return null}
+}
+function getKey(){return localStorage.getItem("cc_apikey")||""}
+function setKey(k){localStorage.setItem("cc_apikey",k)}
+function getPin(){return localStorage.getItem("cc_pin")||""}
+function getUsers(){try{return JSON.parse(localStorage.getItem("cc_users")||"[]")}catch{return[]}}
+
+function initFirebase(cfg){
+  try{
+    fbApp=initializeApp(cfg);
+    fbDb=getDatabase(fbApp);
+    setupRealtimeSync();
+    return true;
+  }catch(e){console.error("Firebase init error:",e);return false}
+}
+
+function setupRealtimeSync(){
+  if(!fbDb)return;
+  setSyncStatus("syncing");
+
+  // Escuchar contenidos (posiciones)
+  onValue(ref(fbDb,"contenidos"),(snap)=>{
+    DB.contenidos=snap.val()||{};
+    setSyncStatus("ok");
+    refreshCurrentPage();
+  },(err)=>{setSyncStatus("error");console.error(err)});
+
+  // Escuchar movimientos
+  onValue(ref(fbDb,"movimientos"),(snap)=>{
+    const raw=snap.val()||{};
+    DB.movimientos=Object.values(raw).sort((a,b)=>new Date(a.fecha)-new Date(b.fecha));
+  });
+
+  // Escuchar ordenes
+  onValue(ref(fbDb,"ordenes"),(snap)=>{
+    const raw=snap.val()||{};
+    DB.ordenes=Object.values(raw);
+  });
+}
+
+function setSyncStatus(s){
+  syncStatus=s;
+  const el=document.getElementById("sync-status");
+  if(!el)return;
+  if(s==="ok"){el.textContent="EN VIVO";el.className="live"}
+  else if(s==="syncing"){el.textContent="SINCRONIZANDO";el.className="live"}
+  else{el.textContent="OFFLINE";el.className="live offline"}
+}
+
+async function setC(id,val){
+  if(!fbDb)return;
+  setSyncStatus("syncing");
+  if(val===null){
+    await set(ref(fbDb,`contenidos/${id.replace(/[.#$/[\]]/g,"_")}`),null);
+  } else {
+    await set(ref(fbDb,`contenidos/${id.replace(/[.#$/[\]]/g,"_")}`),val);
+  }
+}
+
+async function addMov(m){
+  if(!fbDb)return;
+  m.usuario=currentUser;
+  await push(ref(fbDb,"movimientos"),m);
+}
+
+async function addOrden(o){
+  if(!fbDb)return;
+  await push(ref(fbDb,"ordenes"),o);
+}
+
+function getPos(){
+  return BASE_POS.map(p=>({
+    ...p,
+    contenido:DB.contenidos[p.id.replace(/[.#$/[\]]/g,"_")]||null
+  }));
+}
+
+function refreshCurrentPage(){
+  const active=document.querySelector(".page.on");
+  if(!active)return;
+  const id=active.id.replace("page-","");
+  if(id==="dashboard") renderDashboard();
+  if(id==="camara")    renderMapa();
+  if(id==="stock")     renderStock();
+}
+
+// ═══════════════ LOGIN / PIN ═══════════════
+let pinCurrent="";
+
+function initLogin(){
+  const users=getUsers();
+  const sel=document.getElementById("login-user");
+  sel.innerHTML="";
+  users.forEach(u=>{
+    if(u) sel.innerHTML+=`<option value="${u}">${u}</option>`;
+  });
+  // Si no hay usuarios configurados, mostrar setup
+  if(!users.filter(Boolean).length){
+    document.getElementById("login-screen").style.display="none";
+    document.getElementById("setup-screen").style.display="block";
+  }
+}
+
+function updatePinDots(){
+  for(let i=0;i<4;i++){
+    const el=document.getElementById("pd"+i);
+    if(el) el.classList.toggle("filled",i<pinCurrent.length);
+  }
+}
+
+function checkPin(){
+  const correct=getPin();
+  if(!correct){
+    document.getElementById("login-err").textContent="PIN no configurado — usá ⚙ Configuración";
+    pinCurrent=""; updatePinDots(); return;
+  }
+  if(pinCurrent===correct){
+    currentUser=document.getElementById("login-user").value||"Usuario";
+    document.getElementById("login-screen").style.display="none";
+    document.getElementById("app").style.display="block";
+    document.getElementById("user-badge").textContent=currentUser+" · Salir";
+    renderDashboard();
+    document.getElementById("pick-fecha").value=today();
+  } else {
+    document.getElementById("login-err").textContent="PIN incorrecto — intentá de nuevo";
+    pinCurrent=""; updatePinDots();
+    setTimeout(()=>document.getElementById("login-err").textContent="",2500);
+  }
+}
+
+// Exponer funciones de PIN al scope global (necesario para onclick en módulos)
+window.pinPress=function(d){
+  if(pinCurrent.length>=4)return;
+  pinCurrent+=d;
+  updatePinDots();
+  if(pinCurrent.length===4) setTimeout(checkPin,150);
+};
+window.pinDel=function(){
+  pinCurrent=pinCurrent.slice(0,-1);
+  updatePinDots();
+};
+window.logout=function(){
+  if(!confirm("¿Cerrar sesión?"))return;
+  currentUser=""; pinCurrent=""; updatePinDots();
+  document.getElementById("app").style.display="none";
+  document.getElementById("login-screen").style.display="flex";
+};
+
+// ═══════════════ SETUP ═══════════════
+window.showSetup=function(){
+  document.getElementById("login-screen").style.display="none";
+  document.getElementById("setup-screen").style.display="block";
+  // Pre-rellenar si ya hay config guardada
+  const cfg=getCfg();
+  if(cfg){
+    document.getElementById("fb-apikey").value=cfg.apiKey||"";
+    document.getElementById("fb-authdomain").value=cfg.authDomain||"";
+    document.getElementById("fb-dburl").value=cfg.databaseURL||"";
+    document.getElementById("fb-projectid").value=cfg.projectId||"";
+  }
+  const pin=getPin();
+  if(pin){
+    document.getElementById("fb-pin").value=pin;
+    document.getElementById("fb-pin2").value=pin;
+  }
+  const users=getUsers();
+  ["u1","u2","u3","u4"].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el&&users[i]) el.value=users[i];
+  });
+};
+
+window.setupGuardar=function(){
+  const cfg={
+    apiKey:document.getElementById("fb-apikey").value.trim(),
+    authDomain:document.getElementById("fb-authdomain").value.trim(),
+    databaseURL:document.getElementById("fb-dburl").value.trim(),
+    projectId:document.getElementById("fb-projectid").value.trim(),
+  };
+  const pin=document.getElementById("fb-pin").value.trim();
+  const pin2=document.getElementById("fb-pin2").value.trim();
+  const err=document.getElementById("setup-err");
+
+  if(!cfg.apiKey||!cfg.databaseURL||!cfg.projectId){err.innerHTML=`<div class="alert al-danger">Completá todos los campos de Firebase.</div>`;return}
+  if(pin.length!==4||!/^\d{4}$/.test(pin)){err.innerHTML=`<div class="alert al-danger">El PIN debe ser exactamente 4 dígitos.</div>`;return}
+  if(pin!==pin2){err.innerHTML=`<div class="alert al-danger">Los PINs no coinciden.</div>`;return}
+
+  const users=[document.getElementById("u1").value,document.getElementById("u2").value,
+    document.getElementById("u3").value,document.getElementById("u4").value].filter(Boolean);
+
+  localStorage.setItem("cc_fb_cfg",JSON.stringify(cfg));
+  localStorage.setItem("cc_pin",pin);
+  localStorage.setItem("cc_users",JSON.stringify(users));
+
+  const ok=initFirebase(cfg);
+  if(!ok){err.innerHTML=`<div class="alert al-danger">Error al conectar con Firebase. Verificá los datos.</div>`;return}
+
+  document.getElementById("setup-screen").style.display="none";
+  document.getElementById("login-screen").style.display="flex";
+  initLogin();
+};
+
+// ═══════════════ NAV ═══════════════
+function goTo(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("on"));
+  document.querySelectorAll(".nb,.bb").forEach(b=>b.classList.remove("on"));
+  document.getElementById("page-"+page).classList.add("on");
+  document.querySelectorAll(`[onclick="goTo('${page}')"]`).forEach(b=>b.classList.add("on"));
+  if(page==="dashboard") renderDashboard();
+  if(page==="camara")    renderMapa();
+  if(page==="ingreso")   initIngreso();
+  if(page==="picking")   initPicking();
+  if(page==="reparto")   initReparto();
+  if(page==="stock")     renderStock();
+  if(page==="config")    initConfig();
+}
+window.goTo=goTo;
+
+// ═══════════════ DASHBOARD ═══════════════
+function renderDashboard(){
+  const P=getPos().filter(p=>p.contenido);
+  const tot=P.reduce((s,p)=>s+(p.contenido.kg||0),0);
+  const pKg=P.filter(p=>p.contenido.empresa==="pastas").reduce((s,p)=>s+(p.contenido.kg||0),0);
+  const oKg=P.filter(p=>p.contenido.empresa==="pollo").reduce((s,p)=>s+(p.contenido.kg||0),0);
+  const prox=P.filter(p=>p.contenido.vto&&diasVto(p.contenido.vto)<=30).length;
+
+  document.getElementById("kpi-grid").innerHTML=`
+    <div class="kpi"><div class="kl">Total</div><div class="kv">${fmt(tot)}<span class="ku">kg</span></div></div>
+    <div class="kpi"><div class="kl">Pastas</div><div class="kv" style="color:var(--pa)">${fmt(pKg)}<span class="ku">kg</span></div></div>
+    <div class="kpi"><div class="kl">Pollo</div><div class="kv" style="color:var(--po)">${fmt(oKg)}<span class="ku">kg</span></div></div>
+    <div class="kpi"><div class="kl">Posiciones</div><div class="kv">${P.length}<span class="ku">/${BASE_POS.length}</span></div></div>
+    <div class="kpi"><div class="kl">Prox Vencer</div><div class="kv" style="color:${prox>0?"var(--ye)":"var(--gr)"}">${prox}</div></div>
+    <div class="kpi"><div class="kl">Movimientos</div><div class="kv">${DB.movimientos.length}</div></div>`;
+
+  let al="";
+  getPos().forEach(p=>{
+    if(!p.contenido?.vto)return;
+    const d=diasVto(p.contenido.vto);
+    if(d<=7)  al+=`<div class="alert al-danger">🚨 <strong>${p.contenido.producto}</strong> — ${p.label} — vence en ${d} días</div>`;
+    else if(d<=30) al+=`<div class="alert al-warn">⚠ <strong>${p.contenido.producto}</strong> — ${p.label} — vence en ${d} días</div>`;
+  });
+  document.getElementById("alerts-box").innerHTML=al;
+
+  const ac=document.getElementById("activity-card");
+  if(!DB.movimientos.length){ac.innerHTML=`<div style="text-align:center;padding:24px 0;color:var(--t3);font-size:13px">Sin movimientos aún.</div>`;return}
+  ac.innerHTML=[...DB.movimientos].reverse().slice(0,10).map((m,i)=>`
+    <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:${i<9?"1px solid var(--b1)":"none"}">
+      <span style="font-size:14px">${m.tipo==="ingreso"?"📥":m.tipo==="devolucion"?"↩️":"📤"}</span>
+      <div style="flex:1"><div style="font-size:12px;font-weight:600">${m.producto}</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)">${m.posicion} · ${fmt(m.kg)}kg · ${m.fecha}${m.usuario?" · "+m.usuario:""}</div></div>
+      ${tagEmp(m.empresa)} ${m.subdep?sdBadge(m.subdep):""}
+    </div>`).join("");
+
+  const zonas=[
+    {key:"pastas-pared",label:"Pastas Pared"},
+    {key:"pastas-pasillo",label:"Pastas Pasillo"},
+    {key:"pastas-central",label:"Pastas Central"},
+    {key:"pollo-pasillo",label:"Pollo Pasillo"},
+    {key:"pollo-pared",label:"Pollo Pared"},
+  ];
+  const all=getPos();
+  const zs=document.getElementById("zona-summary");
+  zs.style.gridTemplateColumns="repeat("+Math.min(zonas.length,3)+",1fr)";
+  zs.innerHTML=zonas.map(z=>{
+    const zp=all.filter(p=>p.zona===z.key);
+    const occ=zp.filter(p=>p.contenido);
+    const kg=occ.reduce((s,p)=>s+(p.contenido.kg||0),0);
+    const isPA=z.key.startsWith("pastas");
+    return`<div class="kpi"><div class="kl" style="color:var(--${isPA?"pa":"po"})">${z.label}</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--t1)">${fmt(kg)} kg</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--t3)">${occ.length}/${zp.length} pos</div></div>`;
+  }).join("");
+}
+
+// ═══════════════ MAPA ═══════════════
+function renderMapa(){
+  const all=getPos();
+  let html="";
+  const zonas=[
+    {key:"pastas-pared",  label:"Pastas — Pared Izquierda", color:"pa", tipo:"rack"},
+    {key:"pastas-pasillo",label:"Pastas — Pasillo Piso",    color:"pa", tipo:"piso"},
+    {key:"pastas-central",label:"Pastas Central",           color:"pa", tipo:"rack"},
+    {key:"pollo-pasillo", label:"Pollo — Pasillo",          color:"po", tipo:"grupo"},
+    {key:"pollo-pared",   label:"Pollo — Pared Derecha",    color:"po", tipo:"rack"},
+  ];
+  zonas.forEach(z=>{
+    const pos=all.filter(p=>p.zona===z.key);
+    html+=`<div class="stitle"><span style="color:var(--${z.color})">${z.label}</span></div><div class="card" style="padding:10px">`;
+    if(z.tipo==="piso"){
+      html+=`<div class="rack-row">`; pos.sort((a,b)=>a.rack-b.rack).forEach(p=>{html+=rackCard(p)}); html+=`</div>`;
+    } else if(z.tipo==="rack"){
+      const racks={};
+      pos.forEach(p=>{if(!racks[p.rack])racks[p.rack]=[];racks[p.rack].push(p)});
+      Object.entries(racks).sort((a,b)=>+a[0]-+b[0]).forEach(([r,rp])=>{
+        html+=`<div style="margin-bottom:7px"><div style="font-family:var(--mono);font-size:8px;color:var(--t3);margin-bottom:3px">R${r}${r=="1"?" ← PUERTA":r=="7"?" ← FONDO":""}</div><div class="rack-row">`;
+        rp.sort((a,b)=>b.nivel-a.nivel).forEach(p=>{html+=rackCard(p)}); html+=`</div></div>`;
+      });
+    } else {
+      const grps={};
+      pos.forEach(p=>{if(!grps[p.rack])grps[p.rack]=[];grps[p.rack].push(p)});
+      Object.entries(grps).sort((a,b)=>+a[0]-+b[0]).forEach(([g,gp])=>{
+        html+=`<div style="margin-bottom:7px"><div style="font-family:var(--mono);font-size:8px;color:var(--t3);margin-bottom:3px">Grupo ${g} (2×2 apilados)</div><div class="rack-row">`;
+        gp.sort((a,b)=>b.nivel-a.nivel).forEach(p=>{html+=rackCard(p)}); html+=`</div></div>`;
+      });
+    }
+    html+=`</div>`;
+  });
+  document.getElementById("mapa-container").innerHTML=html;
+}
+
+function rackCard(p){
+  const c=p.contenido;
+  let cls="rp";
+  if(!c) cls+=" empty";
+  else cls+=p.empZona==="pastas"?" oc-pa":" oc-po";
+  if(c?.vto){const d=diasVto(c.vto);if(d<=7)cls+=" vto-danger";else if(d<=30)cls+=" vto-warn";}
+  const inner=c?`
+    <div class="rp-code">${p.id}</div>
+    <div class="rp-prod">${c.producto.substring(0,14)}</div>
+    <div class="rp-kg">${fmt(c.kg)}kg</div>
+    <div>${c.vto?vbadge(c.vto):""}${c.subdep&&c.subdep!=="general"?` <span style="font-size:8px;color:var(--t3)">${SD_NAMES[c.subdep]||c.subdep}</span>`:""}</div>
+  `:`<div class="rp-code">${p.id}</div><div style="font-size:9px;color:var(--t3)">Vacía</div>`;
+  return`<div class="${cls}" onclick="showPosDetail('${p.id}')">${inner}</div>`;
+}
+
+window.showPosDetail=function(id){
+  const p=getPos().find(x=>x.id===id); if(!p)return;
+  const c=p.contenido;
+  let html=`<div class="detail-panel">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+      <div><div style="font-family:var(--mono);font-size:11px;font-weight:700">${p.label}</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t3)">${p.id}</div></div>
+      <button onclick="hidePosDetail()" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:18px">✕</button>
+    </div>`;
+  if(c){
+    html+=`<table style="width:100%;font-size:11px;border-collapse:collapse">
+      ${[["Producto",c.producto],["Empresa",c.empresa==="pastas"?"Pariggi":"Pollo Cocido"],
+         ["Sub-dep.",SD_NAMES[c.subdep]||"General"],["Cantidad",fmt(c.kg)+" kg"],
+         ["Vencimiento",c.vto||"—"],["Lote",c.lote||"—"],["Ingresó",c.ingreso||"—"],
+         ["Usuario",c.usuario||"—"],["Obs.",c.obs||"—"]
+        ].map(([k,v])=>`<tr><td style="color:var(--t3);padding:3px 0;width:85px">${k}</td>
+         <td style="font-family:var(--mono);font-weight:600;padding:3px 0">${v}</td></tr>`).join("")}
+    </table>
+    <div class="btn-row" style="margin-top:10px">
+      <button class="btn btn-re btn-sm" onclick="vaciarPos('${id}')">🗑 Vaciar</button>
+    </div>`;
+  } else {
+    html+=`<div style="color:var(--t3);font-size:12px">Posición vacía — disponible.</div>`;
+  }
+  html+=`</div>`;
+  const panel=document.getElementById("pos-detail-panel");
+  panel.innerHTML=html; panel.style.display="block";
+};
+window.hidePosDetail=function(){document.getElementById("pos-detail-panel").style.display="none"};
+window.vaciarPos=async function(id){
+  if(confirm("¿Vaciar esta posición?")){await setC(id,null);hidePosDetail();renderMapa();}
+};
+
+// ═══════════════ FEFO ═══════════════
+function calcFefo(emp,prodNom,subdep){
+  const all=getPos();
+  const zonaOk=emp==="pastas"?["pastas-pared","pastas-central","pastas-pasillo"]:["pollo-pared","pollo-pasillo"];
+  const libres=all.filter(p=>{
+    if(p.contenido)return false;
+    if(!zonaOk.includes(p.zona))return false;
+    if(p.contenido?.reservado&&p.contenido.reservado!==subdep&&subdep!=="general")return false;
+    return true;
+  });
+  if(!libres.length)return{error:"No hay posiciones libres en la zona correcta."};
+  const mismoProd=all.filter(p=>p.contenido?.producto===prodNom&&p.contenido?.empresa===emp);
+  const vtoNuevo=document.getElementById("ing-vto").value;
+  const racksConProd=new Set(mismoProd.map(p=>p.rack));
+
+  let candidatos=libres.map(p=>{
+    let score=0;
+    if(racksConProd.size>0){
+      const minDist=Math.min(...[...racksConProd].map(r=>Math.abs(r-p.rack)));
+      score+=minDist*2;
+    }
+    if(vtoNuevo&&mismoProd.length){
+      const vtosMas=mismoProd.filter(x=>x.contenido?.vto).map(x=>new Date(x.contenido.vto).getTime());
+      const minVto=vtosMas.length?Math.min(...vtosMas):null;
+      const nvDate=new Date(vtoNuevo).getTime();
+      if(minVto&&nvDate<=minVto) score+=Math.abs((p.nivel||1)-1)*3;
+      else score+=Math.abs((p.nivel||1)-3)*2;
+    } else {
+      score+=Math.abs((p.nivel||1)-(emp==="pollo"?1:2))*2;
+    }
+    return{...p,score};
+  });
+  candidatos.sort((a,b)=>a.score-b.score);
+  const best=candidatos[0];
+
+  const movimientos=[];
+  if(vtoNuevo&&mismoProd.length){
+    mismoProd.forEach(p=>{
+      if(!p.contenido?.vto||p.nivel!==1)return;
+      if(diasVto(p.contenido.vto)>diasVto(vtoNuevo)){
+        const nivelSup=all.find(x=>!x.contenido&&x.rack===p.rack&&x.nivel>p.nivel&&x.zona===p.zona);
+        if(nivelSup) movimientos.push({de:p.label,a:nivelSup.label,prod:p.contenido.producto,kg:p.contenido.kg,razon:`Vence ${p.contenido.vto} — mover a nivel superior para dejar N1 libre (nuevo vence ${vtoNuevo})`});
+      }
+    });
+  }
+
+  let just=`Zona correcta. Nivel ${best.nivel||"piso"}. `;
+  if(vtoNuevo&&mismoProd.length){
+    const minVto=Math.min(...mismoProd.filter(x=>x.contenido?.vto).map(x=>new Date(x.contenido.vto).getTime()));
+    just+=new Date(vtoNuevo).getTime()<=minVto?"Vence antes → Nivel bajo (sale primero).":"Vence después → Nivel alto (sale último).";
+  }
+  if(racksConProd.has(best.rack)) just+=" Mismo rack que stock existente ✓";
+
+  return{posicion:best,justificacion:just,movimientos};
+}
+
+// ═══════════════ INGRESO ═══════════════
+function initIngreso(){
+  document.getElementById("ing-sug-box").innerHTML="";
+  document.getElementById("ing-mov-box").innerHTML="";
+  renderPosLibres("ing-pos",null);
+}
+
+window.ingEmpChange=function(){
+  const emp=document.getElementById("ing-empresa").value;
+  const sel=document.getElementById("ing-prod");
+  sel.innerHTML='<option value="">— Seleccionar —</option>';
+  if(emp) PRODS[emp].forEach(p=>{sel.innerHTML+=`<option value="${p.cod}">${p.nom}</option>`});
+  const uni=document.getElementById("ing-unidad");
+  uni.innerHTML=`<option value="kg">kg</option>`;
+  if(emp==="pastas") uni.innerHTML+=`<option value="box">Box suelto</option>`;
+  uni.innerHTML+=`<option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
+  const sd=document.getElementById("ing-subdep");
+  sd.innerHTML='<option value="general">General</option>';
+  if(emp) SUBDEPS[emp]?.filter(s=>s.id!=="general").forEach(s=>{sd.innerHTML+=`<option value="${s.id}">${s.nom}</option>`});
+  renderPosLibres("ing-pos",emp);
+  ingCalc();
+};
+
+window.ingCalc=function(){
+  const emp=document.getElementById("ing-empresa").value;
+  const cod=document.getElementById("ing-prod").value;
+  const cant=document.getElementById("ing-cant").value;
+  const uni=document.getElementById("ing-unidad").value;
+  const eq=document.getElementById("ing-equiv");
+  if(!emp||!cod||!cant){eq.textContent="—";return}
+  const prod=getProd(emp,cod);
+  if(!prod){eq.textContent="—";return}
+  const kg=toKg(cant,uni,prod);
+  eq.innerHTML=equivStr(kg,prod,emp).replace(/ = /g,"<br>");
+};
+
+function renderPosLibres(selId,prefEmp){
+  const sel=document.getElementById(selId);
+  sel.innerHTML='<option value="">— Seleccionar posición libre —</option>';
+  const all=getPos();
+  const libres=all.filter(p=>!p.contenido);
+  const pref=libres.filter(p=>!prefEmp||p.empZona===prefEmp);
+  const otros=libres.filter(p=>prefEmp&&p.empZona!==prefEmp);
+  [...pref,...otros].forEach(p=>{sel.innerHTML+=`<option value="${p.id}">${p.label}</option>`});
+}
+
+function ingGetKg(){
+  return toKg(document.getElementById("ing-cant").value,document.getElementById("ing-unidad").value,
+    getProd(document.getElementById("ing-empresa").value,document.getElementById("ing-prod").value));
+}
+
+window.ingSugerir=function(){
+  const emp=document.getElementById("ing-empresa").value;
+  const cod=document.getElementById("ing-prod").value;
+  const subdep=document.getElementById("ing-subdep").value||"general";
+  const sb=document.getElementById("ing-sug-box");
+  const mb=document.getElementById("ing-mov-box");
+  if(!emp||!cod){sb.innerHTML=`<div class="alert al-warn">Completá empresa y producto.</div>`;return}
+  const prod=getProd(emp,cod);
+  const res=calcFefo(emp,prod.nom,subdep);
+  if(res.error){sb.innerHTML=`<div class="alert al-danger">${res.error}</div>`;mb.innerHTML="";return}
+  sb.innerHTML=`<div style="background:var(--s2);border:1px solid var(--b2);border-left:3px solid var(--gr);border-radius:6px;padding:11px;margin-bottom:9px">
+    <div style="font-family:var(--mono);font-size:10px;color:var(--gr);margin-bottom:5px">◆ POSICIÓN SUGERIDA — FEFO</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:4px">📍 ${res.posicion.label}</div>
+    <div style="font-size:11px;color:var(--t2);line-height:1.5">${res.justificacion}</div>
+  </div>`;
+  mb.innerHTML=res.movimientos.length?`<div style="background:var(--ye2);border:1px solid var(--ye3);border-radius:6px;padding:11px;margin-bottom:9px">
+    <div style="font-family:var(--mono);font-size:10px;color:var(--ye);margin-bottom:7px">⚠ MOVIMIENTOS PREVIOS NECESARIOS</div>
+    ${res.movimientos.map((m,i)=>`<div style="margin-bottom:6px;padding-bottom:6px;border-bottom:${i<res.movimientos.length-1?"1px solid var(--ye3)":"none"}">
+      <div style="font-size:12px;font-weight:700;margin-bottom:2px">Paso ${i+1}: Mover ${fmt(m.kg)}kg de "${m.prod}"</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--ye);line-height:1.6">De: ${m.de}<br>A: ${m.a}<br>Razón: ${m.razon}</div>
+    </div>`).join("")}
+  </div>`:"";
+  document.getElementById("ing-pos").value=res.posicion.id;
+};
+
+window.ingConfirmar=async function(){
+  const emp=document.getElementById("ing-empresa").value;
+  const cod=document.getElementById("ing-prod").value;
+  const vto=document.getElementById("ing-vto").value;
+  const lote=document.getElementById("ing-lote").value;
+  const obs=document.getElementById("ing-obs").value;
+  const posId=document.getElementById("ing-pos").value;
+  const subdep=document.getElementById("ing-subdep").value||"general";
+  const tipo=document.getElementById("ing-tipo").value;
+  const kg=ingGetKg();
+  const b=document.getElementById("ing-banner");
+  if(!emp||!cod||!kg){b.innerHTML=`<div class="alert al-danger">Completá empresa, producto y cantidad.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
+  if(!vto){b.innerHTML=`<div class="alert al-danger">La fecha de vencimiento es obligatoria.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
+  if(!posId){b.innerHTML=`<div class="alert al-danger">Seleccioná una posición.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
+  const prod=getProd(emp,cod);
+  const pos=getPos().find(p=>p.id===posId);
+  if(pos.contenido&&!confirm(`${pos.label} ya tiene mercadería. ¿Sobrescribir?`))return;
+  await setC(posId,{empresa:emp,producto:prod.nom,codigo:cod,kg,vto,lote,obs,subdep,ingreso:today(),tipo,usuario:currentUser});
+  await addMov({tipo,empresa:emp,producto:prod.nom,posicion:pos.label,kg,vto,fecha:today(),subdep,usuario:currentUser});
+  b.innerHTML=`<div class="alert al-ok fadein">✓ ${tipo==="devolucion"?"Devolución":"Ingreso"} registrado: <strong>${prod.nom}</strong> → ${pos.label}</div>`;
+  setTimeout(()=>b.innerHTML="",4e3);
+  ["ing-empresa","ing-prod","ing-cant","ing-vto","ing-lote","ing-obs"].forEach(id=>{
+    const el=document.getElementById(id); if(el.tagName==="SELECT")el.value=""; else el.value="";
+  });
+  document.getElementById("ing-equiv").textContent="—";
+  document.getElementById("ing-sug-box").innerHTML="";
+  document.getElementById("ing-mov-box").innerHTML="";
+  renderPosLibres("ing-pos",null);
+};
+
+// ═══════════════ PICKING ═══════════════
+let pickItems=[], pickOrdenAct=null, pickSteps={};
+
+function initPicking(){
+  if(!document.getElementById("pick-fecha").value) document.getElementById("pick-fecha").value=today();
+  const w=document.getElementById("pick-apikey-warn");
+  w.innerHTML=!getKey()?`<div class="alert al-warn">⚠ Sin API Key — lectura PDF no disponible. <button class="btn btn-ghost btn-sm" onclick="goTo('config')" style="margin-left:6px">Config →</button></div>`:"";
+  renderPickItems();
+}
+
+window.paEmpChange=function(){
+  const emp=document.getElementById("pa-emp").value;
+  const sel=document.getElementById("pa-prod");
+  sel.innerHTML='<option value="">Producto</option>';
+  if(!emp)return;
+  PRODS[emp].forEach(p=>{sel.innerHTML+=`<option value="${p.cod}">${p.nom}</option>`});
+  const u=document.getElementById("pa-uni");
+  u.innerHTML=`<option value="kg">kg</option>`;
+  if(emp==="pastas") u.innerHTML+=`<option value="box">Box</option>`;
+  u.innerHTML+=`<option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
+};
+
+window.paAgregar=function(){
+  const emp=document.getElementById("pa-emp").value;
+  const cod=document.getElementById("pa-prod").value;
+  const cant=parseFloat(document.getElementById("pa-cant").value)||0;
+  const uni=document.getElementById("pa-uni").value;
+  if(!emp||!cod||!cant){alert("Completá empresa, producto y cantidad.");return}
+  const prod=getProd(emp,cod);
+  const kg=toKg(cant,uni,prod);
+  pickItems.push({empresa:emp,codigo:cod,producto:prod.nom,kg,cant,uni});
+  document.getElementById("pa-emp").value="";
+  document.getElementById("pa-prod").innerHTML='<option>Producto</option>';
+  document.getElementById("pa-cant").value="";
+  renderPickItems();
+};
+
+function renderPickItems(){
+  const div=document.getElementById("pick-items-list");
+  if(!pickItems.length){div.innerHTML="";return}
+  div.innerHTML=pickItems.map((it,i)=>`
+    <div style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;margin-bottom:5px">
+      ${tagEmp(it.empresa)}<span style="flex:1;font-size:12px">${it.producto}</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--t2)">${fmt(it.kg)} kg</span>
+      <button onclick="pickItems.splice(${i},1);renderPickItems()" style="background:none;border:none;color:var(--re);cursor:pointer;font-size:13px">✕</button>
+    </div>`).join("");
+}
+
+function fefoLocal(items){
+  return items.map(item=>{
+    const all=getPos();
+    const disp=all.filter(p=>p.contenido?.empresa===item.empresa&&p.contenido?.producto===item.producto)
+      .sort((a,b)=>(a.contenido?.vto?new Date(a.contenido.vto):new Date("9999"))-(b.contenido?.vto?new Date(b.contenido.vto):new Date("9999")));
+    let rest=item.kg; const pasos=[];
+    for(const pos of disp){
+      if(rest<=0.01)break;
+      const aq=pos.contenido?.kg||0; const sacar=Math.min(rest,aq);
+      pasos.push({posId:pos.id,posLabel:pos.label,sacar,quedan:aq-sacar,vto:pos.contenido?.vto,lote:pos.contenido?.lote,subdep:pos.contenido?.subdep});
+      rest-=sacar;
+    }
+    return{...item,pasos,faltante:rest>0.01?rest:0};
+  });
+}
+
+window.pickGenerar=async function(){
+  if(!pickItems.length){alert("Agregá al menos un ítem.");return}
+  const cli=document.getElementById("pick-cliente").value.trim();
+  const fec=document.getElementById("pick-fecha").value;
+  const obs=document.getElementById("pick-obs").value;
+  if(!cli){alert("El cliente es obligatorio.");return}
+  if(!fec){alert("La fecha de entrega es obligatoria.");return}
+  const instrucciones=fefoLocal(pickItems);
+  const id="ORD-"+Date.now().toString().slice(-6);
+  pickOrdenAct={id,fecha:fec,cliente:cli,obs,instrucciones,usuario:currentUser};
+  pickSteps={};
+  await addOrden({id,fecha:fec,cliente:cli,obs,instrucciones,items:pickItems.slice(),usuario:currentUser});
+  pickItems=[]; renderPickItems(); renderOrden(pickOrdenAct);
+};
+
+function renderOrden(orden){
+  const card=document.getElementById("pick-orden-card");
+  const content=document.getElementById("pick-orden-content");
+  document.getElementById("pick-orden-id").textContent=`${orden.id} — ${orden.cliente} — ${orden.fecha}`;
+  card.style.display="block";
+  content.innerHTML=orden.obs?`<div class="alert al-info">📝 ${orden.obs}</div>`:"";
+  orden.instrucciones.forEach((instr,i)=>{
+    content.innerHTML+=`<div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">
+        ${tagEmp(instr.empresa)}<span style="font-weight:700;font-size:13px">${instr.producto}</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--t2);margin-left:auto">${fmt(instr.kg)} kg</span>
+      </div>
+      ${instr.faltante>0?`<div class="alert al-danger">⚠ Faltan ${fmt(instr.faltante)} kg</div>`:""}
+      ${instr.pasos.map((paso,j)=>{
+        const key=`${i}-${j}`;
+        return`<div class="pstep ${instr.empresa}" id="step-${key}" onclick="toggleStep('${key}')">
+          <div class="pchk" id="chk-${key}"></div>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:13px;margin-bottom:2px">📍 ${paso.posLabel}</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--t2);line-height:1.7">
+              → Retirar: <strong style="color:var(--t1)">${fmt(paso.sacar)} kg</strong>
+              ${paso.quedan>0?`· quedan ${fmt(paso.quedan)} kg`:"· <span style='color:var(--ye)'>queda vacío</span>"}
+              ${paso.vto?`<br>→ Vence: ${paso.vto} ${vbadge(paso.vto)}`:""}
+              ${paso.lote?`<br>→ Lote: ${paso.lote}`:""}
+            </div>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`;
+  });
+  const eqDiv=document.getElementById("pick-equiv-summary");
+  eqDiv.innerHTML=orden.instrucciones.map(instr=>{
+    const prod=getProd(instr.empresa,instr.codigo);
+    return`<div style="margin-bottom:4px">${instr.empresa==="pastas"?"🟡":"🔵"} <strong>${instr.producto}</strong>: ${equivStr(instr.kg,prod,instr.empresa)}</div>`;
+  }).join("");
+  card.scrollIntoView({behavior:"smooth"});
+}
+
+window.toggleStep=function(key){
+  pickSteps[key]=!pickSteps[key]; const done=pickSteps[key];
+  document.getElementById("step-"+key)?.classList.toggle("done-step",done);
+  const chk=document.getElementById("chk-"+key);
+  if(chk){chk.classList.toggle("done",done);chk.innerHTML=done?"<span style='color:#fff;font-size:10px;font-weight:700'>✓</span>":"";};
+};
+
+window.pickConfirmarSalida=async function(){
+  if(!pickOrdenAct)return;
+  if(!confirm("¿Confirmar salida y descontar stock?"))return;
+  for(const instr of pickOrdenAct.instrucciones){
+    for(const paso of instr.pasos){
+      const pos=getPos().find(p=>p.id===paso.posId); if(!pos?.contenido)continue;
+      const nk=(pos.contenido.kg||0)-paso.sacar;
+      await setC(paso.posId,nk<=0.1?null:{...pos.contenido,kg:nk});
+      await addMov({tipo:"egreso",empresa:pos.contenido.empresa,producto:pos.contenido.producto,posicion:pos.label,kg:paso.sacar,fecha:today(),cliente:pickOrdenAct.cliente,subdep:pos.contenido.subdep,usuario:currentUser});
+    }
+  }
+  const b=document.getElementById("pick-banner");
+  b.innerHTML=`<div class="alert al-ok fadein">✓ Salida confirmada. Stock actualizado.</div>`;
+  setTimeout(()=>b.innerHTML="",4e3);
+  document.getElementById("pick-orden-card").style.display="none";
+  pickOrdenAct=null;
+};
+
+window.pickLeerPDF=function(e){
+  const file=e.target.files[0]; if(!file)return;
+  const key=getKey();
+  const inner=document.getElementById("pick-pdf-inner");
+  if(!key){inner.innerHTML=`<div class="alert al-warn">⚠ Configurá la API Key en ⚙ Config.</div>`;return}
+  inner.innerHTML=`<div style="display:flex;align-items:center;gap:8px;justify-content:center;font-size:12px;color:var(--t2)"><span class="spin"></span> Leyendo factura...</div>`;
+  const reader=new FileReader();
+  reader.onload=async ev=>{
+    const b64=ev.target.result.split(",")[1];
+    const mt=file.type==="application/pdf"?"application/pdf":"image/jpeg";
+    const pList=[...PRODS.pastas.map(p=>`${p.cod}|${p.nom}|pastas`),...PRODS.pollo.map(p=>`${p.cod}|${p.nom}|pollo`)].join("\n");
+    try{
+      const resp=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01"},
+        body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:800,
+          messages:[{role:"user",content:[
+            {type:mt==="application/pdf"?"document":"image",source:{type:"base64",media_type:mt,data:b64}},
+            {type:"text",text:`Extraé ítems de esta factura argentina que coincidan con:\n${pList}\nRespondé SOLO JSON sin backticks:\n[{"empresa":"pastas","codigo":"XXXXX","producto":"Nombre","cantidad":N,"unidad":"kg"}]\nSi no hay: []`}
+          ]}]})
+      });
+      const data=await resp.json();
+      if(data.error){inner.innerHTML=`<div class="alert al-danger">Error: ${data.error.message}</div>`;return}
+      const parsed=JSON.parse((data.content?.[0]?.text||"[]").replace(/```json|```/g,"").trim());
+      if(parsed.length){
+        parsed.forEach(item=>{
+          const prod=PRODS[item.empresa]?.find(p=>p.cod===item.codigo||p.nom===item.producto);
+          if(!prod)return;
+          pickItems.push({empresa:item.empresa,codigo:item.codigo,producto:item.producto,kg:toKg(item.cantidad,item.unidad,prod),cant:item.cantidad,uni:item.unidad});
+        });
+        renderPickItems();
+        inner.innerHTML=`<div class="alert al-ok">✓ ${parsed.length} producto(s) detectados.</div>`;
+        setTimeout(()=>{inner.innerHTML=`<div style="font-size:13px;color:var(--t2)">📄 Subir otra factura</div>`;},3e3);
+      } else {
+        inner.innerHTML=`<div class="alert al-warn">No se detectaron productos. Ingresalos manualmente.</div>`;
+      }
+    }catch(ex){inner.innerHTML=`<div class="alert al-danger">Error: ${ex.message}</div>`;}
+  };
+  reader.readAsDataURL(file);
+};
+
+// ═══════════════ REPARTO ═══════════════
+function initReparto(){
+  if(!document.getElementById("rep-fecha").value) document.getElementById("rep-fecha").value=today();
+  renderReparto();
+}
+window.renderReparto=function(){
+  const fecha=document.getElementById("rep-fecha").value;
+  const content=document.getElementById("rep-content");
+  if(!fecha){content.innerHTML="";return}
+  const ordenesDia=DB.ordenes.filter(o=>o.fecha===fecha);
+  if(!ordenesDia.length){
+    content.innerHTML=`<div class="card"><div style="text-align:center;padding:24px 0;color:var(--t3);font-size:13px">Sin órdenes para el ${fecha}</div></div>`;
+    return;
+  }
+  const totalPorProd={};
+  ordenesDia.forEach(o=>{
+    o.instrucciones?.forEach(instr=>{
+      const k=`${instr.empresa}__${instr.producto}`;
+      if(!totalPorProd[k]) totalPorProd[k]={empresa:instr.empresa,producto:instr.producto,codigo:instr.codigo,kg:0};
+      totalPorProd[k].kg+=instr.kg;
+    });
+  });
+  let html=`<div class="card" style="border-color:var(--ye3)">
+    <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ye);margin-bottom:10px">HOJA DE RUTA — ${fecha} · ${ordenesDia.length} parada(s)</div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--t3);margin-bottom:7px;text-transform:uppercase;letter-spacing:.08em">Total a cargar en camioneta</div>
+    ${Object.values(totalPorProd).map(r=>{
+      const prod=getProd(r.empresa,r.codigo);
+      return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--b1)">
+        ${tagEmp(r.empresa)}<span style="font-size:12px;font-weight:600;flex:1">${r.producto}</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--t1)">${equivStr(r.kg,prod,r.empresa)}</span>
+      </div>`;
+    }).join("")}
+  </div>`;
+  ordenesDia.forEach((o,i)=>{
+    html+=`<div class="card">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+        <div style="width:26px;height:26px;border-radius:50%;background:var(--ac2);border:1px solid var(--ac3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ac);flex-shrink:0">${i+1}</div>
+        <div><div style="font-size:14px;font-weight:700">${o.cliente}</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--t2)">Orden ${o.id}${o.obs?" · "+o.obs:""}</div></div>
+      </div>`;
+    o.instrucciones?.forEach(instr=>{
+      const prod=getProd(instr.empresa,instr.codigo);
+      html+=`<div style="background:var(--s2);border:1px solid var(--b1);border-radius:5px;padding:8px 10px;margin-bottom:6px">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">${tagEmp(instr.empresa)}<span style="font-size:12px;font-weight:700">${instr.producto}</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--t2);line-height:1.7">
+          Total: <strong style="color:var(--t1)">${equivStr(instr.kg,prod,instr.empresa)}</strong><br>
+          ${instr.pasos.map(p=>`📍 ${p.posLabel} → ${fmt(p.sacar)}kg${p.vto?" (vto "+p.vto+")":""}`).join("<br>")}
+          ${instr.faltante>0?`<br><span style="color:var(--re)">⚠ Faltante: ${fmt(instr.faltante)}kg</span>`:""}
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  content.innerHTML=html;
+};
+
+// ═══════════════ STOCK ═══════════════
+function renderStock(){
+  const all=getPos().filter(p=>p.contenido);
+  const agr={};
+  all.forEach(p=>{
+    const k=`${p.contenido.empresa}__${p.contenido.codigo||p.contenido.producto}__${p.contenido.subdep||"general"}`;
+    if(!agr[k]) agr[k]={empresa:p.contenido.empresa,producto:p.contenido.producto,codigo:p.contenido.codigo,subdep:p.contenido.subdep||"general",kg:0,pos:[]};
+    agr[k].kg+=p.contenido.kg||0; agr[k].pos.push(p.id);
+  });
+  const rows=Object.values(agr);
+  const tbody=document.getElementById("stock-tbody");
+  if(!rows.length){tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px 0;color:var(--t3)">Sin stock</td></tr>`;return}
+  tbody.innerHTML=rows.map(r=>{
+    const prod=PRODS[r.empresa]?.find(p=>p.cod===r.codigo);
+    return`<tr>
+      <td style="font-weight:600;font-size:12px">${r.producto}</td>
+      <td>${tagEmp(r.empresa)}</td>
+      <td>${sdBadge(r.subdep)||`<span style='color:var(--t3);font-size:11px'>General</span>`}</td>
+      <td style="font-family:var(--mono);font-weight:700">${fmt(r.kg)}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${prod?.palKg?(r.kg/prod.palKg).toFixed(2):"—"}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${prod?.cajKg?(r.kg/prod.cajKg).toFixed(1):"—"}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${prod?.pB&&r.empresa==="pastas"?(r.kg/prod.pB).toFixed(0):"—"}</td>
+      <td style="font-family:var(--mono);font-size:9px;color:var(--t3)">${r.pos.join(", ")}</td>
+    </tr>`;
+  }).join("");
+  const conVto=all.filter(p=>p.contenido.vto).sort((a,b)=>new Date(a.contenido.vto)-new Date(b.contenido.vto));
+  const vtoDiv=document.getElementById("vto-list");
+  if(!conVto.length){vtoDiv.innerHTML=`<div style="text-align:center;padding:18px 0;color:var(--t3);font-size:12px">Sin vencimientos</div>`;return}
+  vtoDiv.innerHTML=conVto.map((p,i)=>`
+    <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:${i<conVto.length-1?"1px solid var(--b1)":"none"}">
+      ${vbadge(p.contenido.vto)}
+      <div style="flex:1"><div style="font-size:12px;font-weight:600">${p.contenido.producto}</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)">${p.label} · ${fmt(p.contenido.kg)}kg · ${p.contenido.vto}</div></div>
+      ${tagEmp(p.contenido.empresa)} ${sdBadge(p.contenido.subdep)}
+    </div>`).join("");
+}
+
+// ═══════════════ CONFIG ═══════════════
+function initConfig(){
+  document.getElementById("cfg-key").value=getKey();
+  const cfg=getCfg();
+  document.getElementById("cfg-firebase-status").innerHTML=cfg
+    ?`<div class="alert al-ok">✓ Firebase conectado — Proyecto: <strong>${cfg.projectId}</strong></div>`
+    :`<div class="alert al-warn">Firebase no configurado.</div>`;
+}
+window.cfgGuardar=function(){
+  setKey(document.getElementById("cfg-key").value.trim());
+  const d=document.getElementById("cfg-ok");
+  d.innerHTML=`<div class="alert al-ok">✓ API Key guardada.</div>`;
+  setTimeout(()=>d.innerHTML="",3e3);
+};
+window.cfgBorrar=function(){localStorage.removeItem("cc_apikey");document.getElementById("cfg-key").value="";};
+window.cfgBorrarTodo=async function(){
+  if(!confirm("¿Borrar TODO en Firebase? Irreversible."))return;
+  if(!fbDb)return;
+  await set(ref(fbDb,"contenidos"),null);
+  await set(ref(fbDb,"movimientos"),null);
+  await set(ref(fbDb,"ordenes"),null);
+  alert("Datos borrados.");
+};
+
+// ═══════════════ INIT ═══════════════
+const cfg=getCfg();
+if(cfg){
+  initFirebase(cfg);
+  initLogin();
+  document.getElementById("pick-fecha").value=today();
+} else {
+  // Primera vez → mostrar setup
+  document.getElementById("login-screen").style.display="none";
+  document.getElementById("setup-screen").style.display="block";
+}
+</script>
+</body>
+</html>
