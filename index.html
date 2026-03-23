@@ -3,27 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>CámaraCtrl v5</title>
+<title>CámaraCtrl v12</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#08090c;--s1:#0f1117;--s2:#161a22;
-  --b1:#1e2635;--b2:#2a3448;
-  --t1:#e4e8f0;--t2:#7a8799;--t3:#3d4a5c;
-  --pa:#f0a500;--pa2:rgba(240,165,0,.12);--pa3:rgba(240,165,0,.3);
-  --po:#2d8cf0;--po2:rgba(45,140,240,.12);--po3:rgba(45,140,240,.3);
-  --gr:#1db954;--gr2:rgba(29,185,84,.12);--gr3:rgba(29,185,84,.3);
-  --re:#e53e3e;--re2:rgba(229,62,62,.12);--re3:rgba(229,62,62,.3);
-  --ye:#d4a017;--ye2:rgba(212,160,23,.12);--ye3:rgba(212,160,23,.3);
-  --ac:#6c63ff;--ac2:rgba(108,99,255,.12);--ac3:rgba(108,99,255,.3);
-  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+  --bg:#f0f2f5;--s1:#ffffff;--s2:#f7f8fa;
+  --b1:#e2e6ed;--b2:#c8cfd9;
+  --t1:#1a202c;--t2:#5a6478;--t3:#a0aab8;
+  --pa:#c47d00;--pa2:rgba(196,125,0,.1);--pa3:rgba(196,125,0,.3);
+  --po:#1565c0;--po2:rgba(21,101,192,.1);--po3:rgba(21,101,192,.3);
+  --gr:#1a7a3c;--gr2:rgba(26,122,60,.1);--gr3:rgba(26,122,60,.3);
+  --re:#c0392b;--re2:rgba(192,57,43,.1);--re3:rgba(192,57,43,.3);
+  --ye:#9a6500;--ye2:rgba(154,101,0,.1);--ye3:rgba(154,101,0,.3);
+  --ac:#4f46e5;--ac2:rgba(79,70,229,.1);--ac3:rgba(79,70,229,.3);
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;
 }
 body{font-family:var(--sans);background:var(--bg);color:var(--t1);min-height:100vh}
 input,select,textarea,button{font-family:var(--sans)}
-input[type=date]{color-scheme:dark}
+input[type=date]{color-scheme:light}
 ::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:var(--s1)}
+::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -51,10 +51,10 @@ input[type=date]{color-scheme:dark}
 .logo{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.08em}
 .logo span{color:var(--ac)}
 .hdr-right{display:flex;align-items:center;gap:8px}
-.live{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--gr);background:var(--gr2);padding:3px 8px;border-radius:4px;border:1px solid var(--gr3)}
-.live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gr);animation:pulse 2s infinite;flex-shrink:0}
-.live.offline{color:var(--re);background:var(--re2);border-color:var(--re3)}
-.live.offline::before{background:var(--re)}
+.live{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:#166534;background:#dcfce7;padding:3px 8px;border-radius:4px;border:1px solid #bbf7d0}
+.live::before{content:'';width:6px;height:6px;border-radius:50%;background:#166534;animation:pulse 2s infinite;flex-shrink:0}
+.live.offline{color:#991b1b;background:#fee2e2;border-color:#fecaca}
+.live.offline::before{background:#991b1b}
 .user-badge{font-family:var(--mono);font-size:10px;color:var(--t2);background:var(--s2);padding:3px 8px;border-radius:4px;border:1px solid var(--b1);cursor:pointer}
 
 /* NAV */
@@ -82,17 +82,17 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
 .btn{background:var(--ac);color:#fff;border:none;font-family:var(--sans);font-size:13px;font-weight:600;padding:9px 16px;border-radius:6px;cursor:pointer;transition:filter .15s;display:inline-flex;align-items:center;gap:6px;justify-content:center}
 .btn:hover{filter:brightness(1.1)}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.4;cursor:not-allowed}
 .btn-ghost{background:var(--s2);color:var(--t1);border:1px solid var(--b1)}
-.btn-green{background:var(--gr2);color:var(--gr);border:1px solid var(--gr3)}
-.btn-re{background:var(--re2);color:var(--re);border:1px solid var(--re3)}
-.btn-ye{background:var(--ye2);color:var(--ye);border:1px solid var(--ye3)}
+.btn-green{background:#166534;color:#fff;border:1px solid #14532d}
+.btn-re{background:#991b1b;color:#fff;border:1px solid #7f1d1d}
+.btn-ye{background:#92400e;color:#fff;border:1px solid #78350f}
 .btn-sm{padding:5px 11px;font-size:11px}.btn-full{width:100%}
 .btn-row{display:flex;gap:7px;flex-wrap:wrap}
 
 .alert{padding:9px 12px;border-radius:6px;margin-bottom:9px;font-size:12px;line-height:1.5}
-.al-info{background:var(--ac2);color:#a5b4fc;border:1px solid var(--ac3)}
-.al-ok{background:var(--gr2);color:var(--gr);border:1px solid var(--gr3)}
-.al-warn{background:var(--ye2);color:var(--ye);border:1px solid var(--ye3)}
-.al-danger{background:var(--re2);color:var(--re);border:1px solid var(--re3)}
+.al-info{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+.al-ok{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.al-warn{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+.al-danger{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
 
 .kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
 .kpi{background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px}
@@ -101,20 +101,20 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
 .ku{font-size:11px;color:var(--t2);margin-left:2px}
 
 .tag{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;display:inline-block}
-.tag-pa{background:var(--pa2);color:var(--pa)}.tag-po{background:var(--po2);color:var(--po)}
+.tag-pa{background:#fff3cd;color:#7a5010;border:1px solid #f0a500}.tag-po{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
 
 .stitle{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin:16px 0 9px;display:flex;align-items:center;gap:7px}
 .stitle::after{content:'';flex:1;height:1px;background:var(--b1)}
 
 .vbadge{font-family:var(--mono);font-size:9px;padding:2px 5px;border-radius:3px;display:inline-block}
-.vb-ok{background:var(--gr2);color:var(--gr)}.vb-warn{background:var(--ye2);color:var(--ye)}.vb-danger{background:var(--re2);color:var(--re)}
+.vb-ok{background:#dcfce7;color:#166534}.vb-warn{background:#fef9c3;color:#92400e}.vb-danger{background:#fee2e2;color:#991b1b}
 
 .sdbadge{font-family:var(--mono);font-size:9px;padding:1px 5px;border-radius:3px;display:inline-block;border:1px solid}
-.sd-general{color:#94a3b8;border-color:#2d3748}
-.sd-copetin{color:#f59e0b;border-color:#92400e}
-.sd-huertas{color:#34d399;border-color:#064e3b}
-.sd-suteki{color:#a78bfa;border-color:#4c1d95}
-.sd-reserva{color:#fb923c;border-color:#7c2d12}
+.sd-general{color:#475569;border-color:#94a3b8;background:#f1f5f9}
+.sd-copetin{color:#92400e;border-color:#fbbf24;background:#fffbeb}
+.sd-huertas{color:#166534;border-color:#6ee7b7;background:#f0fdf4}
+.sd-suteki{color:#5b21b6;border-color:#c4b5fd;background:#f5f3ff}
+.sd-reserva{color:#7c2d12;border-color:#fdba74;background:#fff7ed}
 
 .rp{min-width:98px;background:var(--s2);border:1px solid var(--b1);border-radius:5px;padding:6px 7px;cursor:pointer;transition:all .15s}
 .rp:hover{border-color:var(--b2)}.rp.oc-pa{border-color:var(--pa3);background:var(--pa2)}.rp.oc-po{border-color:var(--po3);background:var(--po2)}
@@ -163,9 +163,16 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
   .g2,.g3{grid-template-columns:1fr}
 }
 @media print{
-  .hdr,.nav,.bnav,.btn,.btn-row,.upz,#pick-add-row,#login-screen,#setup-screen{display:none!important}
-  .page{display:block!important}
-  body{background:#fff;color:#000}
+  .hdr,.nav,.bnav,.btn,.btn-row,.upz,#pick-add-row,#login-screen,#setup-screen,.no-print{display:none!important}
+  .page{display:none!important}
+  #page-reparto{display:block!important}
+  body{background:#fff!important;color:#000!important;font-size:11pt}
+  .card{border:1px solid #ccc!important;background:#fff!important;break-inside:avoid}
+  #rep-imprimible{border:none!important}
+  [style*="var(--s2)"]{background:#f9f9f9!important}
+  [style*="var(--pa2)"]{background:#fff3e0!important}
+  [style*="var(--po2)"]{background:#e3f2fd!important}
+  .stitle::after{background:#ccc!important}
 }
 </style>
 </head>
@@ -296,7 +303,7 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
 <div id="app" style="display:none">
 
 <div class="hdr">
-  <div class="logo">CÁMARA<span>CTRL</span> <span style="font-size:9px;color:var(--t3);font-weight:400">v5</span></div>
+  <div class="logo">CÁMARA<span>CTRL</span> <span style="font-size:9px;color:var(--t3);font-weight:400">v11</span></div>
   <div class="hdr-right">
     <div class="live" id="sync-status">SINCRONIZANDO</div>
     <div class="user-badge" id="user-badge" onclick="logout()">— Salir</div>
@@ -305,10 +312,11 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
 
 <nav class="nav">
   <button class="nb on" onclick="goTo('dashboard')">Dashboard</button>
-  <button class="nb" onclick="goTo('camara')">Mapa Cámara</button>
   <button class="nb" onclick="goTo('ingreso')">Ingreso</button>
   <button class="nb" onclick="goTo('picking')">Picking / Salida</button>
-  <button class="nb" onclick="goTo('reparto')">Consolidado Reparto</button>
+  <button class="nb" onclick="goTo('pedidos')">📋 Pedidos Pendientes</button>
+  <button class="nb" onclick="goTo('movimientos')">🔄 Movimientos</button>
+  <button class="nb" onclick="goTo('reparto')">🚚 Consolidado Reparto</button>
   <button class="nb" onclick="goTo('stock')">Stock</button>
   <button class="nb" onclick="goTo('config')">⚙ Config</button>
 </nav>
@@ -319,24 +327,12 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
 <div class="page on" id="page-dashboard">
   <div class="kgrid" id="kpi-grid"></div>
   <div id="alerts-box"></div>
-  <div class="stitle">Actividad reciente</div>
-  <div class="card" id="activity-card"></div>
-  <div class="stitle">Resumen por zona</div>
-  <div id="zona-summary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px"></div>
-</div>
-
-<!-- MAPA -->
-<div class="page" id="page-camara">
-  <div id="mapa-container"></div>
-  <div class="card" style="padding:9px 12px">
-    <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:11px">
-      <span><span style="display:inline-block;width:10px;height:10px;background:var(--pa2);border:1px solid var(--pa3);border-radius:2px;margin-right:3px"></span>Pastas</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:var(--po2);border:1px solid var(--po3);border-radius:2px;margin-right:3px"></span>Pollo</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:var(--ye2);border:1px solid var(--ye3);border-radius:2px;margin-right:3px"></span>Vence ≤30d</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:var(--re2);border:1px solid var(--re3);border-radius:2px;margin-right:3px"></span>Vence ≤7d</span>
-    </div>
+  <!-- MAPA CÁMARA integrado en dashboard -->
+  <div style="margin-top:14px">
+    <div class="stitle">Mapa de Cámara</div>
+    <div id="mapa-container"></div>
+    <div id="pos-detail-panel" style="display:none"></div>
   </div>
-  <div id="pos-detail-panel" style="display:none"></div>
 </div>
 
 <!-- INGRESO -->
@@ -363,7 +359,7 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
       <select class="fc" id="ing-subdep"><option value="general">General</option></select>
     </div>
     <div class="fg"><label class="fl">Producto</label>
-      <select class="fc" id="ing-prod" onchange="ingCalc()"><option value="">— Primero elegí empresa —</option></select>
+      <select class="fc" id="ing-prod" onchange="ingCalc();ingProdChange()"><option value="">— Primero elegí empresa —</option></select>
     </div>
     <div class="g3">
       <div class="fg"><label class="fl">Cantidad</label>
@@ -436,10 +432,19 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
     </div>
     <div class="g2">
       <div class="fg"><label class="fl">Cliente <span class="req">*</span></label>
-        <input type="text" class="fc" id="pick-cliente" placeholder="Nombre del cliente">
+        <input type="text" class="fc" id="pick-cliente" placeholder="Nombre del cliente" oninput="filtrarClientes(this.value)" autocomplete="off">
+        <div id="pick-cliente-list" style="display:none;background:var(--s2);border:1px solid var(--b2);border-radius:6px;max-height:180px;overflow-y:auto;position:absolute;z-index:50;width:calc(50% - 18px)"></div>
       </div>
       <div class="fg"><label class="fl">Fecha de entrega <span class="req">*</span></label>
         <input type="date" class="fc" id="pick-fecha">
+      </div>
+    </div>
+    <div class="g2">
+      <div class="fg"><label class="fl">N° Factura / Remito</label>
+        <input type="text" class="fc" id="pick-nrofac" placeholder="FAR-0005-00005529">
+      </div>
+      <div class="fg"><label class="fl">Fecha de Factura</label>
+        <input type="text" class="fc" id="pick-fecha-fac" placeholder="DD/MM/YYYY">
       </div>
     </div>
     <div class="fg"><label class="fl">Observaciones</label>
@@ -460,15 +465,98 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
   </div>
 </div>
 
+<!-- MOVIMIENTOS -->
+<div class="page" id="page-movimientos">
+  <div id="mov-banner"></div>
+
+  <!-- SECCIÓN C: Confirmaciones de Ingreso por Operario -->
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:#1a7a3c"></span>Confirmaciones de Ingreso Pendientes</div>
+    <div class="alert al-info" style="margin-bottom:10px;font-size:12px">
+      Cada ingreso registrado genera una tarea acá. El operario que coloca la mercadería en la cámara debe confirmarla.
+    </div>
+    <div id="conf-ingreso-list">
+      <div style="text-align:center;padding:20px;color:var(--t3);font-size:13px">Sin confirmaciones pendientes.</div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN A: Movimientos pendientes FEFO -->
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--ye)"></span>Movimientos Pendientes — FEFO</div>
+    <div id="movpend-list">
+      <div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Sin movimientos pendientes.</div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN B: Movimientos entre depósitos -->
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--ac)"></span>Mover Mercadería entre Depósitos</div>
+    <div class="g2">
+      <div class="fg"><label class="fl">Empresa</label>
+        <select class="fc" id="mdep-emp" onchange="mdepEmpChange()">
+          <option value="">— Seleccionar —</option>
+          <option value="pastas">Pastas Pariggi</option>
+          <option value="pollo">Pollo Cocido</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Producto</label>
+        <select class="fc" id="mdep-prod"><option value="">— Primero elegí empresa —</option></select>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="fg"><label class="fl">Cantidad</label>
+        <input type="number" class="fc" id="mdep-cant" placeholder="0" min="0" step="0.5">
+      </div>
+      <div class="fg"><label class="fl">Unidad</label>
+        <select class="fc" id="mdep-uni">
+          <option value="kg">kg</option>
+          <option value="box">Box</option>
+          <option value="caja">Cajas</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Equivalencia</label>
+        <div id="mdep-equiv" style="font-family:var(--mono);font-size:10px;color:var(--t2);padding:8px 0">—</div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="fg"><label class="fl">Sub-depósito origen <span class="req">*</span></label>
+        <select class="fc" id="mdep-origen"><option value="">— Seleccionar —</option></select>
+      </div>
+      <div class="fg"><label class="fl">Sub-depósito destino <span class="req">*</span></label>
+        <select class="fc" id="mdep-destino"><option value="">— Seleccionar —</option></select>
+      </div>
+    </div>
+    <div id="mdep-preview" style="margin-bottom:10px"></div>
+    <button class="btn btn-full" onclick="mdepConfirmar()">✓ Confirmar Movimiento</button>
+  </div>
+</div>
+<div class="page" id="page-pedidos">
+  <div id="ped-banner"></div>
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--ye)"></span>Pedidos Pendientes — Asignación de Fecha y Ruta</div>
+    <div class="alert al-info">
+      Acá aparecen las facturas cargadas (manualmente o por mail). Asignale fecha de entrega y posición en la ruta a cada una antes de pasarlas al consolidado.
+    </div>
+    <div id="ped-list">
+      <div style="text-align:center;padding:32px 0;color:var(--t3);font-size:13px">
+        Sin pedidos pendientes. Cargá una factura desde <strong>Picking / Salida</strong>.
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- REPARTO -->
 <div class="page" id="page-reparto">
-  <div class="card">
-    <div class="ct"><span class="dot" style="background:var(--ye)"></span>Consolidado de Reparto</div>
-    <div class="g2">
-      <div class="fg"><label class="fl">Fecha de reparto</label>
-        <input type="date" class="fc" id="rep-fecha" onchange="renderReparto()">
+  <div class="card" style="border-left:4px solid var(--ye)">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div>
+        <div class="ct" style="margin-bottom:4px"><span class="dot" style="background:var(--ye)"></span>Consolidado de Reparto</div>
+        <div style="font-size:12px;color:var(--t2)">Solo muestra pedidos confirmados con fecha y orden de ruta</div>
       </div>
-      <div style="display:flex;align-items:flex-end;padding-bottom:11px">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="fg" style="margin-bottom:0">
+          <input type="date" class="fc" id="rep-fecha" onchange="renderReparto()" style="font-size:13px;padding:7px 10px">
+        </div>
         <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Imprimir hoja de ruta</button>
       </div>
     </div>
@@ -480,16 +568,37 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
 <div class="page" id="page-stock">
   <div class="card">
     <div class="ct"><span class="dot" style="background:var(--pa)"></span>Stock por Producto</div>
-    <div style="overflow-x:auto">
-      <table class="tbl">
-        <thead><tr><th>Producto</th><th>Empresa</th><th>Sub-dep.</th><th>Kg</th><th>Pallets</th><th>Cajas</th><th>Box</th><th>Posiciones</th></tr></thead>
-        <tbody id="stock-tbody"></tbody>
-      </table>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn btn-sm" id="sf-ambas" onclick="setStockFiltro('ambas')" style="background:var(--ac);color:#fff">Ambas empresas</button>
+      <button class="btn btn-sm btn-ghost" id="sf-pastas" onclick="setStockFiltro('pastas')">Solo Pastas Pariggi</button>
+      <button class="btn btn-sm btn-ghost" id="sf-pollo" onclick="setStockFiltro('pollo')">Solo Pollo Cocido</button>
+    </div>
+    <div id="stock-pastas-section">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--pa);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;padding:6px 10px;background:var(--pa2);border-radius:6px;border-left:3px solid var(--pa)">PASTAS PARIGGI</div>
+      <div style="overflow-x:auto;margin-bottom:16px">
+        <table class="tbl" id="stock-tbl-pastas">
+          <thead><tr><th>Producto</th><th>Sub-dep.</th><th>Box</th><th>Kg</th><th>Cajas</th><th>Pallets</th><th>Posiciones</th></tr></thead>
+          <tbody id="stock-tbody-pastas"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="stock-pollo-section">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--po);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;padding:6px 10px;background:var(--po2);border-radius:6px;border-left:3px solid var(--po)">POLLO COCIDO</div>
+      <div style="overflow-x:auto">
+        <table class="tbl" id="stock-tbl-pollo">
+          <thead><tr><th>Producto</th><th>Sub-dep.</th><th>Kg</th><th>Cajas</th><th>Pallets</th><th>Posiciones</th></tr></thead>
+          <tbody id="stock-tbody-pollo"></tbody>
+        </table>
+      </div>
     </div>
   </div>
   <div class="card">
     <div class="ct"><span class="dot" style="background:var(--re)"></span>Vencimientos</div>
     <div id="vto-list"></div>
+  </div>
+  <div class="card" style="border-color:#7c3aed33">
+    <div class="ct"><span class="dot" style="background:#7c3aed"></span>Depósito Secos — Puntallete</div>
+    <div id="stock-secos"></div>
   </div>
 </div>
 
@@ -515,6 +624,32 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
     <div class="alert al-warn" style="margin-bottom:9px">Borrar todos los datos en Firebase es irreversible.</div>
     <button class="btn btn-re btn-sm" onclick="cfgBorrarTodo()">🗑 Borrar todo el stock y movimientos</button>
   </div>
+  <!-- GESTIÓN DE CLIENTES -->
+  <div class="card">
+    <div class="ct"><span class="dot" style="background:var(--gr)"></span>Gestión de Clientes — Depósito y Vencimientos</div>
+    <div class="alert al-info" style="margin-bottom:12px;font-size:12px">
+      Asigná a cada cliente su depósito preferido y el máximo de días de vencimiento que acepta. 
+      El sistema prioriza el depósito asignado al generar pedidos FEFO.
+    </div>
+    <div class="fg">
+      <input type="text" class="fc" id="cfg-cli-buscar" placeholder="Buscar cliente..." oninput="filtrarTablaClientes(this.value)" style="margin-bottom:10px">
+    </div>
+    <div style="overflow-x:auto">
+      <table class="tbl" id="cfg-cli-tabla">
+        <thead>
+          <tr>
+            <th style="text-align:left;min-width:160px">Cliente</th>
+            <th>Empresa</th>
+            <th>Depósito</th>
+            <th>Días vto máx.</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="cfg-cli-tbody"></tbody>
+      </table>
+    </div>
+    <div id="cfg-cli-status" style="margin-top:8px"></div>
+  </div>
 </div>
 
 </div><!-- end main -->
@@ -524,14 +659,14 @@ select.fc{cursor:pointer}textarea.fc{resize:vertical;min-height:52px}
     <button class="bb on" onclick="goTo('dashboard')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Inicio
     </button>
-    <button class="bb" onclick="goTo('camara')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="12" y1="5" x2="12" y2="19"/></svg>Cámara
-    </button>
     <button class="bb" onclick="goTo('ingreso')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>Ingreso
     </button>
     <button class="bb" onclick="goTo('picking')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Picking
+    </button>
+    <button class="bb" onclick="goTo('movimientos')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>Movim.
     </button>
     <button class="bb" onclick="goTo('reparto')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Reparto
@@ -577,6 +712,10 @@ const SUBDEPS = {
 const SD_NAMES={general:"General",copetin:"Copetin",huertas:"Huertas",suteki:"Suteki",reserva:"Reserva"};
 const SD_CSS={general:"sd-general",copetin:"sd-copetin",huertas:"sd-huertas",suteki:"sd-suteki",reserva:"sd-reserva"};
 
+const CLIENTES_PASTAS=["(Tulio)Sweden Motors","LIMA ENSALADAS","Nuvola","AFRIKANUS S.R.L","AIRE LIBRE RESTO","Alex Coffee Roasters","AMARETTI","Argentina Open","Bodegón CVLP","Carne Res","CEDISUR SA","Copetin Catering Ivz","Distribuidora Santini (Arias P)","DISTRIBUIDORA SANTINI 2","Frosty","Gergal","GOLDEN CENTER- PARQUE NORTE","GREEN & CO SRL","Grupo Tronchetto","Hernan Cohan","Ins Sec. Hnas de María de Schoenstatt Vv","Josephinas Cafe","KEANE FIESTAS","Le Pain Quotidien","Lobo Café","MANJARES DEL MAR SRL","Mara","MATIAS LUEGE","Pimpollo","PLAN B MARIANA PAGES","Ragu Restaurante","RES Carnicería Belgrano R","RES Carnicería Escobar","RES Carnicería Puerto Madero","Samarella","Sky Chef","SOLUCIONES GOURMET","Supermercado Rufino (Cordoba)","Supermercado Rufino 2 (Cordoba)","Sushi Prem Salguero","Tratoria","Uvas de la Patagonia SA","VUOI","Walter Weinzettel","Gate Gourmet","Rey Bubamara","Ensaladas y mas","RES Carnicería Diaz Velez","RES Carnicería Almagro","RES Carnicería Balvanera","RES Carnicería Caballito","RES Carnicería Puerto Madero 2","RES Carnicería Vicente López","RES Carnicería Gascon","Buffet Felix Marino","RES Carnicería Palermo","Distribuidora Santini","NOBS S.A. - RES Carnicería Palermo"];
+const CLIENTES_POLLO=["Fabian Telleria","Selva Gg Caba","AFRIKANUS S.R.L","Alex Coffee Roasters","Alimentos Bajo Cero (Tomas)","Alimentos KB (Sushi Prem)","ALIMENTOS ORGANICOS ARGENTINOS S.A","AMOEDO","Argentina Open","Aufieri","Buo Cafe -PALERMO","Calisa Sa","Casa Frawens Vv","Catering Zapiola","Chungo ISIDRO LABRADOR (SAAVEDRA)","Copetin Catering Ivz","CULTO COCINA","Deli Office","Deli Office 2","Distribuidora Santini","DISTRIBUIDORA SANTINI 2","Ensalada City","FUDY","Gate Gourmet Argentina Srl","Gerardo Gomez Hernan","Gergal CABA","Goldencenter/ salón ombú","Green & Co SRL","Hernan Cohan","Huertas del Pilar Hh Norte","Ins Sec. Hnas de María de Schoenstatt Vv","KALYMMA","KEANE FIESTAS","La Ensaladeria Ivz Oeste","La Maquina de Emma (Quincho River Plate)","Le Pain Quotidien","legran chef","LIMA ENSALADAS","Macacha CABA","Magazino Deli Ivz","Mariana Pages Palenque","Matias Luege","Muni","Muni RCN SAS","Pastas Pariggi","PUNTO CAFE SRL -BUO CAFE","Ragu Restaurante","Samarella Co","Sky Chef","Soluciones Guiar SA","Sushi Prem 3","Sushi Prem Salguero","suteki","Tratoria","Via Cosenza Heladerías","Villa Flor","VUOI","Walter Weinzettel","Tostado Cafe Club Av. Santa Fe","Paula Andrea Stellardo","Gary Club Sabores","UN CAFE","Buffet Felix Marino","JOTTI","Ivan (Yerno de Gaby)","Pradan Sa","Martin Amateur San Telmo CABA"];
+const CLIENTES=[...new Set([...CLIENTES_PASTAS,...CLIENTES_POLLO])].sort((a,b)=>a.localeCompare(b,"es"));
+
 function getProd(emp,cod){return PRODS[emp]?.find(p=>p.cod===cod)}
 function toKg(cant,uni,prod){
   if(!prod||!cant)return 0; cant=parseFloat(cant)||0;
@@ -594,21 +733,52 @@ function equivStr(kg,prod,emp){
 }
 
 // ═══════════════ POSICIONES ═══════════════
+// Capacidades reales según plano:
+// Pollo pared: N3=700kg, N2=350kg, N1=700kg
+// Pastas pared y central: todos los niveles = 400kg
+// Pollo pasillo: 4 grupos × 2 pos × 700kg (3 pallets apilados)
+// Secos: 5 carros × 10 cajas (solo Puntallete)
+const CAP_POLLO_NIVEL={1:700,2:350,3:700};
+const CAP_PASTAS_NIVEL={1:400,2:400,3:400};
+const CAP_POLLO_PASILLO=700; // por posición
+
 function buildPos(){
   const P=[];
+  // POLLO PARED — 7 racks × 3 niveles (R1=puerta, R7=fondo)
   for(let r=1;r<=7;r++) for(let n=1;n<=3;n++)
-    P.push({id:`PA-R${r}-N${n}`,label:`Pastas Rack ${r} Nivel ${n}`,zona:"pastas-pared",rack:r,nivel:n,empZona:"pastas"});
-  for(let p=1;p<=6;p++)
-    P.push({id:`PA-PP${p}`,label:`Pastas Pasillo Pos ${p}`,zona:"pastas-pasillo",rack:p,nivel:0,empZona:"pastas"});
-  for(let r=1;r<=4;r++) for(let n=1;n<=3;n++)
-    P.push({id:`PC-R${r}-N${n}`,label:`Pastas Central Rack ${r} Nivel ${n}`,zona:"pastas-central",rack:r,nivel:n,empZona:"pastas"});
+    P.push({id:`PO-R${r}-N${n}`,label:`Pollo Rack ${r} Nivel ${n}`,zona:"pollo-pared",rack:r,nivel:n,empZona:"pollo",capKg:CAP_POLLO_NIVEL[n]||700});
+  // POLLO PASILLO — 4 grupos × 2 niveles (N1=Abajo, N2=Arriba) × 2 posiciones = 16 pos
+  // Cada posición = 700kg → cada grupo = 2.800kg → total pasillo = 11.200kg
   for(let g=1;g<=4;g++) for(let n=1;n<=2;n++) for(let p=1;p<=2;p++)
-    P.push({id:`PO-PP-G${g}-N${n}-P${p}`,label:`Pollo Pasillo Gr${g} N${n} P${p}`,zona:"pollo-pasillo",rack:g,nivel:n,posNum:p,empZona:"pollo"});
+    P.push({id:`PO-PP-G${g}-N${n}-P${p}`,label:`Pollo Pasillo Gr${g} ${n===1?"Abajo":"Arriba"} Pos${p}`,zona:"pollo-pasillo",rack:g,nivel:n,posNum:p,empZona:"pollo",capKg:700});
+  // PASTAS CENTRAL — 7 racks × 3 niveles × 400kg
   for(let r=1;r<=7;r++) for(let n=1;n<=3;n++)
-    P.push({id:`PO-R${r}-N${n}`,label:`Pollo Rack ${r} Nivel ${n}`,zona:"pollo-pared",rack:r,nivel:n,empZona:"pollo"});
+    P.push({id:`PC-R${r}-N${n}`,label:`Pastas Central Rack ${r} Nivel ${n}`,zona:"pastas-central",rack:r,nivel:n,empZona:"pastas",capKg:400});
+  // PASTAS PARED — 7 racks × 3 niveles × 400kg (R1=puerta, R7=fondo)
+  for(let r=1;r<=7;r++) for(let n=1;n<=3;n++)
+    P.push({id:`PA-R${r}-N${n}`,label:`Pastas Rack ${r} Nivel ${n}`,zona:"pastas-pared",rack:r,nivel:n,empZona:"pastas",capKg:400});
+  // PASTAS PASILLO — 6 posiciones piso × 400kg
+  for(let p=1;p<=6;p++)
+    P.push({id:`PA-PP${p}`,label:`Pastas Pasillo Pos ${p}`,zona:"pastas-pasillo",rack:p,nivel:0,empZona:"pastas",capKg:400});
   return P;
 }
 const BASE_POS=buildPos();
+
+// DEPÓSITO SECOS — 5 carros × 10 cajas (solo Puntallete)
+// Se maneja por separado del mapa de cámara
+function buildSecos(){
+  const S=[];
+  for(let c=1;c<=5;c++)
+    S.push({id:`SEC-C${c}`,label:`Secos Carro ${c}`,zona:"secos",rack:c,nivel:0,empZona:"pastas",capCajas:10,esSeco:true});
+  return S;
+}
+const BASE_SECOS=buildSecos();
+const PRODS_SECOS=["101010204","1010203"]; // Puntallete 1,5kg y 0,500
+
+function getPosAll(){ return [...getPos(),...getSecos()]; }
+function getSecos(){
+  return BASE_SECOS.map(p=>({...p,contenido:DB.contenidos[p.id]||null}));
+}
 
 // ═══════════════ UTILS ═══════════════
 const fmt=n=>parseFloat(n||0).toLocaleString("es-AR",{maximumFractionDigits:1});
@@ -620,7 +790,7 @@ function sdBadge(sd){if(!sd||sd==="general")return"";return`<span class="sdbadge
 
 // ═══════════════ FIREBASE STATE ═══════════════
 let fbApp=null, fbDb=null;
-let DB={contenidos:{},movimientos:[],ordenes:[]};
+let DB={contenidos:{},movimientos:[],ordenes:[],movimientos_pendientes:[],confirmaciones_ingreso:[],clientes_config:{}};
 let currentUser="";
 let syncStatus="offline";
 
@@ -645,23 +815,37 @@ function setupRealtimeSync(){
   if(!fbDb)return;
   setSyncStatus("syncing");
 
-  // Escuchar contenidos (posiciones)
   onValue(ref(fbDb,"contenidos"),(snap)=>{
     DB.contenidos=snap.val()||{};
     setSyncStatus("ok");
     refreshCurrentPage();
   },(err)=>{setSyncStatus("error");console.error(err)});
 
-  // Escuchar movimientos
   onValue(ref(fbDb,"movimientos"),(snap)=>{
     const raw=snap.val()||{};
     DB.movimientos=Object.values(raw).sort((a,b)=>new Date(a.fecha)-new Date(b.fecha));
   });
 
-  // Escuchar ordenes
   onValue(ref(fbDb,"ordenes"),(snap)=>{
     const raw=snap.val()||{};
     DB.ordenes=Object.values(raw);
+    refreshCurrentPage();
+  });
+
+  onValue(ref(fbDb,"movimientos_pendientes"),(snap)=>{
+    const raw=snap.val()||{};
+    DB.movimientos_pendientes=Object.entries(raw).map(([k,v])=>({...v,_key:k})).filter(m=>!m.completado);
+    refreshCurrentPage();
+  });
+
+  onValue(ref(fbDb,"clientes_config"),(snap)=>{
+    DB.clientes_config=snap.val()||{};
+  });
+
+  onValue(ref(fbDb,"confirmaciones_ingreso"),(snap)=>{
+    const raw=snap.val()||{};
+    DB.confirmaciones_ingreso=Object.entries(raw).map(([k,v])=>({...v,_key:k})).filter(c=>!c.confirmado);
+    refreshCurrentPage();
   });
 }
 
@@ -706,9 +890,10 @@ function refreshCurrentPage(){
   const active=document.querySelector(".page.on");
   if(!active)return;
   const id=active.id.replace("page-","");
-  if(id==="dashboard") renderDashboard();
-  if(id==="camara")    renderMapa();
+  if(id==="dashboard"){renderDashboard();renderMapa();}
   if(id==="stock")     renderStock();
+  if(id==="pedidos")   renderPedidos();
+  if(id==="movimientos") { renderMovPendientes(); renderConfirmacionesIngreso(); }
 }
 
 // ═══════════════ LOGIN / PIN ═══════════════
@@ -766,6 +951,14 @@ window.pinDel=function(){
   pinCurrent=pinCurrent.slice(0,-1);
   updatePinDots();
 };
+
+// Soporte teclado para PIN
+document.addEventListener("keydown",function(e){
+  const loginVisible=document.getElementById("login-screen")?.style.display!=="none";
+  if(!loginVisible) return;
+  if(e.key>="0"&&e.key<="9") window.pinPress(e.key);
+  else if(e.key==="Backspace") window.pinDel();
+});
 window.logout=function(){
   if(!confirm("¿Cerrar sesión?"))return;
   currentUser=""; pinCurrent=""; updatePinDots();
@@ -833,10 +1026,11 @@ function goTo(page){
   document.querySelectorAll(".nb,.bb").forEach(b=>b.classList.remove("on"));
   document.getElementById("page-"+page).classList.add("on");
   document.querySelectorAll(`[onclick="goTo('${page}')"]`).forEach(b=>b.classList.add("on"));
-  if(page==="dashboard") renderDashboard();
-  if(page==="camara")    renderMapa();
+  if(page==="dashboard"){renderDashboard();renderMapa();}
   if(page==="ingreso")   initIngreso();
   if(page==="picking")   initPicking();
+  if(page==="pedidos")   renderPedidos();
+  if(page==="movimientos") initMovimientos();
   if(page==="reparto")   initReparto();
   if(page==="stock")     renderStock();
   if(page==="config")    initConfig();
@@ -850,88 +1044,226 @@ function renderDashboard(){
   const pKg=P.filter(p=>p.contenido.empresa==="pastas").reduce((s,p)=>s+(p.contenido.kg||0),0);
   const oKg=P.filter(p=>p.contenido.empresa==="pollo").reduce((s,p)=>s+(p.contenido.kg||0),0);
   const prox=P.filter(p=>p.contenido.vto&&diasVto(p.contenido.vto)<=30).length;
+  const pedPend=DB.ordenes.filter(o=>!o.confirmado).length;
 
   document.getElementById("kpi-grid").innerHTML=`
-    <div class="kpi"><div class="kl">Total</div><div class="kv">${fmt(tot)}<span class="ku">kg</span></div></div>
-    <div class="kpi"><div class="kl">Pastas</div><div class="kv" style="color:var(--pa)">${fmt(pKg)}<span class="ku">kg</span></div></div>
-    <div class="kpi"><div class="kl">Pollo</div><div class="kv" style="color:var(--po)">${fmt(oKg)}<span class="ku">kg</span></div></div>
-    <div class="kpi"><div class="kl">Posiciones</div><div class="kv">${P.length}<span class="ku">/${BASE_POS.length}</span></div></div>
-    <div class="kpi"><div class="kl">Prox Vencer</div><div class="kv" style="color:${prox>0?"var(--ye)":"var(--gr)"}">${prox}</div></div>
-    <div class="kpi"><div class="kl">Movimientos</div><div class="kv">${DB.movimientos.length}</div></div>`;
+    <div class="kpi"><div class="kl">Stock Total</div><div class="kv">${fmt(tot)}<span class="ku">kg</span></div></div>
+    <div class="kpi"><div class="kl">Pastas Pariggi</div><div class="kv" style="color:var(--pa)">${fmt(pKg)}<span class="ku">kg</span></div></div>
+    <div class="kpi"><div class="kl">Pollo Cocido</div><div class="kv" style="color:var(--po)">${fmt(oKg)}<span class="ku">kg</span></div></div>
+    <div class="kpi"><div class="kl">Posiciones usadas</div><div class="kv">${P.length}<span class="ku">/${BASE_POS.length+5}</span></div></div>
+    <div class="kpi" style="cursor:pointer;border-color:${pedPend>0?"var(--ye3)":"var(--b1)"}" onclick="goTo('pedidos')">
+      <div class="kl">Pedidos Pendientes</div>
+      <div class="kv" style="color:${pedPend>0?"var(--ye)":"var(--t2)"}">${pedPend}${pedPend>0?` <span style="font-size:12px;font-weight:400">→ confirmar</span>`:""}</div>
+    </div>
+    <div class="kpi" style="border-color:${prox>0?"var(--re3)":"var(--b1)"}">
+      <div class="kl">Próx. Vencer ≤30d</div>
+      <div class="kv" style="color:${prox>0?"var(--re)":"var(--t2)"}">${prox}</div>
+    </div>`;
 
   let al="";
   getPos().forEach(p=>{
     if(!p.contenido?.vto)return;
     const d=diasVto(p.contenido.vto);
-    if(d<=7)  al+=`<div class="alert al-danger">🚨 <strong>${p.contenido.producto}</strong> — ${p.label} — vence en ${d} días</div>`;
+    if(d<=7)  al+=`<div class="alert al-danger">🚨 <strong>${p.contenido.producto}</strong> — ${p.label} — vence en ${d} días (${p.contenido.vto})</div>`;
     else if(d<=30) al+=`<div class="alert al-warn">⚠ <strong>${p.contenido.producto}</strong> — ${p.label} — vence en ${d} días</div>`;
   });
   document.getElementById("alerts-box").innerHTML=al;
-
-  const ac=document.getElementById("activity-card");
-  if(!DB.movimientos.length){ac.innerHTML=`<div style="text-align:center;padding:24px 0;color:var(--t3);font-size:13px">Sin movimientos aún.</div>`;return}
-  ac.innerHTML=[...DB.movimientos].reverse().slice(0,10).map((m,i)=>`
-    <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:${i<9?"1px solid var(--b1)":"none"}">
-      <span style="font-size:14px">${m.tipo==="ingreso"?"📥":m.tipo==="devolucion"?"↩️":"📤"}</span>
-      <div style="flex:1"><div style="font-size:12px;font-weight:600">${m.producto}</div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)">${m.posicion} · ${fmt(m.kg)}kg · ${m.fecha}${m.usuario?" · "+m.usuario:""}</div></div>
-      ${tagEmp(m.empresa)} ${m.subdep?sdBadge(m.subdep):""}
-    </div>`).join("");
-
-  const zonas=[
-    {key:"pastas-pared",label:"Pastas Pared"},
-    {key:"pastas-pasillo",label:"Pastas Pasillo"},
-    {key:"pastas-central",label:"Pastas Central"},
-    {key:"pollo-pasillo",label:"Pollo Pasillo"},
-    {key:"pollo-pared",label:"Pollo Pared"},
-  ];
-  const all=getPos();
-  const zs=document.getElementById("zona-summary");
-  zs.style.gridTemplateColumns="repeat("+Math.min(zonas.length,3)+",1fr)";
-  zs.innerHTML=zonas.map(z=>{
-    const zp=all.filter(p=>p.zona===z.key);
-    const occ=zp.filter(p=>p.contenido);
-    const kg=occ.reduce((s,p)=>s+(p.contenido.kg||0),0);
-    const isPA=z.key.startsWith("pastas");
-    return`<div class="kpi"><div class="kl" style="color:var(--${isPA?"pa":"po"})">${z.label}</div>
-      <div style="font-family:var(--mono);font-size:12px;color:var(--t1)">${fmt(kg)} kg</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--t3)">${occ.length}/${zp.length} pos</div></div>`;
-  }).join("");
 }
 
-// ═══════════════ MAPA ═══════════════
+// ═══════════════ MAPA 2D ═══════════════
 function renderMapa(){
   const all=getPos();
-  let html="";
-  const zonas=[
-    {key:"pastas-pared",  label:"Pastas — Pared Izquierda", color:"pa", tipo:"rack"},
-    {key:"pastas-pasillo",label:"Pastas — Pasillo Piso",    color:"pa", tipo:"piso"},
-    {key:"pastas-central",label:"Pastas Central",           color:"pa", tipo:"rack"},
-    {key:"pollo-pasillo", label:"Pollo — Pasillo",          color:"po", tipo:"grupo"},
-    {key:"pollo-pared",   label:"Pollo — Pared Derecha",    color:"po", tipo:"rack"},
-  ];
-  zonas.forEach(z=>{
-    const pos=all.filter(p=>p.zona===z.key);
-    html+=`<div class="stitle"><span style="color:var(--${z.color})">${z.label}</span></div><div class="card" style="padding:10px">`;
-    if(z.tipo==="piso"){
-      html+=`<div class="rack-row">`; pos.sort((a,b)=>a.rack-b.rack).forEach(p=>{html+=rackCard(p)}); html+=`</div>`;
-    } else if(z.tipo==="rack"){
-      const racks={};
-      pos.forEach(p=>{if(!racks[p.rack])racks[p.rack]=[];racks[p.rack].push(p)});
-      Object.entries(racks).sort((a,b)=>+a[0]-+b[0]).forEach(([r,rp])=>{
-        html+=`<div style="margin-bottom:7px"><div style="font-family:var(--mono);font-size:8px;color:var(--t3);margin-bottom:3px">R${r}${r=="1"?" ← PUERTA":r=="7"?" ← FONDO":""}</div><div class="rack-row">`;
-        rp.sort((a,b)=>b.nivel-a.nivel).forEach(p=>{html+=rackCard(p)}); html+=`</div></div>`;
-      });
+  const posById=(id)=>all.find(x=>x.id===id)||{id,label:id,contenido:null,capKg:0,empZona:"pastas"};
+
+  function celda(p){
+    if(!p) return`<td style="width:74px;min-width:74px;background:#f9f9f9;border:1px solid #e0e0e0"></td>`;
+    const c=p.contenido;
+    let bg,border,tc;
+    if(!c){bg="white";border="1px solid #e0e0e0";tc="#bbb";}
+    else if(p.empZona==="pastas"){
+      bg="#fff3cd";border="1px solid #f0a500";tc="#7a5010";
+      if(c.vto){const d=diasVto(c.vto);if(d<=7){bg="#ffd7d7";border="2px solid #c0392b";}else if(d<=30){bg="#fff0c0";border="2px solid #d4a017";}}
     } else {
-      const grps={};
-      pos.forEach(p=>{if(!grps[p.rack])grps[p.rack]=[];grps[p.rack].push(p)});
-      Object.entries(grps).sort((a,b)=>+a[0]-+b[0]).forEach(([g,gp])=>{
-        html+=`<div style="margin-bottom:7px"><div style="font-family:var(--mono);font-size:8px;color:var(--t3);margin-bottom:3px">Grupo ${g} (2×2 apilados)</div><div class="rack-row">`;
-        gp.sort((a,b)=>b.nivel-a.nivel).forEach(p=>{html+=rackCard(p)}); html+=`</div></div>`;
-      });
+      bg="#fde8e8";border="1px solid #e57373";tc="#7a2020";
+      if(c.vto){const d=diasVto(c.vto);if(d<=7){bg="#ffd7d7";border="2px solid #c0392b";}else if(d<=30){bg="#fff0c0";border="2px solid #d4a017";}}
     }
-    html+=`</div>`;
+    const capKg=p.capKg||0;
+    const pct=c&&capKg?Math.min((c.kg/capKg*100),100):0;
+    const barColor=pct>90?"#c0392b":pct>60?"#d4a017":"#1a7a3c";
+    return`<td onclick="showPosDetail('${p.id}')" title="${p.label}${c?' — '+c.producto+' '+fmt(c.kg)+'kg':' — vacío'}"
+      style="background:${bg};border:${border};width:74px;min-width:74px;padding:4px 3px;cursor:pointer;vertical-align:top">
+      <div style="font-family:monospace;font-size:7px;color:#999;margin-bottom:1px">${p.id}</div>
+      ${c?`<div style="font-size:9px;font-weight:700;color:${tc};line-height:1.2;margin-bottom:2px">${c.producto.substring(0,14)}</div>
+           <div style="font-family:monospace;font-size:8px;color:${tc};margin-bottom:2px">${fmt(c.kg)}kg</div>
+           ${c.vto?`<div style="font-family:monospace;font-size:7px;color:${diasVto(c.vto)<=7?"#c0392b":diasVto(c.vto)<=30?"#9a6500":"#1a7a3c"};font-weight:700">${diasVto(c.vto)}d vto</div>`:""}
+           ${capKg?`<div style="height:3px;background:#e0e0e0;border-radius:2px;margin-top:2px"><div style="height:3px;width:${pct}%;background:${barColor};border-radius:2px"></div></div>`:""}`
+        :`<div style="font-size:8px;color:#ccc;padding:2px 0">${capKg?fmt(capKg)+"kg":""}<br>vacío</div>`}
+    </td>`;
+  }
+
+  function celdaVacia(w=74){
+    return`<td style="width:${w}px;min-width:${w}px;background:#f0f0f0;border:1px dashed #ddd"></td>`;
+  }
+  function sep(w=12){
+    return`<td rowspan="99" style="width:${w}px;min-width:${w}px;background:transparent;border:none;padding:0"></td>`;
+  }
+  function th(txt,cols,color,bg){
+    return`<th colspan="${cols}" style="text-align:center;font-family:monospace;font-size:10px;font-weight:700;color:${color};background:${bg};border:1px solid #ddd;padding:5px 3px;letter-spacing:.04em">${txt}</th>`;
+  }
+  function thSub(txt,color,bg){
+    return`<th style="text-align:center;font-family:monospace;font-size:9px;font-weight:600;color:${color};background:${bg};border:1px solid #e5e5e5;padding:3px 2px;white-space:nowrap">${txt}</th>`;
+  }
+
+  // Pollo pasillo: filas 1,3,5,7 tienen grupo (G1,G2,G3,G4), filas 2,4,6 vacías
+  // Pastas pasillo: filas 1-6 tienen posición, fila 7 vacía
+  // Pastas central: filas 1-4 tienen rack, filas 5-7 vacías
+
+  let html=`
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:12px">
+
+  <!-- LEYENDA -->
+  <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:11px;font-family:sans-serif">
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#fff3cd;border:1px solid #f0a500;border-radius:2px;display:inline-block"></span>Pastas</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#fde8e8;border:1px solid #e57373;border-radius:2px;display:inline-block"></span>Pollo</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#ffd7d7;border:2px solid #c0392b;border-radius:2px;display:inline-block"></span>Vence ≤7d</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#fff0c0;border:2px solid #d4a017;border-radius:2px;display:inline-block"></span>Vence ≤30d</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:white;border:1px solid #e0e0e0;border-radius:2px;display:inline-block"></span>Vacío</span>
+  </div>
+
+  <table style="border-collapse:separate;border-spacing:2px;font-family:sans-serif">
+  <thead>
+    <tr>
+      ${th("PASTAS RACK",3,"#7a5010","#ffe082")}
+      <td style="width:12px;border:none;background:transparent"></td>
+      ${th("PASTAS PASILLO",1,"#7a5010","#ffe082")}
+      <td style="width:12px;border:none;background:transparent"></td>
+      ${th("PASTAS CENTRAL",3,"#7a5010","#ffe082")}
+      <td style="width:16px;border:none;background:transparent"></td>
+      ${th("POLLO PASILLO",4,"#7a2020","#ffcdd2")}
+      <td style="width:16px;border:none;background:transparent"></td>
+      ${th("POLLO RACK",3,"#7a2020","#ffcdd2")}
+      <td style="border:none;background:transparent"></td>
+    </tr>
+    <tr>
+      ${thSub("ARRIBA<br>N3 400kg","#7a5010","#fff9e6")}
+      ${thSub("MEDIO<br>N2 400kg","#7a5010","#fff9e6")}
+      ${thSub("ABAJO<br>N1 400kg","#7a5010","#fff9e6")}
+      <td style="width:12px;border:none;background:transparent"></td>
+      ${thSub("PISO<br>400kg","#7a5010","#fff9e6")}
+      <td style="width:12px;border:none;background:transparent"></td>
+      ${thSub("ARRIBA<br>N3 400kg","#7a5010","#fff9e6")}
+      ${thSub("MEDIO<br>N2 400kg","#7a5010","#fff9e6")}
+      ${thSub("ABAJO<br>N1 400kg","#7a5010","#fff9e6")}
+      <td style="width:16px;border:none;background:transparent"></td>
+      ${thSub("ABAJO<br>P1 700kg","#7a2020","#fff0f0")}
+      ${thSub("ABAJO<br>P2 700kg","#7a2020","#fff0f0")}
+      ${thSub("ARRIBA<br>P1 700kg","#7a2020","#fff0f0")}
+      ${thSub("ARRIBA<br>P2 700kg","#7a2020","#fff0f0")}
+      <td style="width:16px;border:none;background:transparent"></td>
+      ${thSub("ABAJO<br>N1 700kg","#7a2020","#fff0f0")}
+      ${thSub("MEDIO<br>N2 350kg","#7a2020","#fff0f0")}
+      ${thSub("ARRIBA<br>N3 700kg","#7a2020","#fff0f0")}
+      <td style="border:none;background:transparent"></td>
+    </tr>
+  </thead>
+  <tbody>`;
+
+  // Pollo pasillo: G1→fila1, G2→fila3, G3→fila5, G4→fila7 (filas 2,4,6 vacías)
+  // Cada grupo: ABAJO-P1(N1-P1) | ABAJO-P2(N1-P2) | ARRIBA-P1(N2-P1) | ARRIBA-P2(N2-P2)
+  const ppGrupoFila={1:1,2:3,3:5,4:7};
+
+  for(let r=1;r<=7;r++){
+    const label=r===1?"← PUERTA":r===7?"← FONDO":"";
+    html+=`<tr>`;
+
+    // PASTAS RACK N3,N2,N1
+    html+=celda(posById(`PA-R${r}-N3`));
+    html+=celda(posById(`PA-R${r}-N2`));
+    html+=celda(posById(`PA-R${r}-N1`));
+    html+=`<td style="width:12px;background:transparent;border:none"></td>`;
+
+    // PASTAS PASILLO — solo filas 1-6
+    if(r<=6) html+=celda(posById(`PA-PP${r}`));
+    else html+=celdaVacia();
+    html+=`<td style="width:12px;background:transparent;border:none"></td>`;
+
+    // PASTAS CENTRAL — solo filas 1-4
+    if(r<=4){
+      html+=celda(posById(`PC-R${r}-N3`));
+      html+=celda(posById(`PC-R${r}-N2`));
+      html+=celda(posById(`PC-R${r}-N1`));
+    } else {
+      html+=celdaVacia();html+=celdaVacia();html+=celdaVacia();
+    }
+    html+=`<td style="width:16px;background:transparent;border:none"></td>`;
+
+    // POLLO PASILLO — 4 celdas por grupo, grupos en filas 1,3,5,7
+    const grupoEnFila=Object.entries(ppGrupoFila).find(([g,f])=>parseInt(f)===r);
+    if(grupoEnFila){
+      const g=parseInt(grupoEnFila[0]);
+      html+=celda(posById(`PO-PP-G${g}-N1-P1`));
+      html+=celda(posById(`PO-PP-G${g}-N1-P2`));
+      html+=celda(posById(`PO-PP-G${g}-N2-P1`));
+      html+=celda(posById(`PO-PP-G${g}-N2-P2`));
+    } else {
+      html+=celdaVacia();html+=celdaVacia();html+=celdaVacia();html+=celdaVacia();
+    }
+    html+=`<td style="width:16px;background:transparent;border:none"></td>`;
+
+    // POLLO RACK N1,N2,N3
+    html+=celda(posById(`PO-R${r}-N1`));
+    html+=celda(posById(`PO-R${r}-N2`));
+    html+=celda(posById(`PO-R${r}-N3`));
+
+    // Label fila
+    html+=`<td style="padding-left:8px;font-family:monospace;font-size:9px;white-space:nowrap;border:none;background:transparent;color:${r===1?"#4f46e5":r===7?"#888":"#bbb"}">${label}</td>`;
+    html+=`</tr>`;
+  }
+
+  // FILA PUERTA
+  html+=`<tr>
+    <td colspan="3" style="background:transparent;border:none;height:12px"></td>
+    <td style="border:none"></td>
+    <td colspan="1" style="background:transparent;border:none"></td>
+    <td style="border:none"></td>
+    <td colspan="3" style="background:transparent;border:none"></td>
+    <td style="border:none"></td>
+    <td colspan="4" style="background:transparent;border:none"></td>
+    <td style="border:none"></td>
+    <td colspan="3" style="background:transparent;border:none"></td>
+    <td style="border:none"></td>
+  </tr>
+  <tr>
+    <td colspan="3" style="background:transparent;border:none"></td>
+    <td style="border:none"></td>
+    <td colspan="9" style="text-align:center;padding:10px;font-family:monospace;font-size:12px;font-weight:700;letter-spacing:.1em;color:#4f46e5;background:#eef2ff;border:2px solid #4f46e5;border-radius:4px">▼ PUERTA ▼</td>
+    <td style="border:none"></td>
+    <td colspan="4" style="background:transparent;border:none"></td>
+    <td style="border:none"></td>
+    <td colspan="3" style="background:transparent;border:none"></td>
+    <td style="border:none"></td>
+  </tr>`;
+
+  html+=`</tbody></table></div>`;
+
+  // DEPÓSITO SECOS
+  html+=`<div style="margin-top:20px;font-family:monospace;font-size:10px;font-weight:700;color:#6d28d9;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid #c4b5fd;padding-bottom:5px;margin-bottom:10px">Depósito Secos — Puntallete (fuera de cámara)</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">`;
+
+  getSecos().forEach(s=>{
+    const c=s.contenido;
+    const pct=c?Math.min((c.cajas||0)/10*100,100):0;
+    const barC=pct>90?"#c0392b":pct>60?"#d4a017":"#7c3aed";
+    html+=`<div onclick="showPosDetail('${s.id}')" style="width:90px;background:${c?"#f5f3ff":"white"};border:1px solid ${c?"#c4b5fd":"#e0e0e0"};border-radius:6px;padding:7px;cursor:pointer">
+      <div style="font-family:monospace;font-size:7px;color:#999;margin-bottom:2px">${s.id}</div>
+      ${c?`<div style="font-size:9px;font-weight:700;color:#6d28d9;line-height:1.2;margin-bottom:2px">${c.producto.substring(0,14)}</div>
+           <div style="font-family:monospace;font-size:8px;color:#6d28d9">${c.cajas||0}/10 cajas</div>
+           <div style="height:3px;background:#e9d5ff;border-radius:2px;margin-top:3px"><div style="height:3px;width:${pct}%;background:${barC};border-radius:2px"></div></div>`
+        :`<div style="font-size:8px;color:#ccc;padding:2px 0">vacío<br>hasta 10 cajas</div>`}
+    </div>`;
   });
+  html+=`</div>`;
+
   document.getElementById("mapa-container").innerHTML=html;
 }
 
@@ -951,18 +1283,23 @@ function rackCard(p){
 }
 
 window.showPosDetail=function(id){
-  const p=getPos().find(x=>x.id===id); if(!p)return;
+  // Buscar en posiciones normales y secos
+  let p=getPos().find(x=>x.id===id);
+  let esSeco=false;
+  if(!p){ p=getSecos().find(x=>x.id===id); esSeco=true; }
+  if(!p)return;
   const c=p.contenido;
   let html=`<div class="detail-panel">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
       <div><div style="font-family:var(--mono);font-size:11px;font-weight:700">${p.label}</div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--t3)">${p.id}</div></div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t3)">${p.id}${esSeco?" · DEPÓSITO SECOS":""}</div></div>
       <button onclick="hidePosDetail()" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:18px">✕</button>
     </div>`;
   if(c){
+    const cantStr=esSeco?`${c.cajas||0} cajas`:fmt(c.kg)+" kg";
     html+=`<table style="width:100%;font-size:11px;border-collapse:collapse">
-      ${[["Producto",c.producto],["Empresa",c.empresa==="pastas"?"Pariggi":"Pollo Cocido"],
-         ["Sub-dep.",SD_NAMES[c.subdep]||"General"],["Cantidad",fmt(c.kg)+" kg"],
+      ${[["Producto",c.producto],["Empresa","Pariggi"],
+         ["Cantidad",cantStr],["Capacidad",esSeco?"10 cajas":(p.capKg?fmt(p.capKg)+"kg":"—")],
          ["Vencimiento",c.vto||"—"],["Lote",c.lote||"—"],["Ingresó",c.ingreso||"—"],
          ["Usuario",c.usuario||"—"],["Obs.",c.obs||"—"]
         ].map(([k,v])=>`<tr><td style="color:var(--t3);padding:3px 0;width:85px">${k}</td>
@@ -972,7 +1309,7 @@ window.showPosDetail=function(id){
       <button class="btn btn-re btn-sm" onclick="vaciarPos('${id}')">🗑 Vaciar</button>
     </div>`;
   } else {
-    html+=`<div style="color:var(--t3);font-size:12px">Posición vacía — disponible.</div>`;
+    html+=`<div style="color:var(--t3);font-size:12px">Posición vacía — disponible.<br>${esSeco?"Capacidad: 10 cajas":"Capacidad: "+(p.capKg?fmt(p.capKg)+"kg":"—")}</div>`;
   }
   html+=`</div>`;
   const panel=document.getElementById("pos-detail-panel");
@@ -1052,13 +1389,38 @@ window.ingEmpChange=function(){
   sel.innerHTML='<option value="">— Seleccionar —</option>';
   if(emp) PRODS[emp].forEach(p=>{sel.innerHTML+=`<option value="${p.cod}">${p.nom}</option>`});
   const uni=document.getElementById("ing-unidad");
-  uni.innerHTML=`<option value="kg">kg</option>`;
-  if(emp==="pastas") uni.innerHTML+=`<option value="box">Box suelto</option>`;
-  uni.innerHTML+=`<option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
+  if(emp==="pastas") uni.innerHTML=`<option value="box" selected>Box</option><option value="kg">kg</option><option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
+  else uni.innerHTML=`<option value="kg" selected>kg</option><option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
   const sd=document.getElementById("ing-subdep");
   sd.innerHTML='<option value="general">General</option>';
   if(emp) SUBDEPS[emp]?.filter(s=>s.id!=="general").forEach(s=>{sd.innerHTML+=`<option value="${s.id}">${s.nom}</option>`});
   renderPosLibres("ing-pos",emp);
+  ingCalc();
+};
+
+window.ingProdChange=function(){
+  const emp=document.getElementById("ing-empresa").value;
+  const cod=document.getElementById("ing-prod").value;
+  const esSeco=PRODS_SECOS.includes(cod);
+  const posSel=document.getElementById("ing-pos");
+  const sb=document.getElementById("ing-seco-banner")||document.createElement("div");
+  sb.id="ing-seco-banner";
+  if(esSeco){
+    sb.innerHTML=`<div class="alert" style="background:#f5f3ff;color:#6d28d9;border:1px solid #c4b5fd;margin-bottom:9px">📦 Puntallete va al <strong>Depósito Secos</strong>. Seleccioná un carro disponible.</div>`;
+    document.getElementById("ing-pos").parentNode.insertBefore(sb,document.getElementById("ing-pos"));
+    posSel.innerHTML='<option value="">— Seleccionar carro —</option>';
+    getSecos().filter(s=>!s.contenido).forEach(s=>{
+      posSel.innerHTML+=`<option value="${s.id}">${s.label} (hasta 10 cajas)</option>`;
+    });
+    document.getElementById("ing-unidad").innerHTML=`<option value="caja" selected>Cajas</option>`;
+  } else {
+    const ex=document.getElementById("ing-seco-banner");
+    if(ex) ex.remove();
+    renderPosLibres("ing-pos",emp);
+    const uni=document.getElementById("ing-unidad");
+    if(emp==="pastas") uni.innerHTML=`<option value="box" selected>Box</option><option value="kg">kg</option><option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
+    else uni.innerHTML=`<option value="kg" selected>kg</option><option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
+  }
   ingCalc();
 };
 
@@ -1082,7 +1444,10 @@ function renderPosLibres(selId,prefEmp){
   const libres=all.filter(p=>!p.contenido);
   const pref=libres.filter(p=>!prefEmp||p.empZona===prefEmp);
   const otros=libres.filter(p=>prefEmp&&p.empZona!==prefEmp);
-  [...pref,...otros].forEach(p=>{sel.innerHTML+=`<option value="${p.id}">${p.label}</option>`});
+  [...pref,...otros].forEach(p=>{
+    const cap=p.capKg?` (cap: ${fmt(p.capKg)}kg)`:"";
+    sel.innerHTML+=`<option value="${p.id}">${p.label}${cap}</option>`;
+  });
 }
 
 function ingGetKg(){
@@ -1124,25 +1489,351 @@ window.ingConfirmar=async function(){
   const posId=document.getElementById("ing-pos").value;
   const subdep=document.getElementById("ing-subdep").value||"general";
   const tipo=document.getElementById("ing-tipo").value;
-  const kg=ingGetKg();
   const b=document.getElementById("ing-banner");
-  if(!emp||!cod||!kg){b.innerHTML=`<div class="alert al-danger">Completá empresa, producto y cantidad.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
-  if(!vto){b.innerHTML=`<div class="alert al-danger">La fecha de vencimiento es obligatoria.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
-  if(!posId){b.innerHTML=`<div class="alert al-danger">Seleccioná una posición.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
+
+  if(!emp||!cod){b.innerHTML=`<div class="alert al-danger">Completá empresa y producto.</div>`;setTimeout(()=>b.innerHTML="",4e3);return}
+  if(!posId){b.innerHTML=`<div class="alert al-danger">Seleccioná una posición.</div>`;setTimeout(()=>b.innerHTML="",4e3);return}
+  if(!vto){b.innerHTML=`<div class="alert al-danger">La fecha de vencimiento es obligatoria.</div>`;setTimeout(()=>b.innerHTML="",4e3);return}
+
   const prod=getProd(emp,cod);
-  const pos=getPos().find(p=>p.id===posId);
-  if(pos.contenido&&!confirm(`${pos.label} ya tiene mercadería. ¿Sobrescribir?`))return;
-  await setC(posId,{empresa:emp,producto:prod.nom,codigo:cod,kg,vto,lote,obs,subdep,ingreso:today(),tipo,usuario:currentUser});
-  await addMov({tipo,empresa:emp,producto:prod.nom,posicion:pos.label,kg,vto,fecha:today(),subdep,usuario:currentUser});
-  b.innerHTML=`<div class="alert al-ok fadein">✓ ${tipo==="devolucion"?"Devolución":"Ingreso"} registrado: <strong>${prod.nom}</strong> → ${pos.label}</div>`;
-  setTimeout(()=>b.innerHTML="",4e3);
+  const esSeco=PRODS_SECOS.includes(cod);
+
+  if(esSeco){
+    const cant=parseFloat(document.getElementById("ing-cant").value)||0;
+    if(!cant){b.innerHTML=`<div class="alert al-danger">Ingresá la cantidad en cajas.</div>`;setTimeout(()=>b.innerHTML="",4e3);return}
+    const carro=getSecos().find(s=>s.id===posId);
+    if(!carro){b.innerHTML=`<div class="alert al-danger">Carro no encontrado.</div>`;return}
+    if(carro.contenido&&!confirm(`${carro.label} ya tiene mercadería. ¿Sobrescribir?`))return;
+    await setC(posId,{empresa:emp,producto:prod.nom,codigo:cod,cajas:cant,kg:cant*(prod.cajKg||0),vto,lote,obs,subdep:"secos",ingreso:today(),tipo,usuario:currentUser,esSeco:true});
+    await addMov({tipo,empresa:emp,producto:prod.nom,posicion:carro.label,kg:cant*(prod.cajKg||0),vto,fecha:today(),subdep:"secos",usuario:currentUser});
+    b.innerHTML=`<div class="alert al-ok fadein">✓ Ingreso registrado: <strong>${prod.nom}</strong> → ${carro.label} (${cant} cajas)</div>`;
+    setTimeout(()=>b.innerHTML="",5e3);
+  } else {
+    const kg=ingGetKg();
+    if(!kg){b.innerHTML=`<div class="alert al-danger">Completá la cantidad.</div>`;setTimeout(()=>b.innerHTML="",4e3);return}
+    const pos=getPos().find(p=>p.id===posId);
+    if(!pos){b.innerHTML=`<div class="alert al-danger">Posición no encontrada.</div>`;return}
+    if(pos.contenido&&!confirm(`${pos.label} ya tiene mercadería. ¿Sobrescribir?`))return;
+    if(pos.capKg&&kg>pos.capKg){
+      b.innerHTML=`<div class="alert al-danger">⛔ ${fmt(kg)}kg supera la capacidad del nivel (${fmt(pos.capKg)}kg). Reducí la cantidad o elegí otra posición.</div>`;
+      return;
+    }
+    await setC(posId,{empresa:emp,producto:prod.nom,codigo:cod,kg,vto,lote,obs,subdep,ingreso:today(),tipo,usuario:currentUser});
+    await addMov({tipo,empresa:emp,producto:prod.nom,posicion:pos.label,kg,vto,fecha:today(),subdep,usuario:currentUser});
+    // Generar tarea de confirmación para el operario
+    if(fbDb){
+      const ck=`conf-${Date.now()}`;
+      await set(ref(fbDb,`confirmaciones_ingreso/${ck}`),{
+        tipo:"confirmacion_ingreso",producto:prod.nom,empresa:emp,codigo:cod,
+        kg,vto,lote,posicion:pos.label,posId,subdep,
+        fecha:today(),confirmado:false,usuario:currentUser,
+        mensaje:`Ingreso de ${prod.nom} (${fmt(kg)}kg) → ${pos.label}${vto?" · Vto: "+vto:""}`
+      });
+    }
+    b.innerHTML=`<div class="alert al-ok fadein">✓ ${tipo==="devolucion"?"Devolución":"Ingreso"} registrado: <strong>${prod.nom}</strong> → ${pos.label}</div>`;
+    setTimeout(()=>b.innerHTML="",5e3);
+    // CALCULAR MOVIMIENTOS FEFO NECESARIOS
+    calcMovimientosIngreso(emp,cod,prod,vto,posId,kg);
+  }
+
   ["ing-empresa","ing-prod","ing-cant","ing-vto","ing-lote","ing-obs"].forEach(id=>{
     const el=document.getElementById(id); if(el.tagName==="SELECT")el.value=""; else el.value="";
   });
   document.getElementById("ing-equiv").textContent="—";
   document.getElementById("ing-sug-box").innerHTML="";
-  document.getElementById("ing-mov-box").innerHTML="";
+  const ex=document.getElementById("ing-seco-banner"); if(ex) ex.remove();
   renderPosLibres("ing-pos",null);
+};
+
+// ═══════════════ MOVIMIENTOS FEFO POR INGRESO ═══════════════
+async function calcMovimientosIngreso(emp,cod,prod,vtoNuevo,posNueva,kgNuevo){
+  const movBox=document.getElementById("ing-mov-box");
+  if(!movBox) return;
+
+  const all=getPos();
+  const zonaOk=emp==="pastas"?["pastas-pared","pastas-central","pastas-pasillo"]:["pollo-pared","pollo-pasillo"];
+  const conProd=all.filter(p=>p.contenido&&p.contenido.codigo===cod&&p.contenido.empresa===emp&&p.id!==posNueva);
+
+  if(!conProd.length){
+    movBox.innerHTML=`<div class="alert al-ok" style="margin-top:10px">✓ Primera carga de este producto en cámara. Sin movimientos necesarios.</div>`;
+    return;
+  }
+
+  const libres=all.filter(p=>!p.contenido&&zonaOk.includes(p.zona)&&p.id!==posNueva);
+  const movs=[];
+  let sinEspacio=false;
+
+  // Agrupar por rack y analizar inversiones FEFO
+  const porRack={};
+  conProd.forEach(p=>{
+    const rk=`${p.zona}__R${p.rack}`;
+    if(!porRack[rk]) porRack[rk]=[];
+    porRack[rk].push(p);
+  });
+
+  Object.entries(porRack).forEach(([rk,posRack])=>{
+    if(posRack.length<2) return;
+    posRack.sort((a,b)=>a.nivel-b.nivel); // N1 primero (más accesible)
+    for(let i=0;i<posRack.length-1;i++){
+      const accesible=posRack[i];
+      const alto=posRack[i+1];
+      if(!accesible.contenido?.vto||!alto.contenido?.vto) continue;
+      const vtoAcc=new Date(accesible.contenido.vto);
+      const vtoAlto=new Date(alto.contenido.vto);
+      if(vtoAcc>vtoAlto){
+        // Inversión: el más accesible vence DESPUÉS que el de arriba → hay que intercambiar
+        const libre=libres.find(l=>l.id!==accesible.id&&l.id!==alto.id);
+        if(libre){
+          movs.push({paso:movs.length+1,accion:"① MOVER TEMP.",prod:accesible.contenido.producto,de:accesible.label,a:libre.label,kg:fmt(accesible.contenido.kg),razon:`Liberar nivel accesible (vto ${accesible.contenido.vto} — sale después)`});
+          movs.push({paso:movs.length+1,accion:"② BAJAR",prod:alto.contenido.producto,de:alto.label,a:accesible.label,kg:fmt(alto.contenido.kg),razon:`Vence ${alto.contenido.vto} — va al nivel más accesible`});
+          movs.push({paso:movs.length+1,accion:"③ COLOCAR ARRIBA",prod:accesible.contenido.producto,de:libre.label,a:alto.label,kg:fmt(accesible.contenido.kg),razon:`Vence ${accesible.contenido.vto} — queda en nivel superior`});
+        } else {
+          sinEspacio=true;
+          movs.push({paso:movs.length+1,accion:"⚠ SIN ESPACIO",prod:accesible.contenido.producto,de:accesible.label,a:"— RESOLVER MANUAL —",kg:fmt(accesible.contenido.kg),razon:`Inversión FEFO detectada pero no hay posición libre para mover temporalmente`});
+        }
+      }
+    }
+  });
+
+  // También verificar si el nuevo ingreso crea inversión con el stock ya existente
+  const posNuevoObj=all.find(p=>p.id===posNueva);
+  if(posNuevoObj){
+    const mismoRack=conProd.filter(p=>p.zona===posNuevoObj.zona&&p.rack===posNuevoObj.rack);
+    mismoRack.forEach(p=>{
+      if(!p.contenido?.vto) return;
+      const vtoExist=new Date(p.contenido.vto);
+      const vtoNuevoD=new Date(vtoNuevo);
+      const esNuevoMasAccesible=posNuevoObj.nivel<p.nivel;
+      const esNuevoMenorVto=vtoNuevoD<vtoExist;
+      if(esNuevoMasAccesible&&!esNuevoMenorVto){
+        movs.push({paso:movs.length+1,accion:"⚠ INGRESO EN NIVEL INCORRECTO",prod:prod.nom,de:posNuevoObj.label,a:"Mover a nivel superior",kg:fmt(kgNuevo),razon:`Vence ${vtoNuevo} (posterior a ${p.contenido.vto} en ${p.label}) — debería ir al nivel menos accesible`});
+      }
+    });
+  }
+
+  if(!movs.length){
+    movBox.innerHTML=`<div class="alert al-ok" style="margin-top:10px">✓ El stock respeta FEFO correctamente. Sin movimientos necesarios.</div>`;
+    return;
+  }
+
+  movBox.innerHTML=`
+  <div style="margin-top:14px;border:2px solid ${sinEspacio?"#fca5a5":"#fde68a"};border-radius:8px;overflow:hidden">
+    <div style="background:${sinEspacio?"#fee2e2":"#fef9c3"};padding:10px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+      <div style="font-family:monospace;font-size:11px;font-weight:700;color:${sinEspacio?"#c0392b":"#92400e"}">
+        📋 INSTRUCCIONES DE REUBICACIÓN FEFO — ${prod.nom}
+      </div>
+      <div style="font-size:11px;color:#666">${movs.length} paso(s) · Nuevo ingreso vto: <strong>${vtoNuevo}</strong></div>
+    </div>
+    <div style="padding:12px;background:white">
+      ${movs.map(m=>`
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px;background:#f9f9f9;border-radius:6px;margin-bottom:8px;border-left:4px solid ${m.accion.includes("⚠")?"#c0392b":m.accion.includes("①")?"#d4a017":m.accion.includes("②")?"#1a7a3c":"#4f46e5"}">
+          <div style="width:24px;height:24px;border-radius:50%;background:#4f46e5;color:#fff;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px;font-weight:700;flex-shrink:0">${m.paso}</div>
+          <div style="flex:1">
+            <div style="font-family:monospace;font-size:10px;font-weight:700;color:#333;margin-bottom:3px">${m.accion}</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:4px">${m.prod} · ${m.kg}kg</div>
+            <div style="font-family:monospace;font-size:10px;color:#555;margin-bottom:3px">
+              📍 DE: <strong style="color:#c0392b">${m.de}</strong><br>
+              📍 A: <strong style="color:#1a7a3c">${m.a}</strong>
+            </div>
+            <div style="font-size:10px;color:#888;font-style:italic">${m.razon}</div>
+          </div>
+        </div>`).join("")}
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">
+        <button onclick="document.getElementById('ing-mov-box').innerHTML=''" style="background:none;border:1px solid #ddd;border-radius:5px;padding:5px 12px;cursor:pointer;font-size:12px">✕ Cerrar</button>
+        <button onclick="window.print()" style="background:#4f46e5;color:#fff;border:none;border-radius:5px;padding:5px 12px;cursor:pointer;font-size:12px">🖨 Imprimir</button>
+      </div>
+    </div>
+  </div>`;
+
+  // Guardar en Firebase para la pestaña Movimientos
+  if(movs.length&&fbDb){
+    const newKey=`mov-${Date.now()}`;
+    await set(ref(fbDb,`movimientos_pendientes/${newKey}`),{
+      producto:prod.nom,empresa:emp,codigo:cod,
+      pasos:movs,fecha:today(),completado:false,
+      vtoNuevo,usuario:currentUser
+    });
+  }
+}
+
+// ═══════════════ MOVIMIENTOS (pestaña) ═══════════════
+function initMovimientos(){
+  renderConfirmacionesIngreso();
+  renderMovPendientes();
+  mdepEmpChange();
+}
+
+function renderConfirmacionesIngreso(){
+  const div=document.getElementById("conf-ingreso-list");
+  if(!div)return;
+  const pend=DB.confirmaciones_ingreso||[];
+  if(!pend.length){
+    div.innerHTML=`<div style="text-align:center;padding:20px;color:var(--t3);font-size:13px">Sin confirmaciones pendientes.</div>`;
+    return;
+  }
+  div.innerHTML=pend.map(c=>`
+    <div style="background:white;border:2px solid var(--gr3);border-radius:8px;padding:13px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700;margin-bottom:3px">📦 ${c.producto}</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--t2);margin-bottom:6px">
+            ${c.empresa==="pastas"?"Pastas Pariggi":"Pollo Cocido"} · ${fmt(c.kg||0)}kg
+          </div>
+          <div style="background:var(--s2);border-radius:6px;padding:9px;font-size:12px">
+            <div style="margin-bottom:4px">📍 <strong>Posición:</strong> ${c.posicion||"—"}</div>
+            ${c.vto?`<div style="margin-bottom:4px">📅 <strong>Vencimiento:</strong> ${c.vto}</div>`:""}
+            ${c.lote?`<div style="margin-bottom:4px">🏷 <strong>Lote:</strong> ${c.lote}</div>`:""}
+            <div style="color:var(--t2);font-size:11px;margin-top:4px">Registrado: ${c.fecha||"—"} por ${c.usuario||"—"}</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:130px">
+          <button class="btn btn-green btn-sm" onclick="confirmarIngresoPosicion('${c._key}')">✓ Coloqué la mercadería</button>
+          <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="ignorarConfirmacion('${c._key}')">✕ Ignorar</button>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+window.confirmarIngresoPosicion=async function(key){
+  if(!fbDb)return;
+  const conf=DB.confirmaciones_ingreso.find(c=>c._key===key);
+  if(!confirm(`¿Confirmás que colocaste ${conf?.producto||"la mercadería"} en ${conf?.posicion||"la posición indicada"}?`))return;
+  await set(ref(fbDb,`confirmaciones_ingreso/${key}/confirmado`),true);
+  await set(ref(fbDb,`confirmaciones_ingreso/${key}/fechaConfirmacion`),today());
+  await set(ref(fbDb,`confirmaciones_ingreso/${key}/usuarioConfirmacion`),currentUser);
+  const b=document.getElementById("mov-banner");
+  b.innerHTML=`<div class="alert al-ok fadein">✓ Ingreso confirmado correctamente.</div>`;
+  setTimeout(()=>b.innerHTML="",3e3);
+};
+
+window.ignorarConfirmacion=async function(key){
+  if(!confirm("¿Ignorar esta tarea de confirmación?"))return;
+  if(!fbDb)return;
+  await set(ref(fbDb,`confirmaciones_ingreso/${key}`),null);
+};
+
+function renderMovPendientes(){
+  const div=document.getElementById("movpend-list");
+  const pend=DB.movimientos_pendientes;
+  if(!pend||!pend.length){
+    div.innerHTML=`<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Sin movimientos pendientes.</div>`;
+    return;
+  }
+  div.innerHTML=pend.map(m=>`
+    <div style="background:white;border:1px solid #fde68a;border-radius:8px;padding:13px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div>
+          <div style="font-size:13px;font-weight:700">${m.producto} — ${m.empresa==="pastas"?"Pastas Pariggi":"Pollo Cocido"}</div>
+          <div style="font-family:monospace;font-size:10px;color:var(--t2)">Generado: ${m.fecha} · Nuevo ingreso vto: ${m.vtoNuevo||"—"}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-green btn-sm" onclick="completarMovimiento('${m._key}')">✓ Realizado</button>
+          <button class="btn btn-ghost btn-sm" onclick="ignorarMovimiento('${m._key}')">✕ Ignorar</button>
+        </div>
+      </div>
+      ${m.pasos?.map((p,i)=>`
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:9px;background:#fefce8;border-radius:6px;margin-bottom:6px;border-left:3px solid ${p.accion?.includes("⚠")?"#c0392b":"#d4a017"}">
+          <div style="width:22px;height:22px;border-radius:50%;background:#4f46e5;color:#fff;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px;font-weight:700;flex-shrink:0">${i+1}</div>
+          <div style="flex:1">
+            <div style="font-family:monospace;font-size:10px;font-weight:700;color:#333;margin-bottom:2px">${p.accion||"MOVER"}</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">${p.prod||m.producto} · ${p.kg||"—"}kg</div>
+            <div style="font-family:monospace;font-size:10px;color:#555">
+              📍 DE: <strong style="color:#c0392b">${p.de||"—"}</strong><br>
+              📍 A:&nbsp;&nbsp; <strong style="color:#1a7a3c">${p.a||"—"}</strong>
+            </div>
+            <div style="font-size:10px;color:#888;font-style:italic;margin-top:2px">${p.razon||""}</div>
+          </div>
+        </div>`).join("")||""}
+    </div>`).join("");
+}
+
+window.completarMovimiento=async function(key){
+  if(!fbDb)return;
+  await set(ref(fbDb,`movimientos_pendientes/${key}/completado`),true);
+  const b=document.getElementById("mov-banner");
+  b.innerHTML=`<div class="alert al-ok fadein">✓ Movimiento marcado como realizado.</div>`;
+  setTimeout(()=>b.innerHTML="",3e3);
+};
+
+window.ignorarMovimiento=async function(key){
+  if(!confirm("¿Ignorar este movimiento? El stock no se modificará."))return;
+  if(!fbDb)return;
+  await set(ref(fbDb,`movimientos_pendientes/${key}`),null);
+};
+
+window.mdepEmpChange=function(){
+  const emp=document.getElementById("mdep-emp")?.value;
+  const sel=document.getElementById("mdep-prod");
+  if(!sel)return;
+  sel.innerHTML='<option value="">— Seleccionar —</option>';
+  if(emp) PRODS[emp].forEach(p=>{sel.innerHTML+=`<option value="${p.cod}">${p.nom}</option>`});
+  const uni=document.getElementById("mdep-uni");
+  if(uni) uni.innerHTML=emp==="pastas"?`<option value="box" selected>Box</option><option value="kg">kg</option><option value="caja">Cajas</option>`
+    :`<option value="kg" selected>kg</option><option value="caja">Cajas</option>`;
+  mdepActualizarDeps();
+};
+
+function mdepActualizarDeps(){
+  const emp=document.getElementById("mdep-emp")?.value;
+  const origen=document.getElementById("mdep-origen");
+  const destino=document.getElementById("mdep-destino");
+  if(!origen||!destino)return;
+  origen.innerHTML='<option value="">— Seleccionar —</option>';
+  destino.innerHTML='<option value="">— Seleccionar —</option>';
+  if(!emp) return;
+  SUBDEPS[emp].forEach(s=>{
+    origen.innerHTML+=`<option value="${s.id}">${s.nom}</option>`;
+    destino.innerHTML+=`<option value="${s.id}">${s.nom}</option>`;
+  });
+}
+
+window.mdepConfirmar=async function(){
+  const emp=document.getElementById("mdep-emp").value;
+  const cod=document.getElementById("mdep-prod").value;
+  const cant=parseFloat(document.getElementById("mdep-cant").value)||0;
+  const uni=document.getElementById("mdep-uni").value;
+  const origen=document.getElementById("mdep-origen").value;
+  const destino=document.getElementById("mdep-destino").value;
+  const b=document.getElementById("mov-banner");
+
+  if(!emp||!cod){b.innerHTML=`<div class="alert al-danger">Seleccioná empresa y producto.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
+  if(!cant){b.innerHTML=`<div class="alert al-danger">Ingresá la cantidad.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
+  if(!origen||!destino){b.innerHTML=`<div class="alert al-danger">Seleccioná origen y destino.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
+  if(origen===destino){b.innerHTML=`<div class="alert al-danger">Origen y destino no pueden ser iguales.</div>`;setTimeout(()=>b.innerHTML="",3e3);return}
+
+  const prod=getProd(emp,cod);
+  const kg=toKg(cant,uni,prod);
+
+  // Buscar posiciones con el producto en el depósito origen
+  const posOrigen=getPos().filter(p=>p.contenido&&p.contenido.codigo===cod&&p.contenido.empresa===emp&&(p.contenido.subdep||"general")===origen);
+  const kgDisp=posOrigen.reduce((s,p)=>s+(p.contenido.kg||0),0);
+
+  if(kg>kgDisp){
+    b.innerHTML=`<div class="alert al-danger">Stock insuficiente en ${SD_NAMES[origen]||origen}: ${fmt(kgDisp)}kg disponibles, querés mover ${fmt(kg)}kg.</div>`;
+    return;
+  }
+
+  // Mover: actualizar subdep en Firebase
+  let resto=kg;
+  for(const pos of posOrigen){
+    if(resto<=0) break;
+    const posKg=pos.contenido.kg||0;
+    if(posKg<=resto){
+      await setC(pos.id,{...pos.contenido,subdep:destino});
+      resto-=posKg;
+    } else {
+      // Dividir posición — dejar resto en origen
+      await setC(pos.id,{...pos.contenido,kg:posKg-resto,subdep:origen});
+      // Crear nueva entrada en posición libre
+      const libre=getPos().find(p=>!p.contenido&&p.empZona===emp);
+      if(libre) await setC(libre.id,{...pos.contenido,kg:resto,subdep:destino});
+      resto=0;
+    }
+  }
+
+  await addMov({tipo:"movimiento_dep",empresa:emp,producto:prod.nom,posicion:`${SD_NAMES[origen]||origen} → ${SD_NAMES[destino]||destino}`,kg,fecha:today(),subdep:destino,usuario:currentUser});
+  b.innerHTML=`<div class="alert al-ok fadein">✓ ${fmt(kg)}kg de ${prod.nom} movidos de ${SD_NAMES[origen]||origen} a ${SD_NAMES[destino]||destino}.</div>`;
+  setTimeout(()=>b.innerHTML="",5e3);
 };
 
 // ═══════════════ PICKING ═══════════════
@@ -1152,8 +1843,25 @@ function initPicking(){
   if(!document.getElementById("pick-fecha").value) document.getElementById("pick-fecha").value=today();
   const w=document.getElementById("pick-apikey-warn");
   w.innerHTML=!getKey()?`<div class="alert al-warn">⚠ Sin API Key — lectura PDF no disponible. <button class="btn btn-ghost btn-sm" onclick="goTo('config')" style="margin-left:6px">Config →</button></div>`:"";
+  document.getElementById("pick-nrofac").value="";
+  document.getElementById("pick-fecha-fac").value="";
   renderPickItems();
 }
+
+window.filtrarClientes=function(val){
+  const list=document.getElementById("pick-cliente-list");
+  if(!val||val.length<2){list.style.display="none";return}
+  const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const matches=CLIENTES.filter(c=>norm(c).includes(norm(val))).slice(0,10);
+  if(!matches.length){list.style.display="none";return}
+  list.style.display="block";
+  list.innerHTML=matches.map(c=>`<div onclick="document.getElementById('pick-cliente').value='${c.replace(/'/g,"\\'")}';document.getElementById('pick-cliente-list').style.display='none'" style="padding:7px 10px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--b1)"onmouseover="this.style.background='var(--b1)'" onmouseout="this.style.background='none'">${c}</div>`).join("");
+};
+// Cerrar lista al clickear afuera
+document.addEventListener("click",e=>{
+  const list=document.getElementById("pick-cliente-list");
+  if(list&&!e.target.closest("#pick-cliente")&&!e.target.closest("#pick-cliente-list")) list.style.display="none";
+});
 
 window.paEmpChange=function(){
   const emp=document.getElementById("pa-emp").value;
@@ -1162,9 +1870,10 @@ window.paEmpChange=function(){
   if(!emp)return;
   PRODS[emp].forEach(p=>{sel.innerHTML+=`<option value="${p.cod}">${p.nom}</option>`});
   const u=document.getElementById("pa-uni");
+  // Default: box para pastas, kg para pollo
   u.innerHTML=`<option value="kg">kg</option>`;
-  if(emp==="pastas") u.innerHTML+=`<option value="box">Box</option>`;
-  u.innerHTML+=`<option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
+  if(emp==="pastas") u.innerHTML=`<option value="box" selected>Box</option><option value="kg">kg</option><option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
+  else u.innerHTML=`<option value="kg" selected>kg</option><option value="caja">Cajas</option><option value="pallet">Pallets</option>`;
 };
 
 window.paAgregar=function(){
@@ -1185,12 +1894,19 @@ window.paAgregar=function(){
 function renderPickItems(){
   const div=document.getElementById("pick-items-list");
   if(!pickItems.length){div.innerHTML="";return}
-  div.innerHTML=pickItems.map((it,i)=>`
-    <div style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;margin-bottom:5px">
-      ${tagEmp(it.empresa)}<span style="flex:1;font-size:12px">${it.producto}</span>
-      <span style="font-family:var(--mono);font-size:10px;color:var(--t2)">${fmt(it.kg)} kg</span>
-      <button onclick="pickItems.splice(${i},1);renderPickItems()" style="background:none;border:none;color:var(--re);cursor:pointer;font-size:13px">✕</button>
-    </div>`).join("");
+  div.innerHTML=pickItems.map((it,i)=>{
+    // Mostrar en unidad original si fue cargado en box/kg
+    const prod=getProd(it.empresa,it.codigo);
+    let displayCant=it.cant;
+    let displayUni=it.uni;
+    if(!displayCant||!displayUni){displayCant=fmt(it.kg);displayUni="kg";}
+    return`<div style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;margin-bottom:5px">
+      ${tagEmp(it.empresa)}
+      <span style="flex:1;font-size:12px">${it.producto}</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--t2)">${displayCant} ${displayUni} = ${fmt(it.kg)}kg</span>
+      <button type="button" style="background:none;border:none;color:var(--re);cursor:pointer;font-size:16px;padding:0 4px;line-height:1" onclick="(function(){pickItems.splice(${i},1);renderPickItems()})()">✕</button>
+    </div>`;
+  }).join("");
 }
 
 function fefoLocal(items){
@@ -1214,22 +1930,30 @@ window.pickGenerar=async function(){
   const cli=document.getElementById("pick-cliente").value.trim();
   const fec=document.getElementById("pick-fecha").value;
   const obs=document.getElementById("pick-obs").value;
+  const nroFac=document.getElementById("pick-nrofac").value.trim();
+  const fechaFac=document.getElementById("pick-fecha-fac").value.trim();
   if(!cli){alert("El cliente es obligatorio.");return}
-  if(!fec){alert("La fecha de entrega es obligatoria.");return}
   const instrucciones=fefoLocal(pickItems);
-  const id="ORD-"+Date.now().toString().slice(-6);
-  pickOrdenAct={id,fecha:fec,cliente:cli,obs,instrucciones,usuario:currentUser};
+  const id=nroFac||("ORD-"+Date.now().toString().slice(-6));
+  const nuevaOrden={id,fecha:fec||today(),cliente:cli,obs,nroFac,fechaFac,instrucciones,items:pickItems.slice(),usuario:currentUser,confirmado:false,fechaEntrega:"",ordenRuta:null};
+  pickOrdenAct=nuevaOrden;
   pickSteps={};
-  await addOrden({id,fecha:fec,cliente:cli,obs,instrucciones,items:pickItems.slice(),usuario:currentUser});
-  pickItems=[]; renderPickItems(); renderOrden(pickOrdenAct);
+  await addOrden(nuevaOrden);
+  pickItems=[]; renderPickItems();
+  renderOrden(pickOrdenAct);
+  // Mostrar aviso de que fue a pedidos pendientes
+  const b=document.getElementById("pick-banner");
+  b.innerHTML=`<div class="alert al-ok fadein">✓ Orden creada. Andá a <strong>📋 Pedidos Pendientes</strong> para asignarle fecha de entrega y orden de ruta.</div>`;
+  setTimeout(()=>b.innerHTML="",6e3);
 };
 
 function renderOrden(orden){
   const card=document.getElementById("pick-orden-card");
   const content=document.getElementById("pick-orden-content");
-  document.getElementById("pick-orden-id").textContent=`${orden.id} — ${orden.cliente} — ${orden.fecha}`;
+  document.getElementById("pick-orden-id").textContent=`${orden.nroFac||orden.id} — ${orden.cliente} — ${orden.fecha}`;
   card.style.display="block";
   content.innerHTML=orden.obs?`<div class="alert al-info">📝 ${orden.obs}</div>`:"";
+  if(orden.nroFac) content.innerHTML+=`<div style="font-family:var(--mono);font-size:10px;color:var(--t2);margin-bottom:8px">Factura: ${orden.nroFac}${orden.fechaFac?" · Fecha fac: "+orden.fechaFac:""}</div>`;
   orden.instrucciones.forEach((instr,i)=>{
     content.innerHTML+=`<div style="margin-bottom:12px">
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">
@@ -1297,127 +2021,743 @@ window.pickLeerPDF=function(e){
   reader.onload=async ev=>{
     const b64=ev.target.result.split(",")[1];
     const mt=file.type==="application/pdf"?"application/pdf":"image/jpeg";
-    const pList=[...PRODS.pastas.map(p=>`${p.cod}|${p.nom}|pastas`),...PRODS.pollo.map(p=>`${p.cod}|${p.nom}|pollo`)].join("\n");
+    const pListPastas=PRODS.pastas.map(p=>`${p.cod}|${p.nom}|pastas`).join("\n");
+    const pListPollo=PRODS.pollo.map(p=>`${p.cod}|${p.nom}|pollo`).join("\n");
     try{
       const resp=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01"},
-        body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:800,
+        method:"POST",
+        headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+        body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:1200,
           messages:[{role:"user",content:[
             {type:mt==="application/pdf"?"document":"image",source:{type:"base64",media_type:mt,data:b64}},
-            {type:"text",text:`Extraé ítems de esta factura argentina que coincidan con:\n${pList}\nRespondé SOLO JSON sin backticks:\n[{"empresa":"pastas","codigo":"XXXXX","producto":"Nombre","cantidad":N,"unidad":"kg"}]\nSi no hay: []`}
+            {type:"text",text:`Sos un extractor de datos de facturas/remitos argentinos de alimentos.
+
+PRODUCTOS PASTAS (unidad PA = box):
+${pListPastas}
+
+PRODUCTOS POLLO (unidad KG = kilogramos):
+${pListPollo}
+
+REGLAS IMPORTANTES:
+- Para PASTAS: la unidad en factura es "PA" que significa box (paquete). Extraé la cantidad como número de boxes.
+- Para POLLO: la unidad en factura es "KG". Extraé la cantidad en kilogramos.
+- El código en la factura puede tener ceros a la izquierda distintos, matcheá por nombre si el código no coincide exactamente.
+- El cliente aparece como "Sres: [CODIGO] Nombre del cliente"
+- El número de factura aparece como "FAR - N°: XXXX - XXXXXXXX"
+- La fecha aparece como "Fecha: DD/MM/YYYY"
+
+Respondé SOLO con este JSON sin backticks ni texto extra:
+{
+  "nro_factura": "FAR-XXXX-XXXXXXXX",
+  "cliente": "Nombre del cliente sin el código entre corchetes",
+  "fecha_factura": "DD/MM/YYYY",
+  "items": [
+    {"empresa":"pastas","codigo":"XXXXX","producto":"Nombre exacto de nuestra lista","cantidad":N,"unidad":"box"},
+    {"empresa":"pollo","codigo":"XXXXX","producto":"Nombre exacto de nuestra lista","cantidad":N,"unidad":"kg"}
+  ]
+}
+Si no hay productos de nuestra lista: {"nro_factura":"","cliente":"","fecha_factura":"","items":[]}`}
           ]}]})
       });
       const data=await resp.json();
-      if(data.error){inner.innerHTML=`<div class="alert al-danger">Error: ${data.error.message}</div>`;return}
-      const parsed=JSON.parse((data.content?.[0]?.text||"[]").replace(/```json|```/g,"").trim());
-      if(parsed.length){
-        parsed.forEach(item=>{
-          const prod=PRODS[item.empresa]?.find(p=>p.cod===item.codigo||p.nom===item.producto);
+      if(data.error){inner.innerHTML=`<div class="alert al-danger">Error API: ${data.error.message}</div>`;return}
+      const txt=(data.content?.[0]?.text||"{}").replace(/```json|```/g,"").trim();
+      const parsed=JSON.parse(txt);
+
+      // Autocompletar número de factura y cliente
+      if(parsed.nro_factura) document.getElementById("pick-nrofac").value=parsed.nro_factura;
+      if(parsed.cliente){
+        const cli=document.getElementById("pick-cliente");
+        cli.value=parsed.cliente;
+        // Intentar matchear con lista de clientes
+        const norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,"");
+        const match=CLIENTES.find(c=>norm(c).includes(norm(parsed.cliente))||norm(parsed.cliente).includes(norm(c)));
+        if(match) cli.value=match;
+      }
+      if(parsed.fecha_factura) document.getElementById("pick-fecha-fac").value=parsed.fecha_factura;
+
+      const items=parsed.items||[];
+      if(items.length){
+        items.forEach(item=>{
+          const prod=PRODS[item.empresa]?.find(p=>p.cod===item.codigo||p.nom===item.producto||
+            p.nom.toLowerCase().includes(item.producto?.toLowerCase()?.substring(0,8)));
           if(!prod)return;
-          pickItems.push({empresa:item.empresa,codigo:item.codigo,producto:item.producto,kg:toKg(item.cantidad,item.unidad,prod),cant:item.cantidad,uni:item.unidad});
+          const uni=item.unidad||( item.empresa==="pastas"?"box":"kg");
+          const kg=toKg(item.cantidad,uni,prod);
+          pickItems.push({empresa:item.empresa,codigo:prod.cod,producto:prod.nom,kg,cant:item.cantidad,uni});
         });
         renderPickItems();
-        inner.innerHTML=`<div class="alert al-ok">✓ ${parsed.length} producto(s) detectados.</div>`;
-        setTimeout(()=>{inner.innerHTML=`<div style="font-size:13px;color:var(--t2)">📄 Subir otra factura</div>`;},3e3);
+        inner.innerHTML=`<div class="alert al-ok">✓ ${items.length} producto(s) detectados${parsed.cliente?" · Cliente: "+parsed.cliente:""}${parsed.nro_factura?" · "+parsed.nro_factura:""}.</div>`;
+        setTimeout(()=>{inner.innerHTML=`<div style="font-size:13px;color:var(--t2)">📄 Subir otra factura</div>`;},4e3);
       } else {
-        inner.innerHTML=`<div class="alert al-warn">No se detectaron productos. Ingresalos manualmente.</div>`;
+        inner.innerHTML=`<div class="alert al-warn">No se detectaron productos de nuestra lista. Ingresalos manualmente.</div>`;
       }
     }catch(ex){inner.innerHTML=`<div class="alert al-danger">Error: ${ex.message}</div>`;}
   };
   reader.readAsDataURL(file);
 };
 
-// ═══════════════ REPARTO ═══════════════
+// ═══════════════ UNIDADES OPERATIVAS ═══════════════
+// Convierte kg a la representación operativa correcta por empresa
+function fmtOpPastas(kg, prod){
+  // Pastas: pallet + cajas + box sueltos. NUNCA kilos.
+  if(!prod||!kg) return fmt(kg)+" kg";
+  const palKg=prod.palKg||0;
+  const cajKg=prod.cajKg||0;
+  const pB=prod.pB||0;
+  let partes=[];
+  let resto=kg;
+  if(palKg&&resto>=palKg){
+    const pals=Math.floor(resto/palKg);
+    partes.push(pals===1?"1 pallet":`${pals} pallets`);
+    resto=Math.round((resto-pals*palKg)*100)/100;
+  }
+  if(cajKg&&resto>=cajKg){
+    const cajas=Math.floor(resto/cajKg);
+    partes.push(cajas===1?"1 caja":`${cajas} cajas`);
+    resto=Math.round((resto-cajas*cajKg)*100)/100;
+  }
+  if(pB&&resto>=pB){
+    const boxes=Math.round(resto/pB);
+    if(boxes>0) partes.push(boxes===1?"1 box":`${boxes} box`);
+  }
+  return partes.length?partes.join(" + "):(fmt(kg)+" kg");
+}
+
+function fmtOpPollo(kg, prod){
+  // Pollo: kg / cajas / pallets según alcance
+  if(!prod||!kg) return fmt(kg)+" kg";
+  const palKg=prod.palKg||0;
+  const cajKg=prod.cajKg||0;
+  let partes=[];
+  let resto=kg;
+  if(palKg&&resto>=palKg){
+    const pals=Math.floor(resto/palKg);
+    partes.push(pals===1?"1 pallet":`${pals} pallets`);
+    resto=Math.round((resto-pals*palKg)*100)/100;
+  }
+  if(cajKg&&resto>=cajKg){
+    const cajas=Math.floor(resto/cajKg);
+    partes.push(cajas===1?"1 caja":`${cajas} cajas`);
+    resto=Math.round((resto-cajas*cajKg)*100)/100;
+  }
+  if(resto>=0.1) partes.push(fmt(resto)+" kg");
+  return partes.length?partes.join(" + "):(fmt(kg)+" kg");
+}
+
+function fmtOp(kg, prod, empresa){
+  return empresa==="pastas"?fmtOpPastas(kg,prod):fmtOpPollo(kg,prod);
+}
+
+// ═══════════════ PEDIDOS PENDIENTES ═══════════════
+function renderPedidos(){
+  const div=document.getElementById("ped-list");
+  const pendientes=DB.ordenes.filter(o=>!o.confirmado&&o.estado!=="anulado");
+  if(!pendientes.length){
+    div.innerHTML=`<div style="text-align:center;padding:32px 0;color:var(--t3);font-size:13px">Sin pedidos pendientes. Cargá una factura desde <strong>Picking / Salida</strong>.</div>`;
+    return;
+  }
+  div.innerHTML=pendientes.map((o,i)=>{
+    const esNC=o.tipo==="NC";
+    const borderColor=esNC?"#c0392b":"var(--b1)";
+    const badgeNC=esNC?`<span style="background:#c0392b;color:#fff;font-family:monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:6px">NC</span>`:"";
+    return`<div style="background:var(--s2);border:1px solid ${borderColor};border-radius:8px;padding:13px;margin-bottom:10px" id="ped-${o.id}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px">${o.cliente||"Sin cliente"}${badgeNC}</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--t2)">${o.nroFac||o.id}${o.fechaFac?" · Fecha: "+o.fechaFac:""}${esNC&&o.facturaAnulada?` · Anula: <strong style="color:#c0392b">${o.facturaAnulada}</strong>`:""}</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${o.instrucciones?.map(instr=>`<span class="tag tag-${instr.empresa==="pastas"?"pa":"po"}">${instr.producto.substring(0,12)}</span>`).join("")||""}
+        </div>
+      </div>
+      ${esNC?`
+      <div style="background:#fff5f5;border:1px solid #fca5a5;border-radius:6px;padding:10px;margin-bottom:10px;font-size:12px">
+        <strong style="color:#c0392b">Nota de Crédito</strong> — anula factura <strong>${o.facturaAnulada||"—"}</strong><br>
+        <span style="color:var(--t2)">Al procesar: se anulará el pedido original y se devolverá la mercadería al stock.</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm" style="background:#c0392b;color:#fff" onclick="procesarNC('${o.id}')">⚡ Procesar NC</button>
+        <button class="btn btn-re btn-sm" onclick="eliminarPedido('${o.id}')">✕ Eliminar</button>
+      </div>`
+      :`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+        <div>
+          <div class="fl">Fecha de entrega *</div>
+          <input type="date" class="fc" id="ped-fecha-${o.id}" value="${o.fechaEntrega||""}" style="font-size:12px;padding:6px 8px">
+        </div>
+        <div>
+          <div class="fl">Orden en ruta</div>
+          <input type="number" class="fc" id="ped-orden-${o.id}" value="${o.ordenRuta||""}" placeholder="1, 2, 3..." min="1" style="font-size:12px;padding:6px 8px">
+        </div>
+        <div>
+          <div class="fl">Observación</div>
+          <input type="text" class="fc" id="ped-obs-${o.id}" value="${o.obsEntrega||""}" placeholder="Ej: AM / PM" style="font-size:12px;padding:6px 8px">
+        </div>
+      </div>
+      <div style="margin-bottom:10px;font-size:12px;color:var(--t2)">
+        ${o.instrucciones?.map(instr=>{
+          const prod=getProd(instr.empresa,instr.codigo);
+          return `<span style="margin-right:12px">${instr.empresa==="pastas"?"🟡":"🔵"} ${instr.producto}: <strong style="color:var(--t1)">${fmtOp(instr.kg,prod,instr.empresa)}</strong></span>`;
+        }).join("")||""}
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-green btn-sm" onclick="confirmarPedido('${o.id}')">✓ Confirmar para reparto</button>
+        <button class="btn btn-sm" style="background:var(--ac);color:#fff" onclick="abrirDividirPedido('${o.id}')">✂ Dividir</button>
+        <button class="btn btn-re btn-sm" onclick="eliminarPedido('${o.id}')">✕ Eliminar</button>
+      </div>`}
+    </div>`;
+  }).join("");
+}
+
+window.confirmarPedido=async function(id){
+  const orden=DB.ordenes.find(o=>o.id===id);
+  if(!orden)return;
+  const fecha=document.getElementById("ped-fecha-"+id)?.value;
+  const orden_ruta=parseInt(document.getElementById("ped-orden-"+id)?.value)||99;
+  const obs=document.getElementById("ped-obs-"+id)?.value||"";
+  if(!fecha){alert("La fecha de entrega es obligatoria.");return}
+
+  // Actualizar en Firebase
+  const allOrdenes=await get(ref(fbDb,"ordenes"));
+  const raw=allOrdenes.val()||{};
+  const key=Object.keys(raw).find(k=>raw[k].id===id);
+  if(key){
+    await set(ref(fbDb,`ordenes/${key}`),{...raw[key],fechaEntrega:fecha,ordenRuta:orden_ruta,obsEntrega:obs,confirmado:true});
+  }
+
+  const b=document.getElementById("ped-banner");
+  b.innerHTML=`<div class="alert al-ok fadein">✓ Pedido de <strong>${orden.cliente}</strong> confirmado para el ${fecha}.</div>`;
+  setTimeout(()=>b.innerHTML="",3e3);
+  renderPedidos();
+};
+
+window.eliminarPedido=async function(id){
+  if(!confirm("¿Eliminar este pedido pendiente?"))return;
+  const allOrdenes=await get(ref(fbDb,"ordenes"));
+  const raw=allOrdenes.val()||{};
+  const key=Object.keys(raw).find(k=>raw[k].id===id);
+  if(key) await set(ref(fbDb,`ordenes/${key}`),null);
+  renderPedidos();
+};
+
+window.procesarNC=async function(id){
+  const nc=DB.ordenes.find(o=>o.id===id);
+  if(!nc)return;
+  const b=document.getElementById("ped-banner");
+
+  if(!nc.facturaAnulada){
+    b.innerHTML=`<div class="alert al-warn">⚠ Esta NC no tiene factura de referencia. Procesá manualmente.</div>`;
+    return;
+  }
+
+  if(!confirm(`¿Procesar NC ${nc.nroFac}? Se anulará la orden ${nc.facturaAnulada} y se devolverá la mercadería al stock.`))return;
+
+  const allOrdenes=await get(ref(fbDb,"ordenes"));
+  const raw=allOrdenes.val()||{};
+
+  // Buscar factura original
+  const keyFac=Object.keys(raw).find(k=>{
+    const nro=raw[k].nroFac||"";
+    const norm=s=>s.replace(/[\s\-\/]/g,"").toUpperCase();
+    return norm(nro)===norm(nc.facturaAnulada);
+  });
+
+  if(keyFac){
+    const facOriginal=raw[keyFac];
+    // Marcar como anulada
+    await set(ref(fbDb,`ordenes/${keyFac}/estado`),"anulado");
+    await set(ref(fbDb,`ordenes/${keyFac}/anuladaPor`),nc.nroFac);
+
+    // Devolver mercadería al stock como devolución
+    if(nc.items?.length){
+      nc.items.forEach(async item=>{
+        const prod=PRODS[nc.empresa]?.find(p=>p.nom.toLowerCase().includes(item.producto?.toLowerCase()?.substring(0,8)));
+        if(!prod) return;
+        const kg=toKg(item.cantidad,item.unidad,prod);
+        if(!kg) return;
+        // Buscar posición libre en zona correcta
+        const libre=getPos().find(p=>!p.contenido&&p.empZona===nc.empresa);
+        if(libre){
+          await setC(libre.id,{empresa:nc.empresa,producto:prod.nom,codigo:prod.cod,kg,vto:"",lote:"NC-"+nc.nroFac,subdep:"general",ingreso:today(),tipo:"devolucion_nc",usuario:currentUser});
+        }
+        await addMov({tipo:"devolucion_nc",empresa:nc.empresa,producto:prod.nom,posicion:"Devolución NC",kg,fecha:today(),subdep:"general",usuario:currentUser});
+      });
+    }
+
+    // Marcar NC como procesada
+    const keyNC=Object.keys(raw).find(k=>raw[k].id===id);
+    if(keyNC) await set(ref(fbDb,`ordenes/${keyNC}/confirmado`),true);
+
+    b.innerHTML=`<div class="alert al-ok fadein">✓ NC procesada. Orden <strong>${nc.facturaAnulada}</strong> anulada. Mercadería devuelta al stock.</div>`;
+  } else {
+    b.innerHTML=`<div class="alert al-warn">⚠ Factura original <strong>${nc.facturaAnulada}</strong> no encontrada en el sistema. Verificá manualmente.</div>`;
+    // Igual marcar NC como vista
+    const keyNC=Object.keys(raw).find(k=>raw[k].id===id);
+    if(keyNC) await set(ref(fbDb,`ordenes/${keyNC}/sinFacturaOriginal`),true);
+  }
+
+  setTimeout(()=>b.innerHTML="",6e3);
+  renderPedidos();
+};
+
+// ═══════════════ DIVIDIR PEDIDO ═══════════════
+let dividirOrdenActual=null;
+
+window.abrirDividirPedido=function(id){
+  const orden=DB.ordenes.find(o=>o.id===id);
+  if(!orden||!orden.instrucciones?.length){alert("Sin ítems para dividir.");return;}
+  dividirOrdenActual=orden;
+
+  // Crear modal overlay
+  let modal=document.getElementById("dividir-modal");
+  if(!modal){
+    modal=document.createElement("div");
+    modal.id="dividir-modal";
+    modal.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px";
+    document.body.appendChild(modal);
+  }
+
+  const todayVal=today();
+  const itemsHtml=orden.instrucciones.map((instr,i)=>{
+    const prod=getProd(instr.empresa,instr.codigo);
+    const unidad=instr.empresa==="pastas"?"box":"kg";
+    const cantBase=instr.empresa==="pastas"?(prod?.cajKg?Math.round(instr.kg/prod.cajKg):instr.kg):instr.kg;
+    return`<div style="background:var(--s2);border-radius:6px;padding:10px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:700;margin-bottom:6px">${instr.producto} — Total: <strong>${fmtOp(instr.kg,prod,instr.empresa)}</strong></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div>
+          <div class="fl" style="font-size:10px">Entrega 1 (${unidad})</div>
+          <input type="number" class="fc" id="div-e1-${i}" placeholder="0" min="0" step="${instr.empresa==="pastas"?1:0.5}" style="font-size:12px;padding:6px 8px" value="${cantBase}">
+        </div>
+        <div>
+          <div class="fl" style="font-size:10px">Entrega 2 (${unidad})</div>
+          <input type="number" class="fc" id="div-e2-${i}" placeholder="0" min="0" step="${instr.empresa==="pastas"?1:0.5}" style="font-size:12px;padding:6px 8px" value="0">
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+
+  modal.innerHTML=`
+  <div style="background:var(--s1);border-radius:12px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.18)">
+    <div style="padding:16px 18px;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:15px;font-weight:700">✂ Dividir Pedido</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--t2)">${orden.cliente} · ${orden.nroFac||orden.id}</div>
+      </div>
+      <button onclick="cerrarDividirModal()" style="background:none;border:none;font-size:20px;color:var(--t2);cursor:pointer">✕</button>
+    </div>
+    <div style="padding:16px 18px">
+      <div class="alert al-info" style="margin-bottom:12px;font-size:12px">
+        Indicá cuánto va en cada entrega. Podés asignar distintas fechas y horarios a cada una.
+      </div>
+      ${itemsHtml}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+        <div style="background:var(--pa2);border-radius:8px;padding:10px">
+          <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--ac);margin-bottom:8px">ENTREGA 1</div>
+          <div class="fg"><label class="fl" style="font-size:11px">Fecha *</label>
+            <input type="date" class="fc" id="div-fecha1" value="${todayVal}" style="font-size:12px;padding:6px 8px">
+          </div>
+          <div class="fg" style="margin-top:6px"><label class="fl" style="font-size:11px">Horario / Obs.</label>
+            <input type="text" class="fc" id="div-obs1" placeholder="AM / PM / 10:00hs" style="font-size:12px;padding:6px 8px">
+          </div>
+          <div class="fg" style="margin-top:6px"><label class="fl" style="font-size:11px">Orden en ruta</label>
+            <input type="number" class="fc" id="div-orden1" placeholder="1" min="1" style="font-size:12px;padding:6px 8px" value="${orden.ordenRuta||1}">
+          </div>
+        </div>
+        <div style="background:var(--po2);border-radius:8px;padding:10px">
+          <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--po);margin-bottom:8px">ENTREGA 2</div>
+          <div class="fg"><label class="fl" style="font-size:11px">Fecha *</label>
+            <input type="date" class="fc" id="div-fecha2" value="${todayVal}" style="font-size:12px;padding:6px 8px">
+          </div>
+          <div class="fg" style="margin-top:6px"><label class="fl" style="font-size:11px">Horario / Obs.</label>
+            <input type="text" class="fc" id="div-obs2" placeholder="AM / PM / 14:00hs" style="font-size:12px;padding:6px 8px">
+          </div>
+          <div class="fg" style="margin-top:6px"><label class="fl" style="font-size:11px">Orden en ruta</label>
+            <input type="number" class="fc" id="div-orden2" placeholder="2" min="1" style="font-size:12px;padding:6px 8px" value="${(orden.ordenRuta||1)+1}">
+          </div>
+        </div>
+      </div>
+      <div id="div-banner" style="margin-top:10px"></div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="btn btn-ghost" onclick="cerrarDividirModal()" style="flex:1">Cancelar</button>
+        <button class="btn" style="flex:2;background:var(--ac);color:#fff" onclick="confirmarDivision()">✓ Confirmar División</button>
+      </div>
+    </div>
+  </div>`;
+  modal.style.display="flex";
+};
+
+window.cerrarDividirModal=function(){
+  const m=document.getElementById("dividir-modal");
+  if(m) m.style.display="none";
+  dividirOrdenActual=null;
+};
+
+window.confirmarDivision=async function(){
+  const orden=dividirOrdenActual;
+  if(!orden)return;
+  const b=document.getElementById("div-banner");
+  const fecha1=document.getElementById("div-fecha1").value;
+  const fecha2=document.getElementById("div-fecha2").value;
+  if(!fecha1||!fecha2){b.innerHTML=`<div class="alert al-danger">Las dos fechas son obligatorias.</div>`;return;}
+
+  const obs1=document.getElementById("div-obs1").value;
+  const obs2=document.getElementById("div-obs2").value;
+  const orden1=parseInt(document.getElementById("div-orden1").value)||1;
+  const orden2=parseInt(document.getElementById("div-orden2").value)||2;
+
+  // Construir instrucciones de cada entrega
+  const instr1=[],instr2=[];
+  let hayE2=false;
+
+  orden.instrucciones.forEach((instr,i)=>{
+    const prod=getProd(instr.empresa,instr.codigo);
+    const unidad=instr.empresa==="pastas"?"box":"kg";
+    const cajKg=prod?.cajKg||1;
+    const v1=parseFloat(document.getElementById(`div-e1-${i}`)?.value)||0;
+    const v2=parseFloat(document.getElementById(`div-e2-${i}`)?.value)||0;
+    const kg1=instr.empresa==="pastas"?v1*cajKg:v1;
+    const kg2=instr.empresa==="pastas"?v2*cajKg:v2;
+    if(kg1>0) instr1.push({...instr,kg:kg1});
+    if(kg2>0){instr2.push({...instr,kg:kg2});hayE2=true;}
+  });
+
+  if(!instr1.length&&!instr2.length){b.innerHTML=`<div class="alert al-danger">Asigná al menos algo a una entrega.</div>`;return;}
+  if(!hayE2){b.innerHTML=`<div class="alert al-warn">La Entrega 2 no tiene ítems — usá "Confirmar para reparto" directamente.</div>`;return;}
+
+  b.innerHTML=`<div class="alert al-info">Procesando...</div>`;
+
+  // Eliminar la orden original
+  const allOrdenes=await get(ref(fbDb,"ordenes"));
+  const raw=allOrdenes.val()||{};
+  const keyOrig=Object.keys(raw).find(k=>raw[k].id===orden.id);
+
+  // Crear Entrega 1 (con los ítems de la primera)
+  if(instr1.length){
+    const id1=`${orden.id}-E1`;
+    await addOrden({...orden,id:id1,instrucciones:instr1,
+      fechaEntrega:fecha1,obsEntrega:obs1,ordenRuta:orden1,
+      confirmado:true,nroFac:(orden.nroFac||orden.id)+"-E1",estado:"pendiente"
+    });
+  }
+  // Crear Entrega 2
+  if(instr2.length){
+    const id2=`${orden.id}-E2`;
+    await addOrden({...orden,id:id2,instrucciones:instr2,
+      fechaEntrega:fecha2,obsEntrega:obs2,ordenRuta:orden2,
+      confirmado:true,nroFac:(orden.nroFac||orden.id)+"-E2",estado:"pendiente"
+    });
+  }
+
+  // Eliminar original
+  if(keyOrig) await set(ref(fbDb,`ordenes/${keyOrig}`),null);
+
+  cerrarDividirModal();
+  const pb=document.getElementById("ped-banner");
+  pb.innerHTML=`<div class="alert al-ok fadein">✓ Pedido dividido en ${instr1.length?"Entrega 1 ("+fecha1+")":""}${instr1.length&&instr2.length?" y ":""}${instr2.length?"Entrega 2 ("+fecha2+")":""}. Pasó al consolidado.</div>`;
+  setTimeout(()=>pb.innerHTML="",5e3);
+  renderPedidos();
+};
+
+
 function initReparto(){
   if(!document.getElementById("rep-fecha").value) document.getElementById("rep-fecha").value=today();
   renderReparto();
 }
+
 window.renderReparto=function(){
   const fecha=document.getElementById("rep-fecha").value;
   const content=document.getElementById("rep-content");
   if(!fecha){content.innerHTML="";return}
-  const ordenesDia=DB.ordenes.filter(o=>o.fecha===fecha);
+
+  const ordenesDia=DB.ordenes
+    .filter(o=>o.confirmado&&o.fechaEntrega===fecha&&o.estado!=="anulado")
+    .sort((a,b)=>(a.ordenRuta||99)-(b.ordenRuta||99));
+
   if(!ordenesDia.length){
-    content.innerHTML=`<div class="card"><div style="text-align:center;padding:24px 0;color:var(--t3);font-size:13px">Sin órdenes para el ${fecha}</div></div>`;
+    content.innerHTML=`<div class="card"><div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Sin pedidos confirmados para el ${fecha}.<br><small>Confirmá pedidos en "📋 Pedidos Pendientes"</small></div></div>`;
     return;
   }
-  const totalPorProd={};
+
+  // Acumular totales por producto con posiciones FEFO
+  const totProd={};
   ordenesDia.forEach(o=>{
     o.instrucciones?.forEach(instr=>{
       const k=`${instr.empresa}__${instr.producto}`;
-      if(!totalPorProd[k]) totalPorProd[k]={empresa:instr.empresa,producto:instr.producto,codigo:instr.codigo,kg:0};
-      totalPorProd[k].kg+=instr.kg;
+      if(!totProd[k]) totProd[k]={empresa:instr.empresa,producto:instr.producto,codigo:instr.codigo,kg:0,pasos:[]};
+      totProd[k].kg+=instr.kg;
+      // Acumular pasos (posiciones de donde sacar)
+      instr.pasos?.forEach(paso=>{
+        const existing=totProd[k].pasos.find(p=>p.posLabel===paso.posLabel);
+        if(existing) existing.sacar+=paso.sacar;
+        else totProd[k].pasos.push({...paso});
+      });
     });
   });
-  let html=`<div class="card" style="border-color:var(--ye3)">
-    <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ye);margin-bottom:10px">HOJA DE RUTA — ${fecha} · ${ordenesDia.length} parada(s)</div>
-    <div style="font-family:var(--mono);font-size:9px;color:var(--t3);margin-bottom:7px;text-transform:uppercase;letter-spacing:.08em">Total a cargar en camioneta</div>
-    ${Object.values(totalPorProd).map(r=>{
+
+  const prodPastas=Object.values(totProd).filter(r=>r.empresa==="pastas").sort((a,b)=>b.kg-a.kg);
+  const prodPollo=Object.values(totProd).filter(r=>r.empresa==="pollo").sort((a,b)=>b.kg-a.kg);
+
+  let html=`
+  <div class="card" id="rep-imprimible" style="border:2px solid var(--b2)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--b1)">
+      <div>
+        <div style="font-size:18px;font-weight:700">Hoja de Ruta</div>
+        <div style="font-family:var(--mono);font-size:13px;color:var(--t2)">${fecha} · ${ordenesDia.length} parada(s)</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--t3);text-align:right">CámaraCtrl v12<br>${new Date().toLocaleString("es-AR")}</div>
+    </div>
+
+    <!-- BLOQUE 1: TOTAL A CARGAR + DE DÓNDE SACAR -->
+    <div style="margin-bottom:16px">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);margin-bottom:10px;padding:6px 10px;background:var(--s2);border-radius:5px">📦 BLOQUE 1 — TOTAL A CARGAR EN CAMIONETA</div>`;
+
+  // Pastas
+  if(prodPastas.length){
+    html+=`<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:10px;color:var(--pa);font-weight:700;letter-spacing:.06em;margin-bottom:6px">PASTAS PARIGGI</div>`;
+    html+=prodPastas.map(r=>{
       const prod=getProd(r.empresa,r.codigo);
-      return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--b1)">
-        ${tagEmp(r.empresa)}<span style="font-size:12px;font-weight:600;flex:1">${r.producto}</span>
-        <span style="font-family:var(--mono);font-size:11px;color:var(--t1)">${equivStr(r.kg,prod,r.empresa)}</span>
+      const posStr=r.pasos.length?r.pasos.map(p=>`<div style="font-family:var(--mono);font-size:10px;color:var(--t2);padding-left:12px">📍 ${p.posLabel} → <strong>${fmtOpPastas(p.sacar,prod)}</strong>${p.vto?" · vto "+p.vto:""}</div>`).join(""):
+        `<div style="font-family:var(--mono);font-size:10px;color:var(--t3);padding-left:12px">Sin posición asignada</div>`;
+      return`<div style="padding:8px 10px;background:var(--pa2);border-radius:5px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="font-size:13px;font-weight:700">${r.producto}</span>
+          <span style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--pa)">${fmtOpPastas(r.kg,prod)}</span>
+        </div>${posStr}
       </div>`;
-    }).join("")}
-  </div>`;
-  ordenesDia.forEach((o,i)=>{
-    html+=`<div class="card">
-      <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-        <div style="width:26px;height:26px;border-radius:50%;background:var(--ac2);border:1px solid var(--ac3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ac);flex-shrink:0">${i+1}</div>
-        <div><div style="font-size:14px;font-weight:700">${o.cliente}</div>
-        <div style="font-family:var(--mono);font-size:9px;color:var(--t2)">Orden ${o.id}${o.obs?" · "+o.obs:""}</div></div>
-      </div>`;
-    o.instrucciones?.forEach(instr=>{
-      const prod=getProd(instr.empresa,instr.codigo);
-      html+=`<div style="background:var(--s2);border:1px solid var(--b1);border-radius:5px;padding:8px 10px;margin-bottom:6px">
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">${tagEmp(instr.empresa)}<span style="font-size:12px;font-weight:700">${instr.producto}</span></div>
-        <div style="font-family:var(--mono);font-size:10px;color:var(--t2);line-height:1.7">
-          Total: <strong style="color:var(--t1)">${equivStr(instr.kg,prod,instr.empresa)}</strong><br>
-          ${instr.pasos.map(p=>`📍 ${p.posLabel} → ${fmt(p.sacar)}kg${p.vto?" (vto "+p.vto+")":""}`).join("<br>")}
-          ${instr.faltante>0?`<br><span style="color:var(--re)">⚠ Faltante: ${fmt(instr.faltante)}kg</span>`:""}
-        </div>
-      </div>`;
-    });
+    }).join("");
     html+=`</div>`;
+  }
+
+  // Pollo
+  if(prodPollo.length){
+    html+=`<div><div style="font-family:var(--mono);font-size:10px;color:var(--po);font-weight:700;letter-spacing:.06em;margin-bottom:6px">POLLO COCIDO</div>`;
+    html+=prodPollo.map(r=>{
+      const prod=getProd(r.empresa,r.codigo);
+      const posStr=r.pasos.length?r.pasos.map(p=>`<div style="font-family:var(--mono);font-size:10px;color:var(--t2);padding-left:12px">📍 ${p.posLabel} → <strong>${fmtOpPollo(p.sacar,prod)}</strong>${p.vto?" · vto "+p.vto:""}</div>`).join(""):
+        `<div style="font-family:var(--mono);font-size:10px;color:var(--t3);padding-left:12px">Sin posición asignada</div>`;
+      return`<div style="padding:8px 10px;background:var(--po2);border-radius:5px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="font-size:13px;font-weight:700">${r.producto}</span>
+          <span style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--po)">${fmtOpPollo(r.kg,prod)}</span>
+        </div>${posStr}
+      </div>`;
+    }).join("");
+    html+=`</div>`;
+  }
+
+  html+=`</div>
+    <div style="border-top:2px dashed var(--b2);margin:16px 0"></div>
+
+    <!-- BLOQUE 2: ORDEN DE ENTREGA POR CLIENTE (sin posiciones) -->
+    <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);margin-bottom:10px;padding:6px 10px;background:var(--s2);border-radius:5px">🚚 BLOQUE 2 — ORDEN DE ENTREGA</div>`;
+
+  ordenesDia.forEach((o,i)=>{
+    const esPrimero=i===0, esUltimo=i===ordenesDia.length-1;
+    html+=`
+    <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--b1)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;flex-shrink:0">${i+1}</div>
+        <div style="flex:1">
+          <div style="font-size:15px;font-weight:700">${o.cliente}</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--t2)">${o.nroFac||o.id}${o.obsEntrega?" · "+o.obsEntrega:""}</div>
+        </div>
+        <div class="no-print" style="display:flex;flex-direction:column;gap:3px">
+          ${!esPrimero?`<button onclick="moverOrdenReparto('${o.id}','up','${fecha}')" style="width:28px;height:24px;background:var(--s2);border:1px solid var(--b2);border-radius:4px;cursor:pointer;font-size:12px">↑</button>`:`<div style="width:28px;height:24px"></div>`}
+          ${!esUltimo?`<button onclick="moverOrdenReparto('${o.id}','down','${fecha}')" style="width:28px;height:24px;background:var(--s2);border:1px solid var(--b2);border-radius:4px;cursor:pointer;font-size:12px">↓</button>`:`<div style="width:28px;height:24px"></div>`}
+          <button onclick="devolverAPendientes('${o.id}')" title="Devolver a Pedidos Pendientes" style="width:28px;height:24px;background:var(--ye2);border:1px solid var(--ye3);border-radius:4px;cursor:pointer;font-size:11px;color:var(--ye)">↩</button>
+        </div>
+      </div>
+      ${o.instrucciones?.map(instr=>{
+        const prod=getProd(instr.empresa,instr.codigo);
+        const esPA=instr.empresa==="pastas";
+        // Obtener vto del primer lote FEFO
+        const vtoLote=instr.pasos?.[0]?.vto||"";
+        return`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--s2);border-left:3px solid var(--${esPA?"pa":"po"});border-radius:0 5px 5px 0;margin-bottom:4px">
+          <span style="font-size:12px;font-weight:700">${instr.producto}</span>
+          <div style="text-align:right">
+            <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--${esPA?"pa":"po"})">${fmtOp(instr.kg,prod,instr.empresa)}</div>
+            ${vtoLote?`<div style="font-family:var(--mono);font-size:9px;color:var(--t3)">vto ${vtoLote}</div>`:""}
+          </div>
+        </div>`;
+      }).join("")||""}
+    </div>`;
   });
+
+  html+=`</div>`;
   content.innerHTML=html;
 };
 
+window.moverOrdenReparto=async function(id,dir,fecha){
+  // Obtener ordenes del día ordenadas
+  const ordenesDia=DB.ordenes
+    .filter(o=>o.confirmado&&o.fechaEntrega===fecha)
+    .sort((a,b)=>(a.ordenRuta||99)-(b.ordenRuta||99));
+
+  const idx=ordenesDia.findIndex(o=>o.id===id);
+  if(idx===-1) return;
+
+  const swapIdx=dir==="up"?idx-1:idx+1;
+  if(swapIdx<0||swapIdx>=ordenesDia.length) return;
+
+  const ordenA=ordenesDia[idx].ordenRuta||idx+1;
+  const ordenB=ordenesDia[swapIdx].ordenRuta||swapIdx+1;
+
+  // Intercambiar órdenes en Firebase
+  const allRaw=await get(ref(fbDb,"ordenes"));
+  const raw=allRaw.val()||{};
+  const keyA=Object.keys(raw).find(k=>raw[k].id===id);
+  const keyB=Object.keys(raw).find(k=>raw[k].id===ordenesDia[swapIdx].id);
+
+  if(keyA) await set(ref(fbDb,`ordenes/${keyA}/ordenRuta`),ordenB);
+  if(keyB) await set(ref(fbDb,`ordenes/${keyB}/ordenRuta`),ordenA);
+
+  renderReparto();
+};
+
+window.devolverAPendientes=async function(id){
+  const orden=DB.ordenes.find(o=>o.id===id);
+  if(!orden)return;
+  if(!confirm(`¿Devolver el pedido de ${orden.cliente} a Pedidos Pendientes? Podrás editarlo o dividirlo desde allí.`))return;
+  if(!fbDb)return;
+  const allRaw=await get(ref(fbDb,"ordenes"));
+  const raw=allRaw.val()||{};
+  const key=Object.keys(raw).find(k=>raw[k].id===id);
+  if(key){
+    await set(ref(fbDb,`ordenes/${key}/confirmado`),false);
+    await set(ref(fbDb,`ordenes/${key}/fechaEntrega`),null);
+    await set(ref(fbDb,`ordenes/${key}/ordenRuta`),null);
+  }
+  renderReparto();
+  // Mostrar feedback temporario
+  const content=document.getElementById("rep-content");
+  const banner=document.createElement("div");
+  banner.innerHTML=`<div class="alert al-ok fadein" style="margin-bottom:12px">✓ Pedido de <strong>${orden.cliente}</strong> devuelto a Pedidos Pendientes.</div>`;
+  content.prepend(banner);
+  setTimeout(()=>banner.remove(),4e3);
+};
+
 // ═══════════════ STOCK ═══════════════
+let stockFiltro="ambas";
+window.setStockFiltro=function(f){
+  stockFiltro=f;
+  ["ambas","pastas","pollo"].forEach(k=>{
+    const btn=document.getElementById("sf-"+k);
+    if(btn){ btn.style.background=k===f?"var(--ac)":""; btn.style.color=k===f?"#fff":""; btn.className=k===f?"btn btn-sm":"btn btn-sm btn-ghost"; }
+  });
+  const ps=document.getElementById("stock-pastas-section");
+  const po=document.getElementById("stock-pollo-section");
+  if(ps) ps.style.display=(f==="pollo")?"none":"block";
+  if(po) po.style.display=(f==="pastas")?"none":"block";
+  renderStock();
+};
+
+// Orden sub-depósitos
+const SD_ORDER_POLLO=["general","copetin","huertas","suteki"];
+const SD_ORDER_PASTAS=["general","reserva"];
+
 function renderStock(){
   const all=getPos().filter(p=>p.contenido);
-  const agr={};
+  // Agrupar por empresa + producto + subdep
+  const agrP={}, agrO={};
   all.forEach(p=>{
-    const k=`${p.contenido.empresa}__${p.contenido.codigo||p.contenido.producto}__${p.contenido.subdep||"general"}`;
-    if(!agr[k]) agr[k]={empresa:p.contenido.empresa,producto:p.contenido.producto,codigo:p.contenido.codigo,subdep:p.contenido.subdep||"general",kg:0,pos:[]};
-    agr[k].kg+=p.contenido.kg||0; agr[k].pos.push(p.id);
+    const c=p.contenido;
+    const sd=c.subdep||"general";
+    if(c.empresa==="pastas"){
+      const k=`${c.codigo||c.producto}__${sd}`;
+      if(!agrP[k]) agrP[k]={producto:c.producto,codigo:c.codigo,subdep:sd,kg:0,pos:[]};
+      agrP[k].kg+=c.kg||0; agrP[k].pos.push(p.id);
+    } else {
+      const k=`${c.codigo||c.producto}__${sd}`;
+      if(!agrO[k]) agrO[k]={producto:c.producto,codigo:c.codigo,subdep:sd,kg:0,pos:[]};
+      agrO[k].kg+=c.kg||0; agrO[k].pos.push(p.id);
+    }
   });
-  const rows=Object.values(agr);
-  const tbody=document.getElementById("stock-tbody");
-  if(!rows.length){tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px 0;color:var(--t3)">Sin stock</td></tr>`;return}
-  tbody.innerHTML=rows.map(r=>{
-    const prod=PRODS[r.empresa]?.find(p=>p.cod===r.codigo);
-    return`<tr>
-      <td style="font-weight:600;font-size:12px">${r.producto}</td>
-      <td>${tagEmp(r.empresa)}</td>
-      <td>${sdBadge(r.subdep)||`<span style='color:var(--t3);font-size:11px'>General</span>`}</td>
-      <td style="font-family:var(--mono);font-weight:700">${fmt(r.kg)}</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${prod?.palKg?(r.kg/prod.palKg).toFixed(2):"—"}</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${prod?.cajKg?(r.kg/prod.cajKg).toFixed(1):"—"}</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${prod?.pB&&r.empresa==="pastas"?(r.kg/prod.pB).toFixed(0):"—"}</td>
-      <td style="font-family:var(--mono);font-size:9px;color:var(--t3)">${r.pos.join(", ")}</td>
-    </tr>`;
-  }).join("");
+
+  // PASTAS — ordenar por subdep luego producto
+  const rowsP=Object.values(agrP).sort((a,b)=>{
+    const oi=SD_ORDER_PASTAS.indexOf(a.subdep)-SD_ORDER_PASTAS.indexOf(b.subdep);
+    return oi!==0?oi:b.kg-a.kg; // dentro del mismo depósito: mayor a menor
+  });
+  const tbP=document.getElementById("stock-tbody-pastas");
+  if(tbP){
+    if(!rowsP.length){ tbP.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:18px;color:var(--t3);font-size:12px">Sin stock de Pastas Pariggi</td></tr>`; }
+    else tbP.innerHTML=rowsP.map(r=>{
+      const prod=PRODS.pastas.find(p=>p.cod===r.codigo);
+      const box=prod?.pB?(r.kg/prod.pB).toFixed(0):"—";
+      const cajas=prod?.cajKg?(r.kg/prod.cajKg).toFixed(1):"—";
+      const pals=prod?.palKg?(r.kg/prod.palKg).toFixed(2):"—";
+      return`<tr>
+        <td style="font-weight:600;font-size:12px">${r.producto}</td>
+        <td>${sdBadge(r.subdep)||`<span style="color:var(--t3);font-size:11px">General</span>`}</td>
+        <td style="font-family:var(--mono);font-weight:700;color:var(--pa)">${box}</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${fmt(r.kg)}</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${cajas}</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${pals}</td>
+        <td style="font-family:var(--mono);font-size:9px;color:var(--t3)">${r.pos.join(", ")}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  // POLLO — ordenar por subdep (General→Copetin→Huertas→Suteki) luego producto
+  const rowsO=Object.values(agrO).sort((a,b)=>{
+    const ai=SD_ORDER_POLLO.indexOf(a.subdep); const bi=SD_ORDER_POLLO.indexOf(b.subdep);
+    const oi=(ai===-1?99:ai)-(bi===-1?99:bi);
+    return oi!==0?oi:b.kg-a.kg; // dentro del mismo depósito: mayor a menor
+  });
+  const tbO=document.getElementById("stock-tbody-pollo");
+  if(tbO){
+    if(!rowsO.length){ tbO.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--t3);font-size:12px">Sin stock de Pollo Cocido</td></tr>`; }
+    else tbO.innerHTML=rowsO.map(r=>{
+      const prod=PRODS.pollo.find(p=>p.cod===r.codigo);
+      const cajas=prod?.cajKg?(r.kg/prod.cajKg).toFixed(1):"—";
+      const pals=prod?.palKg?(r.kg/prod.palKg).toFixed(2):"—";
+      return`<tr>
+        <td style="font-weight:600;font-size:12px">${r.producto}</td>
+        <td>${sdBadge(r.subdep)||`<span style="color:var(--t3);font-size:11px">General</span>`}</td>
+        <td style="font-family:var(--mono);font-weight:700;color:var(--po)">${fmt(r.kg)}</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${cajas}</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--t2)">${pals}</td>
+        <td style="font-family:var(--mono);font-size:9px;color:var(--t3)">${r.pos.join(", ")}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  // Vencimientos
   const conVto=all.filter(p=>p.contenido.vto).sort((a,b)=>new Date(a.contenido.vto)-new Date(b.contenido.vto));
   const vtoDiv=document.getElementById("vto-list");
-  if(!conVto.length){vtoDiv.innerHTML=`<div style="text-align:center;padding:18px 0;color:var(--t3);font-size:12px">Sin vencimientos</div>`;return}
+  if(!vtoDiv)return;
+  if(!conVto.length){vtoDiv.innerHTML=`<div style="text-align:center;padding:18px;color:var(--t3);font-size:12px">Sin vencimientos registrados</div>`;return}
   vtoDiv.innerHTML=conVto.map((p,i)=>`
     <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:${i<conVto.length-1?"1px solid var(--b1)":"none"}">
       ${vbadge(p.contenido.vto)}
       <div style="flex:1"><div style="font-size:12px;font-weight:600">${p.contenido.producto}</div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)">${p.label} · ${fmt(p.contenido.kg)}kg · ${p.contenido.vto}</div></div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t2)">${p.label} · ${fmtOp(p.contenido.kg,PRODS[p.contenido.empresa]?.find(x=>x.cod===p.contenido.codigo),p.contenido.empresa)} · ${p.contenido.vto}</div></div>
       ${tagEmp(p.contenido.empresa)} ${sdBadge(p.contenido.subdep)}
     </div>`).join("");
+
+  // SECOS
+  const secosDiv=document.getElementById("stock-secos");
+  if(!secosDiv) return;
+  const secosOcup=getSecos().filter(s=>s.contenido);
+  if(!secosOcup.length){
+    secosDiv.innerHTML=`<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Sin stock en depósito de secos</div>`;
+    return;
+  }
+  const agrSec={};
+  secosOcup.forEach(s=>{
+    const k=s.contenido.codigo||s.contenido.producto;
+    if(!agrSec[k]) agrSec[k]={producto:s.contenido.producto,codigo:s.contenido.codigo,cajas:0,pos:[]};
+    agrSec[k].cajas+=(s.contenido.cajas||0);
+    agrSec[k].pos.push(s.id);
+  });
+  secosDiv.innerHTML=`<table class="tbl"><thead><tr><th>Producto</th><th>Cajas</th><th>Carros</th></tr></thead><tbody>
+    ${Object.values(agrSec).sort((a,b)=>b.cajas-a.cajas).map(r=>`<tr>
+      <td style="font-weight:600;font-size:12px">${r.producto}</td>
+      <td style="font-family:var(--mono);font-weight:700;color:#7c3aed">${r.cajas}</td>
+      <td style="font-family:var(--mono);font-size:10px;color:var(--t3)">${r.pos.join(", ")}</td>
+    </tr>`).join("")}
+  </tbody></table>`;
 }
 
 // ═══════════════ CONFIG ═══════════════
@@ -1427,7 +2767,57 @@ function initConfig(){
   document.getElementById("cfg-firebase-status").innerHTML=cfg
     ?`<div class="alert al-ok">✓ Firebase conectado — Proyecto: <strong>${cfg.projectId}</strong></div>`
     :`<div class="alert al-warn">Firebase no configurado.</div>`;
+  renderTablaClientes("");
 }
+
+function renderTablaClientes(filtro){
+  const tbody=document.getElementById("cfg-cli-tbody");
+  if(!tbody)return;
+  const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const lista=CLIENTES.filter(c=>!filtro||norm(c).includes(norm(filtro)));
+  tbody.innerHTML=lista.map(cli=>{
+    const key=cli.toLowerCase().replace(/[^a-z0-9]/g,"_").substring(0,40);
+    const cfg=DB.clientes_config[key]||{};
+    const emp=cfg.empresa||"";
+    const dep=cfg.deposito||"";
+    const dias=cfg.diasVto||0;
+    const depOpts=emp==="pastas"?["general","reserva"]:emp==="pollo"?["general","copetin","huertas","suteki"]:["general"];
+    return`<tr>
+      <td style="font-size:12px;font-weight:600">${cli}</td>
+      <td>
+        <select onchange="cfgCliUpdate('${key}','empresa',this.value,'${cli}')" style="font-size:11px;padding:3px 5px;border:1px solid var(--b2);border-radius:4px;background:var(--s2)">
+          <option value="" ${!emp?"selected":""}>—</option>
+          <option value="pastas" ${emp==="pastas"?"selected":""}>Pastas</option>
+          <option value="pollo" ${emp==="pollo"?"selected":""}>Pollo</option>
+          <option value="ambas" ${emp==="ambas"?"selected":""}>Ambas</option>
+        </select>
+      </td>
+      <td>
+        <select onchange="cfgCliUpdate('${key}','deposito',this.value,'${cli}')" style="font-size:11px;padding:3px 5px;border:1px solid var(--b2);border-radius:4px;background:var(--s2)">
+          ${depOpts.map(d=>`<option value="${d}" ${dep===d?"selected":""}>${SD_NAMES[d]||d}</option>`).join("")}
+        </select>
+      </td>
+      <td>
+        <input type="number" value="${dias}" min="0" max="365" placeholder="0"
+          onchange="cfgCliUpdate('${key}','diasVto',parseInt(this.value)||0,'${cli}')"
+          style="width:60px;font-size:11px;padding:3px 5px;border:1px solid var(--b2);border-radius:4px;text-align:center">
+      </td>
+      <td style="font-family:monospace;font-size:9px;color:var(--t3)">${dep||"—"}</td>
+    </tr>`;
+  }).join("");
+}
+
+window.cfgCliUpdate=async function(key,campo,valor,nombre){
+  if(!fbDb)return;
+  const existing=DB.clientes_config[key]||{nombre};
+  await set(ref(fbDb,`clientes_config/${key}`),{...existing,nombre,[campo]:valor});
+  const st=document.getElementById("cfg-cli-status");
+  if(st){st.innerHTML=`<div class="alert al-ok" style="font-size:11px">✓ ${nombre} actualizado.</div>`;setTimeout(()=>st.innerHTML="",2e3);}
+};
+
+window.filtrarTablaClientes=function(val){
+  renderTablaClientes(val);
+};
 window.cfgGuardar=function(){
   setKey(document.getElementById("cfg-key").value.trim());
   const d=document.getElementById("cfg-ok");
@@ -1450,8 +2840,8 @@ if(cfg){
   initFirebase(cfg);
   initLogin();
   document.getElementById("pick-fecha").value=today();
+  document.getElementById("rep-fecha").value=today();
 } else {
-  // Primera vez → mostrar setup
   document.getElementById("login-screen").style.display="none";
   document.getElementById("setup-screen").style.display="block";
 }
