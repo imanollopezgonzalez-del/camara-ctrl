@@ -794,13 +794,21 @@ let DB={contenidos:{},movimientos:[],ordenes:[],movimientos_pendientes:[],confir
 let currentUser="";
 let syncStatus="offline";
 
-function getCfg(){
-  try{const r=localStorage.getItem("cc_fb_cfg");return r?JSON.parse(r):null}catch{return null}
-}
+// ═══════════════ CONFIG HARDCODEADA ═══════════════
+const FIREBASE_CFG={
+  apiKey:"AIzaSyCkvsNrZ2UgnE-dETljxJp50zxFQKhn6N8",
+  authDomain:"camara-ctrl.firebaseapp.com",
+  databaseURL:"https://camara-ctrl-default-rtdb.firebaseio.com",
+  projectId:"camara-ctrl"
+};
+const HARDCODED_PIN="2512";
+const HARDCODED_USERS=["Imanol","Flavia","Ivan","Rodrigo"];
+
+function getCfg(){ return FIREBASE_CFG; }
 function getKey(){return localStorage.getItem("cc_apikey")||""}
 function setKey(k){localStorage.setItem("cc_apikey",k)}
-function getPin(){return localStorage.getItem("cc_pin")||""}
-function getUsers(){try{return JSON.parse(localStorage.getItem("cc_users")||"[]")}catch{return[]}}
+function getPin(){return HARDCODED_PIN;}
+function getUsers(){return HARDCODED_USERS;}
 
 function initFirebase(cfg){
   try{
@@ -2835,16 +2843,10 @@ window.cfgBorrarTodo=async function(){
 };
 
 // ═══════════════ INIT ═══════════════
-const cfg=getCfg();
-if(cfg){
-  initFirebase(cfg);
-  initLogin();
-  document.getElementById("pick-fecha").value=today();
-  document.getElementById("rep-fecha").value=today();
-} else {
-  document.getElementById("login-screen").style.display="none";
-  document.getElementById("setup-screen").style.display="block";
-}
+initFirebase(FIREBASE_CFG);
+initLogin();
+document.getElementById("pick-fecha").value=today();
+document.getElementById("rep-fecha").value=today();
 </script>
 </body>
 </html>
